@@ -1,0 +1,106 @@
+<script>
+/* Roda durante o parse, antes de a página ser desenhada: quem já confirmou
+   não chega a ver o portão piscar. Sem JS, o portão fica — e sem confirmação
+   não há acesso, que é o comportamento correto para uma trava legal. */
+(function () {
+  try {
+    var CHAVE = 'sanabria:idade', TRINTA_DIAS = 30 * 24 * 60 * 60 * 1000;
+    var marca = Number(localStorage.getItem(CHAVE));
+    var vale = marca && (Date.now() - marca) < TRINTA_DIAS;
+    /* ?idade na URL reabre o portão — serve para demonstrar sem limpar o navegador */
+    if (vale && !/[?&]idade\b/.test(location.search)) {
+      document.documentElement.classList.add('gate-ok');
+    }
+  } catch (e) { /* localStorage bloqueado: mostra o portão */ }
+})();
+</script>
+
+<div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-titulo">
+  <div class="gate-card">
+    <div class="gate-logo" role="img" aria-label="Sanabria — Laboratório de Vinhos Naturais"></div>
+
+    <div data-painel="pergunta">
+      <p class="lab">Verificação de idade</p>
+      <h2 class="gate-h" id="gate-titulo">Você tem 18 anos ou&nbsp;mais?</h2>
+      <p class="gate-p">Este site vende bebida alcoólica. Vender, fornecer ou entregar bebida alcoólica a menores de 18 anos é crime no Brasil (ECA, art.&nbsp;243).</p>
+
+      <div class="gate-actions">
+        <button class="btn" type="button" id="gate-sim">Sim, tenho 18 anos ou mais</button>
+        <button class="btn btn-ghost" type="button" id="gate-nao">Não</button>
+      </div>
+
+      <p class="gate-fine">
+        Ao entrar, você declara ter idade legal para consumir bebida alcoólica.
+        <b>Aprecie com moderação.</b> <b>Se beber, não dirija.</b>
+      </p>
+    </div>
+
+    <div data-painel="negado" hidden>
+      <p class="lab">Acesso não permitido</p>
+      <h2 class="gate-h">Volte quando completar&nbsp;18.</h2>
+      <p class="gate-p">Não podemos mostrar nosso catálogo para menores de 18 anos. Obrigado pela compreensão — a gente fica te esperando.</p>
+
+      <div class="gate-actions">
+        <button class="btn btn-ghost" type="button" id="gate-voltar">Voltar</button>
+      </div>
+
+      <p class="gate-fine">Sanabria · Laboratório de Vinhos Naturais</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var raiz = document.documentElement;
+  var portao = document.getElementById('gate');
+  if (!portao) return;
+
+  /* já confirmado: tira o portão do DOM para não deixar foco preso atrás dele */
+  if (raiz.classList.contains('gate-ok')) { portao.remove(); return; }
+
+  var pergunta = portao.querySelector('[data-painel="pergunta"]');
+  var negado   = portao.querySelector('[data-painel="negado"]');
+  var semAnima = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function focaveis() {
+    return [].slice.call(portao.querySelectorAll('button:not([hidden])'))
+             .filter(function (b) { return b.offsetParent !== null; });
+  }
+
+  function entrar() {
+    try { localStorage.setItem('sanabria:idade', String(Date.now())); } catch (e) {}
+    raiz.classList.add('gate-ok');
+    /* limpa o ?idade da barra de endereço para não reabrir a cada recarga */
+    if (/[?&]idade\b/.test(location.search) && history.replaceState) {
+      history.replaceState(null, '', location.pathname + location.hash);
+    }
+    if (semAnima) { portao.remove(); return; }
+    portao.classList.add('is-leaving');
+    setTimeout(function () { portao.remove(); }, 320);
+  }
+
+  function mostra(painel) {
+    pergunta.hidden = painel !== 'pergunta';
+    negado.hidden   = painel !== 'negado';
+    var alvo = focaveis()[0];
+    if (alvo) alvo.focus();
+  }
+
+  document.getElementById('gate-sim').addEventListener('click', entrar);
+  document.getElementById('gate-nao').addEventListener('click', function () { mostra('negado'); });
+  document.getElementById('gate-voltar').addEventListener('click', function () { mostra('pergunta'); });
+
+  /* prende o Tab dentro do diálogo: nada atrás dele deve ser alcançável */
+  portao.addEventListener('keydown', function (e) {
+    if (e.key !== 'Tab') return;
+    var itens = focaveis();
+    if (!itens.length) return;
+    var primeiro = itens[0], ultimo = itens[itens.length - 1];
+    if (e.shiftKey && document.activeElement === primeiro) { e.preventDefault(); ultimo.focus(); }
+    else if (!e.shiftKey && document.activeElement === ultimo) { e.preventDefault(); primeiro.focus(); }
+  });
+
+  /* Esc não fecha: é uma trava legal, não um aviso de cookies */
+  document.getElementById('gate-sim').focus();
+})();
+</script>

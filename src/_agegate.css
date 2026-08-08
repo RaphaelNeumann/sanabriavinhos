@@ -1,0 +1,82 @@
+/* ============================================================
+   PORTÃO DE IDADE
+   Exigência legal: a venda de bebida alcoólica a menores de 18
+   anos é crime no Brasil. O portão bloqueia a página inteira até
+   a confirmação — sem confirmação, não há acesso.
+   ============================================================ */
+
+/* trava a rolagem enquanto o portão está aberto */
+:root:not(.gate-ok){ overflow: hidden; }
+
+.gate{
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  padding: clamp(1rem, 5vw, 3rem);
+  background: rgba(12, 11, 9, .62);
+  /* até o desfoque é monocromático — a regra do sistema vale aqui também */
+  backdrop-filter: blur(14px) grayscale(1);
+  -webkit-backdrop-filter: blur(14px) grayscale(1);
+}
+:root.gate-ok .gate{ display: none; }
+
+.gate.is-leaving{ opacity: 0; transition: opacity .3s ease; }
+
+.gate-card{
+  margin: auto;                 /* centraliza sem cortar o topo em telas baixas */
+  width: min(34rem, 100%);
+  background: var(--surface);
+  border: 1px solid var(--fg);
+  padding: clamp(1.6rem, 4vw, 2.75rem);
+}
+
+.gate-logo{
+  width: min(210px, 62%);
+  aspect-ratio: 760 / 285;
+  background-image: var(--img-logo);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left center;
+  filter: var(--logo-tint);
+  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.gate-h{
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  line-height: 1.02;
+  letter-spacing: -.025em;
+  text-wrap: balance;
+  margin: .7rem 0 .9rem;
+}
+.gate-p{ margin: 0; color: var(--fg-2); font-size: .95rem; max-width: 42ch; }
+
+.gate-actions{
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  margin: clamp(1.5rem, 3vw, 2rem) 0 1.25rem;
+}
+.gate-actions .btn{ justify-content: center; }
+
+.gate-fine{
+  margin: 0;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: .625rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  line-height: 1.9;
+  color: var(--fg-2);
+}
+.gate-fine b{ color: var(--stamp); font-weight: 400; }
+
+@media (prefers-reduced-motion: reduce){
+  .gate.is-leaving{ transition: none; }
+}

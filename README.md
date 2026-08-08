@@ -58,6 +58,7 @@ src/                 fontes editáveis (fragmentos HTML com <style> embutido)
   proposta.html        documento da proposta
   _base.css            tokens e primitivas
   _chrome.css          cabeçalho e rodapé
+  _agegate.css/.html   verificação de 18 anos (exigência legal)
   _header.html  _footer.html  _script.html
 assets/
   final/               imagens já redimensionadas
@@ -93,3 +94,5 @@ python3 -m http.server 8000 --directory docs
 - Temas claro e escuro completos, incluindo o estado "sistema" (sem `data-theme`)
 - `prefers-reduced-motion` desliga toda a animação e já entrega os rótulos coloridos
 - `alt` / `aria-label` em toda imagem de conteúdo; foco de teclado visível
+- Portão de idade bloqueando roda, toque e teclado até a confirmação, com foco preso
+  no diálogo e resposta lembrada por 30 dias (`?idade` na URL reabre, para demonstrar)

@@ -194,6 +194,9 @@ body{
   border-radius: 0;
   padding: .95rem 1.5rem;
   transition: background .18s ease, color .18s ease;
+  cursor: pointer;              /* .btn também é usado em <button> */
+  -webkit-appearance: none;
+  appearance: none;
 }
 .btn:hover{ --btn-bg: var(--stamp); border-color: var(--stamp); --btn-fg: var(--on-stamp); }
 .btn-ghost{ --btn-bg: transparent; --btn-fg: var(--fg); }
@@ -353,6 +356,88 @@ a:focus-visible, button:focus-visible{
   color: var(--fg-2);
 }
 .foot-legal .warn{ color: var(--stamp); }
+/* ============================================================
+   PORTÃO DE IDADE
+   Exigência legal: a venda de bebida alcoólica a menores de 18
+   anos é crime no Brasil. O portão bloqueia a página inteira até
+   a confirmação — sem confirmação, não há acesso.
+   ============================================================ */
+
+/* trava a rolagem enquanto o portão está aberto */
+:root:not(.gate-ok){ overflow: hidden; }
+
+.gate{
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  padding: clamp(1rem, 5vw, 3rem);
+  background: rgba(12, 11, 9, .62);
+  /* até o desfoque é monocromático — a regra do sistema vale aqui também */
+  backdrop-filter: blur(14px) grayscale(1);
+  -webkit-backdrop-filter: blur(14px) grayscale(1);
+}
+:root.gate-ok .gate{ display: none; }
+
+.gate.is-leaving{ opacity: 0; transition: opacity .3s ease; }
+
+.gate-card{
+  margin: auto;                 /* centraliza sem cortar o topo em telas baixas */
+  width: min(34rem, 100%);
+  background: var(--surface);
+  border: 1px solid var(--fg);
+  padding: clamp(1.6rem, 4vw, 2.75rem);
+}
+
+.gate-logo{
+  width: min(210px, 62%);
+  aspect-ratio: 760 / 285;
+  background-image: var(--img-logo);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left center;
+  filter: var(--logo-tint);
+  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.gate-h{
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  line-height: 1.02;
+  letter-spacing: -.025em;
+  text-wrap: balance;
+  margin: .7rem 0 .9rem;
+}
+.gate-p{ margin: 0; color: var(--fg-2); font-size: .95rem; max-width: 42ch; }
+
+.gate-actions{
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  margin: clamp(1.5rem, 3vw, 2rem) 0 1.25rem;
+}
+.gate-actions .btn{ justify-content: center; }
+
+.gate-fine{
+  margin: 0;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: .625rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  line-height: 1.9;
+  color: var(--fg-2);
+}
+.gate-fine b{ color: var(--stamp); font-weight: 400; }
+
+@media (prefers-reduced-motion: reduce){
+  .gate.is-leaving{ transition: none; }
+}
 
 /* ============================================================
    HOME
@@ -648,6 +733,113 @@ a:focus-visible, button:focus-visible{
 .tl-t{ font-family: var(--serif); font-size: 1.25rem; line-height: 1.2; letter-spacing: -.015em; margin: 0 0 .25rem; }
 .tl-row p{ margin: 0; font-size: .9rem; color: var(--fg-2); max-width: 58ch; }
 </style>
+
+<script>
+/* Roda durante o parse, antes de a página ser desenhada: quem já confirmou
+   não chega a ver o portão piscar. Sem JS, o portão fica — e sem confirmação
+   não há acesso, que é o comportamento correto para uma trava legal. */
+(function () {
+  try {
+    var CHAVE = 'sanabria:idade', TRINTA_DIAS = 30 * 24 * 60 * 60 * 1000;
+    var marca = Number(localStorage.getItem(CHAVE));
+    var vale = marca && (Date.now() - marca) < TRINTA_DIAS;
+    /* ?idade na URL reabre o portão — serve para demonstrar sem limpar o navegador */
+    if (vale && !/[?&]idade\b/.test(location.search)) {
+      document.documentElement.classList.add('gate-ok');
+    }
+  } catch (e) { /* localStorage bloqueado: mostra o portão */ }
+})();
+</script>
+
+<div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-titulo">
+  <div class="gate-card">
+    <div class="gate-logo" role="img" aria-label="Sanabria — Laboratório de Vinhos Naturais"></div>
+
+    <div data-painel="pergunta">
+      <p class="lab">Verificação de idade</p>
+      <h2 class="gate-h" id="gate-titulo">Você tem 18 anos ou&nbsp;mais?</h2>
+      <p class="gate-p">Este site vende bebida alcoólica. Vender, fornecer ou entregar bebida alcoólica a menores de 18 anos é crime no Brasil (ECA, art.&nbsp;243).</p>
+
+      <div class="gate-actions">
+        <button class="btn" type="button" id="gate-sim">Sim, tenho 18 anos ou mais</button>
+        <button class="btn btn-ghost" type="button" id="gate-nao">Não</button>
+      </div>
+
+      <p class="gate-fine">
+        Ao entrar, você declara ter idade legal para consumir bebida alcoólica.
+        <b>Aprecie com moderação.</b> <b>Se beber, não dirija.</b>
+      </p>
+    </div>
+
+    <div data-painel="negado" hidden>
+      <p class="lab">Acesso não permitido</p>
+      <h2 class="gate-h">Volte quando completar&nbsp;18.</h2>
+      <p class="gate-p">Não podemos mostrar nosso catálogo para menores de 18 anos. Obrigado pela compreensão — a gente fica te esperando.</p>
+
+      <div class="gate-actions">
+        <button class="btn btn-ghost" type="button" id="gate-voltar">Voltar</button>
+      </div>
+
+      <p class="gate-fine">Sanabria · Laboratório de Vinhos Naturais</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var raiz = document.documentElement;
+  var portao = document.getElementById('gate');
+  if (!portao) return;
+
+  /* já confirmado: tira o portão do DOM para não deixar foco preso atrás dele */
+  if (raiz.classList.contains('gate-ok')) { portao.remove(); return; }
+
+  var pergunta = portao.querySelector('[data-painel="pergunta"]');
+  var negado   = portao.querySelector('[data-painel="negado"]');
+  var semAnima = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function focaveis() {
+    return [].slice.call(portao.querySelectorAll('button:not([hidden])'))
+             .filter(function (b) { return b.offsetParent !== null; });
+  }
+
+  function entrar() {
+    try { localStorage.setItem('sanabria:idade', String(Date.now())); } catch (e) {}
+    raiz.classList.add('gate-ok');
+    /* limpa o ?idade da barra de endereço para não reabrir a cada recarga */
+    if (/[?&]idade\b/.test(location.search) && history.replaceState) {
+      history.replaceState(null, '', location.pathname + location.hash);
+    }
+    if (semAnima) { portao.remove(); return; }
+    portao.classList.add('is-leaving');
+    setTimeout(function () { portao.remove(); }, 320);
+  }
+
+  function mostra(painel) {
+    pergunta.hidden = painel !== 'pergunta';
+    negado.hidden   = painel !== 'negado';
+    var alvo = focaveis()[0];
+    if (alvo) alvo.focus();
+  }
+
+  document.getElementById('gate-sim').addEventListener('click', entrar);
+  document.getElementById('gate-nao').addEventListener('click', function () { mostra('negado'); });
+  document.getElementById('gate-voltar').addEventListener('click', function () { mostra('pergunta'); });
+
+  /* prende o Tab dentro do diálogo: nada atrás dele deve ser alcançável */
+  portao.addEventListener('keydown', function (e) {
+    if (e.key !== 'Tab') return;
+    var itens = focaveis();
+    if (!itens.length) return;
+    var primeiro = itens[0], ultimo = itens[itens.length - 1];
+    if (e.shiftKey && document.activeElement === primeiro) { e.preventDefault(); ultimo.focus(); }
+    else if (!e.shiftKey && document.activeElement === ultimo) { e.preventDefault(); primeiro.focus(); }
+  });
+
+  /* Esc não fecha: é uma trava legal, não um aviso de cookies */
+  document.getElementById('gate-sim').focus();
+})();
+</script>
 
 <header class="hdr" id="hdr">
   <div class="wrap hdr-in">

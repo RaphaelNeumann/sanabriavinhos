@@ -155,6 +155,9 @@ body{
   border-radius: 0;
   padding: .95rem 1.5rem;
   transition: background .18s ease, color .18s ease;
+  cursor: pointer;              /* .btn também é usado em <button> */
+  -webkit-appearance: none;
+  appearance: none;
 }
 .btn:hover{ --btn-bg: var(--stamp); border-color: var(--stamp); --btn-fg: var(--on-stamp); }
 .btn-ghost{ --btn-bg: transparent; --btn-fg: var(--fg); }
