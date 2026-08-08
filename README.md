@@ -2,8 +2,8 @@
 
 Mock de apresentação para o redesign de [sanabriavinhos.com](https://www.sanabriavinhos.com/).
 
-**🍷 Mock da home:** https://raphaelneumann.github.io/sanabriavinhos/
-**📐 Proposta:** https://raphaelneumann.github.io/sanabriavinhos/proposta.html
+**🍷 Mock da home:** https://rneumann.me/sanabriavinhos/
+**📐 Proposta:** https://rneumann.me/sanabriavinhos/proposta.html
 
 > **Aviso.** Este repositório é uma **peça de apresentação de design**, não o site oficial
 > da Sanabria e não um site de e-commerce em funcionamento. O logotipo, as fotografias e

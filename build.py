@@ -23,8 +23,9 @@ SITE = ROOT / "docs"   # GitHub Pages só aceita "/" ou "/docs" como origem
 
 PLACEHOLDER = "/*__ASSETS__*/"
 
-# og:image precisa de URL absoluta — a maioria dos scrapers ignora caminho relativo
-BASE = "https://raphaelneumann.github.io/sanabriavinhos/"
+# og:image e canonical precisam de URL absoluta — a maioria dos scrapers ignora
+# caminho relativo. A conta tem domínio próprio, então não é *.github.io.
+BASE = "https://rneumann.me/sanabriavinhos/"
 
 # no formato Artifact as páginas se referenciam pelas URLs publicadas
 ARTIFACT_MOCK = "https://claude.ai/code/artifact/670a4853-7382-4cab-ba32-b1b3de072b0d"
@@ -57,6 +58,7 @@ DOC = """<!doctype html>
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <meta name="color-scheme" content="light dark">
+<link rel="canonical" href="{canonical}">
 <link rel="icon" href="img/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="img/favicon.png">
 <meta property="og:type" content="website">
@@ -145,7 +147,9 @@ def main():
         # entre páginas do site, os links são relativos
         body = body.replace("__PROPOSTA__", "proposta.html")
         body = body.replace(ARTIFACT_MOCK, "./")
-        doc = DOC.format(title=title, desc=page["desc"], og=BASE + "img/og.png", body=body)
+        canonical = BASE + ("" if page["out"] == "index.html" else page["out"])
+        doc = DOC.format(title=title, desc=page["desc"], og=BASE + "img/og.png",
+                         canonical=canonical, body=body)
         (SITE / page["out"]).write_text(doc)
 
         print(f"{'dist/' + page['dist']:34} {len(one)/1024/1024:6.2f} MB")
