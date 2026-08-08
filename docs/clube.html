@@ -576,6 +576,36 @@ a:focus-visible, button:focus-visible{
 </style>
 
 <script>
+/* Troca de tema por URL: ?tema=claro | ?tema=escuro | ?tema=sistema
+   Existe para apresentar as duas versões sem mexer na preferência da máquina.
+   Roda durante o parse, antes da primeira pintura, então a página já nasce
+   no tema certo — sem piscar do claro para o escuro.
+   Fica na sessão do navegador, então vale ao navegar entre as páginas. */
+(function () {
+  var CHAVE = 'sanabria:tema';
+  try {
+    var m = /[?&]tema=([a-z]+)/i.exec(location.search);
+    var escolha = null;
+
+    if (m) {
+      var v = m[1].toLowerCase();
+      if (v === 'claro' || v === 'light')       escolha = 'light';
+      else if (v === 'escuro' || v === 'dark')  escolha = 'dark';
+      else                                      escolha = 'sistema';
+      if (escolha === 'sistema') sessionStorage.removeItem(CHAVE);
+      else sessionStorage.setItem(CHAVE, escolha);
+    } else {
+      escolha = sessionStorage.getItem(CHAVE);
+    }
+
+    if (escolha === 'light' || escolha === 'dark') {
+      document.documentElement.setAttribute('data-theme', escolha);
+    }
+  } catch (e) { /* sessionStorage bloqueado: segue o tema do sistema */ }
+})();
+</script>
+
+<script>
 /* Roda durante o parse, antes de a página ser desenhada: quem já confirmou
    não chega a ver o portão piscar. Sem JS, o portão fica — e sem confirmação
    não há acesso, que é o comportamento correto para uma trava legal. */

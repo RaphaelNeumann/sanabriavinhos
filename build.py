@@ -73,6 +73,7 @@ PARTIALS = {
     "/*__BASE__*/":       "_base.css",
     "/*__CHROME__*/":     "_chrome.css",
     "/*__AGEGATE__*/":    "_agegate.css",
+    "<!--__THEME__-->":   "_theme.html",
     "<!--__AGEGATE__-->": "_agegate.html",
     "<!--__HEADER__-->": "_header.html",
     "<!--__FOOTER__-->": "_footer.html",

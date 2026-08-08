@@ -206,6 +206,36 @@ ul.plain li::before{ content: "—"; color: var(--fg); margin-right: .4rem; }
 footer.end{ border-top: 1px solid var(--fg); padding-block: 2rem 3rem; }
 </style>
 
+<script>
+/* Troca de tema por URL: ?tema=claro | ?tema=escuro | ?tema=sistema
+   Existe para apresentar as duas versões sem mexer na preferência da máquina.
+   Roda durante o parse, antes da primeira pintura, então a página já nasce
+   no tema certo — sem piscar do claro para o escuro.
+   Fica na sessão do navegador, então vale ao navegar entre as páginas. */
+(function () {
+  var CHAVE = 'sanabria:tema';
+  try {
+    var m = /[?&]tema=([a-z]+)/i.exec(location.search);
+    var escolha = null;
+
+    if (m) {
+      var v = m[1].toLowerCase();
+      if (v === 'claro' || v === 'light')       escolha = 'light';
+      else if (v === 'escuro' || v === 'dark')  escolha = 'dark';
+      else                                      escolha = 'sistema';
+      if (escolha === 'sistema') sessionStorage.removeItem(CHAVE);
+      else sessionStorage.setItem(CHAVE, escolha);
+    } else {
+      escolha = sessionStorage.getItem(CHAVE);
+    }
+
+    if (escolha === 'light' || escolha === 'dark') {
+      document.documentElement.setAttribute('data-theme', escolha);
+    }
+  } catch (e) { /* sessionStorage bloqueado: segue o tema do sistema */ }
+})();
+</script>
+
 <div class="wrap cover">
   <div class="cover-logo" role="img" aria-label="Sanabria — Laboratório de Vinhos Naturais"></div>
   <p class="lab">Proposta de redesign · sanabriavinhos.com</p>

@@ -59,6 +59,7 @@ src/                 fontes editáveis (fragmentos HTML com <style> embutido)
   _base.css            tokens e primitivas
   _chrome.css          cabeçalho e rodapé
   _agegate.css/.html   verificação de 18 anos (exigência legal)
+  _theme.html          troca de tema por URL, para apresentar as duas versões
   _header.html  _footer.html  _script.html
 assets/
   final/               imagens já redimensionadas
@@ -87,6 +88,21 @@ Para ver localmente:
 ```bash
 python3 -m http.server 8000 --directory docs
 ```
+
+## Para apresentar
+
+O site segue o tema do sistema de quem visita. Para mostrar as duas versões sem mexer
+nas preferências da máquina, use o parâmetro na URL — ele vale para as três páginas e
+fica guardado na sessão do navegador:
+
+| | |
+|---|---|
+| `?tema=claro` | força o tema claro |
+| `?tema=escuro` | força o tema escuro |
+| `?tema=sistema` | devolve o controle ao sistema operacional |
+| `?idade` | reabre a verificação de idade |
+
+Dá para combinar: `?tema=claro&idade`.
 
 ## Verificado
 
