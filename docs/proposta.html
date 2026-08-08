@@ -197,6 +197,16 @@ a:focus-visible{ outline: 2px solid var(--stamp); outline-offset: 3px; }
   padding: clamp(1.3rem, 3vw, 2.25rem);
   background: var(--surface);
 }
+.warn-two{
+  display: grid;
+  grid-template-columns: minmax(0,1fr);
+  gap: clamp(1.4rem, 3vw, 2.5rem);
+}
+@media (min-width: 820px){ .warn-two{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+.warn-two h4{ margin-bottom: .6rem; }
+.warn-two p{ font-size: .9rem; color: var(--fg-2); }
+.warn-two p + p{ margin-top: .7rem; }
+
 .warn-grid{
   display: grid;
   grid-template-columns: minmax(0,1fr);
@@ -664,9 +674,10 @@ footer.end{ border-top: 1px solid var(--fg); padding-block: 2rem 3rem; }
       <div class="cell">
         <h4>Recomendação: Wix Studio, por <em>branch</em></h4>
         <p style="margin-top:.5rem;">O site está no editor clássico do Wix, cujo posicionamento absoluto é a causa direta do mobile quebrado. O <strong>Wix Studio</strong> suporta CSS grid real, breakpoints e CSS customizado — o suficiente para executar este design fielmente.</p>
-        <p style="margin-top:.7rem;">Não existe conversão: um site do editor clássico nunca vira um site Studio. O caminho é criar uma <strong>branch</strong> (<em>Sites → ações do site → “Create a version on Studio”</em>) — um segundo editor para o mesmo site. Ela <strong>divide o painel com o original</strong>: produtos, contatos e dados de negócio são os mesmos, e os apps se reinstalam sozinhos. Só o design é refeito, e o site atual continua no ar enquanto isso.</p>
-        <p style="margin-top:.7rem;">Por isso Studio e não Shopify ou WordPress: sair do Wix significaria remontar catálogo, pedidos, assinantes do Clube e agendamentos do zero.</p>
+        <p style="margin-top:.7rem;">Não existe conversão: um site do editor clássico nunca vira um site Studio. O caminho é criar uma <strong>branch</strong> (<em>Sites → ações do site → “Create a version on Studio”</em>) — um segundo editor para o mesmo site. Ela <strong>divide o painel com o original</strong>, o que a documentação exemplifica com “produtos, contatos, etc.”. Os apps se reinstalam sozinhos, só o design é refeito, e o site atual continua no ar enquanto isso.</p>
+        <p style="margin-top:.7rem;">A escolha entre Studio e sair do Wix depende inteiramente da pergunta ao lado. Se os assinantes do Clube sobrevivem à branch, o Studio é o caminho mais barato com folga. Se não sobrevivem, o custo de migração fica igual em qualquer destino — e aí vale reabrir Shopify e WordPress, que dão mais controle sobre o resultado.</p>
       </div>
+
 
       <div class="cell">
         <h4>Decisões que dependem de você</h4>
@@ -684,9 +695,21 @@ footer.end{ border-top: 1px solid var(--fg); padding-block: 2rem 3rem; }
 
     <div class="warn">
       <p class="lab" style="color:var(--stamp);">Antes de atravessar</p>
-      <h3 style="margin:.7rem 0 .9rem;">Publicar a branch é irreversível.</h3>
-      <p class="copy">Publicar a versão Studio <strong>despublica automaticamente a branch do editor clássico, e não é possível voltar e republicar a original.</strong> Não é “experimenta e vê” — é construir inteiro, conferir tudo, e então atravessar uma vez só.</p>
-      <p class="copy" style="margin-top:.9rem;">A boa notícia: os apps que sustentam o negócio sobrevivem. Dos 29 apps sem suporte no Studio, <strong>todos são de terceiros</strong> — widgets de chat, timers, reservas de restaurante — mais o Wix Music. <strong>Wix Stores, Bookings, Pricing Plans e Wix Chat não estão na lista.</strong> O que não vem junto é o texto das páginas, que é redigitado, e os envios dos formulários antigos.</p>
+      <h3 style="margin:.7rem 0 1.4rem;">Duas coisas precisam estar resolvidas.</h3>
+
+      <div class="warn-two">
+        <div>
+          <h4>1 · As assinaturas do Clube sobrevivem à branch?</h4>
+          <p>A documentação do Wix <strong>não responde isso</strong>. Ela diz que as branches compartilham “a maior parte dos dados e apps” e exemplifica com produtos e contatos — mas <strong>nunca menciona Planos Pagos, assinaturas ou pagamentos recorrentes</strong>.</p>
+          <p>São duas coisas distintas. A <strong>cobrança recorrente</strong>: os assinantes seguem sendo cobrados? E a <strong>concessão de acesso</strong>: um plano libera páginas específicas, e como as páginas do Studio são novas, esses vínculos certamente precisam ser refeitos. O segundo é reconfiguração; o primeiro, se falhar, significa pedir a cada assinante que assine de novo — e aí a branch perde a razão de existir.</p>
+          <p>Isso <strong>não impede começar</strong>. Trocar a conta e criar a branch é grátis, reversível e não publica nada — e a própria branch responde a pergunta: basta abrir o painel dela em Planos Pagos e ver se os assinantes estão listados.</p>
+        </div>
+        <div>
+          <h4>2 · Publicar é irreversível</h4>
+          <p>Publicar a versão Studio <strong>despublica automaticamente a branch do editor clássico, e não é possível voltar e republicar a original.</strong> Não é “experimenta e vê” — é construir inteiro, conferir tudo, e então atravessar uma vez só.</p>
+          <p>Sobre os apps, a resposta é boa: dos 29 sem suporte no Studio, <strong>todos são de terceiros</strong> — widgets de chat, timers, reservas de restaurante — mais o Wix Music. <strong>Wix Stores, Bookings, Pricing Plans e Wix Chat não estão na lista.</strong> O que não vem junto é o texto das páginas, que é redigitado, e os envios dos formulários antigos.</p>
+        </div>
+      </div>
       <div class="warn-grid">
         <div>
           <h4>Trocar a conta para Studio</h4>
