@@ -1,0 +1,43 @@
+<script>
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hdr = document.getElementById('hdr');
+  var shelf = document.querySelector('.reveal-color');
+
+  if (reduce) {
+    document.querySelectorAll('.rise').forEach(function (el) { el.classList.add('is-in'); });
+    if (shelf) shelf.classList.add('is-live');
+  }
+
+  /* Uma varredura por quadro cobre tudo: o estado do cabeçalho, as entradas
+     e a revelação de cor. Diferente de um IntersectionObserver, ela também
+     acerta os blocos que ficaram para trás quando o usuário pula direto para
+     uma âncora — que de outro modo continuariam invisíveis. */
+  var ticking = false;
+
+  function frame() {
+    ticking = false;
+    if (hdr) hdr.classList.toggle('is-stuck', window.scrollY > 40);
+    if (reduce) return;
+
+    var vh = window.innerHeight;
+    document.querySelectorAll('.rise:not(.is-in)').forEach(function (el) {
+      if (el.getBoundingClientRect().top < vh * 0.88) el.classList.add('is-in');
+    });
+
+    /* o único gesto orquestrado do site: as garrafas ganham cor */
+    if (shelf && !shelf.classList.contains('is-live')
+        && shelf.getBoundingClientRect().top < vh * 0.82) {
+      shelf.classList.add('is-live');
+    }
+  }
+
+  function schedule() {
+    if (!ticking) { ticking = true; window.requestAnimationFrame(frame); }
+  }
+
+  frame();
+  window.addEventListener('scroll', schedule, { passive: true });
+  window.addEventListener('resize', schedule, { passive: true });
+})();
+</script>

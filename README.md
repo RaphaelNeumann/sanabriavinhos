@@ -2,7 +2,8 @@
 
 Mock de apresentação para o redesign de [sanabriavinhos.com](https://www.sanabriavinhos.com/).
 
-**🍷 Mock da home:** https://rneumann.me/sanabriavinhos/
+**🍷 Home:** https://rneumann.me/sanabriavinhos/
+**📦 Clube:** https://rneumann.me/sanabriavinhos/clube.html
 **📐 Proposta:** https://rneumann.me/sanabriavinhos/proposta.html
 
 > **Aviso.** Este repositório é uma **peça de apresentação de design**, não o site oficial
@@ -52,8 +53,12 @@ Nenhuma webfont: sem risco de fallback silencioso e sem custo de carregamento.
 
 ```
 src/                 fontes editáveis (fragmentos HTML com <style> embutido)
-  mock.html            home proposta
+  mock.html            home
+  clube.html           página do clube de assinatura
   proposta.html        documento da proposta
+  _base.css            tokens e primitivas
+  _chrome.css          cabeçalho e rodapé
+  _header.html  _footer.html  _script.html
 assets/
   final/               imagens já redimensionadas
   favicon.png  og.png
@@ -63,9 +68,11 @@ docs/                site estático publicado no GitHub Pages
 dist/                versão de arquivo único, com imagens em data-URI  (ignorado no git)
 ```
 
-Cada página existe em dois formatos a partir do mesmo fonte: o site estático, com imagens
-como arquivos de verdade, e um arquivo único com tudo embutido em data-URI — necessário
-onde uma CSP bloqueia hosts externos.
+Os fontes são fragmentos com marcadores que o `build.py` substitui — `/*__BASE__*/`,
+`<!--__HEADER__-->`, `__HOME__` e afins. Cada página sai em dois formatos: o site
+estático, com imagens como arquivos de verdade e links relativos, e um arquivo único
+com tudo embutido em data-URI e links absolutos — necessário onde uma CSP bloqueia
+hosts externos.
 
 ## Build
 

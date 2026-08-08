@@ -1,0 +1,828 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clube Sanabria — assinatura de vinhos naturais</title>
+<meta name="description" content="Clube Sanabria: assinatura mensal de vinhos naturais, com curadoria do enólogo e frete grátis em todos os planos.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://rneumann.me/sanabriavinhos/clube.html">
+<link rel="icon" href="img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="img/favicon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Clube Sanabria — assinatura de vinhos naturais">
+<meta property="og:description" content="Clube Sanabria: assinatura mensal de vinhos naturais, com curadoria do enólogo e frete grátis em todos os planos.">
+<meta property="og:image" content="https://rneumann.me/sanabriavinhos/img/og.png">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+<style>
+:root{
+  --img-art:url("img/art.jpg");
+  --img-b1:url("img/b1.jpg");
+  --img-b2:url("img/b2.png");
+  --img-b3:url("img/b3.jpg");
+  --img-b4:url("img/b4.jpg");
+  --img-b5:url("img/b5.jpg");
+  --img-b6:url("img/b6.jpg");
+  --img-box:url("img/box.jpg");
+  --img-dinner:url("img/dinner.jpg");
+  --img-family:url("img/family.jpg");
+  --img-flask:url("img/flask.jpg");
+  --img-harvest:url("img/harvest.jpg");
+  --img-hero:url("img/hero.jpg");
+  --img-host:url("img/host.jpg");
+  --img-lab:url("img/lab.jpg");
+  --img-logo:url("img/logo.png");
+  --img-press:url("img/press.jpg");
+  --img-seal:url("img/seal.jpg");
+}
+/* ============================================================
+   SANABRIA — BASE
+   Tese: tudo em preto e branco; a cor só existe onde há rótulo.
+   ============================================================ */
+
+:root{
+  /* superfícies e tinta — neutros quentes, deslocados para o oliva
+     do traço do logotipo; nada de cinza puro */
+  --bg:        #E9E6DE;
+  --surface:   #FDFCFA;
+  --surface-2: #DFDBD1;
+  --fg:        #15130F;
+  --fg-2:      #5F5A50;
+  --rule:      #C7C2B6;
+  --rule-soft: #D6D2C7;
+  --stamp:     #8A2F1D;   /* segunda tinta. uma só função. */
+  --on-stamp:  #F4EFE7;
+  --logo-tint: none;
+
+  --serif: "Times New Roman", Times, "Liberation Serif", serif;
+  --mono:  ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Courier New", monospace;
+  --sans:  "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+
+  --wrap: 1280px;
+  --pad: clamp(1.25rem, 4vw, 3.25rem);
+  --photo: grayscale(1) contrast(1.06) brightness(.98);
+  /* distância entre a borda do conteúdo e a borda da janela — para sangrar */
+  --bleed: calc((100vw - min(100vw, var(--wrap))) / 2 + var(--pad));
+}
+
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:        #131210;
+    --surface:   #1B1917;
+    --surface-2: #242119;
+    --fg:        #EAE7DF;
+    --fg-2:      #9A9488;
+    --rule:      #35322B;
+    --rule-soft: #2A2722;
+    --stamp:     #DE7A5C;
+    --on-stamp:  #17140F;
+    --photo: grayscale(1) contrast(1.02) brightness(.9);
+    --logo-tint: brightness(1.7) saturate(.9);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:        #131210;
+  --surface:   #1B1917;
+  --surface-2: #242119;
+  --fg:        #EAE7DF;
+  --fg-2:      #9A9488;
+  --rule:      #35322B;
+  --rule-soft: #2A2722;
+  --stamp:     #DE7A5C;
+  --on-stamp:  #17140F;
+  --photo: grayscale(1) contrast(1.02) brightness(.9);
+  --logo-tint: brightness(1.7) saturate(.9);
+}
+
+*, *::before, *::after{ box-sizing: border-box; }
+
+body{
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ---------- primitivas tipográficas ---------- */
+
+.d1, .d2, .d3{
+  font-family: var(--serif);
+  font-weight: 400;
+  text-wrap: balance;
+  margin: 0;
+}
+.d1{ font-size: clamp(3.1rem, 8.2vw, 7.2rem); line-height: .88;  letter-spacing: -.032em; }
+.d2{ font-size: clamp(2.1rem, 4.4vw, 3.75rem); line-height: .96; letter-spacing: -.026em; }
+.d3{ font-size: clamp(1.45rem, 2.3vw, 2.05rem); line-height: 1.1; letter-spacing: -.016em; }
+.d1 em, .d2 em, .d3 em{ font-style: italic; }
+
+.lab{
+  font-family: var(--mono);
+  font-size: .6875rem;
+  letter-spacing: .175em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+  margin: 0;
+}
+.lede{
+  font-size: clamp(1.02rem, 1.25vw, 1.18rem);
+  line-height: 1.6;
+  color: var(--fg-2);
+  max-width: 34ch;
+  margin: 0;
+}
+.copy{ color: var(--fg-2); max-width: 62ch; margin: 0; }
+.num{ font-variant-numeric: tabular-nums; }
+
+/* ---------- estrutura ---------- */
+
+.wrap{
+  width: 100%;
+  max-width: var(--wrap);
+  margin-inline: auto;
+  padding-inline: var(--pad);
+}
+.band{ border-top: 1px solid var(--rule); }
+.band-pad{ padding-block: clamp(3.5rem, 7vw, 6.5rem); }
+
+/* cabeçalho de seção: número de série + título, como etiqueta de amostra */
+.shead{
+  display: grid;
+  grid-template-columns: minmax(0,1fr);
+  gap: 1.5rem;
+  align-items: end;
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+}
+@media (min-width: 860px){
+  .shead{ grid-template-columns: 8rem minmax(0,1fr) minmax(0, 22rem); gap: 2.5rem; }
+}
+.shead-n{
+  font-family: var(--mono);
+  font-size: .6875rem;
+  letter-spacing: .175em;
+  color: var(--fg-2);
+  padding-top: .55rem;
+  border-top: 1px solid var(--fg);
+}
+
+/* ---------- botões ---------- */
+
+.btn{
+  --btn-fg: var(--on-stamp);
+  --btn-bg: var(--fg);
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  font-family: var(--mono);
+  font-size: .6875rem;
+  letter-spacing: .175em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--btn-fg);
+  background: var(--btn-bg);
+  border: 1px solid var(--fg);
+  border-radius: 0;
+  padding: .95rem 1.5rem;
+  transition: background .18s ease, color .18s ease;
+}
+.btn:hover{ --btn-bg: var(--stamp); border-color: var(--stamp); --btn-fg: var(--on-stamp); }
+.btn-ghost{ --btn-bg: transparent; --btn-fg: var(--fg); }
+.btn-ghost:hover{ --btn-bg: var(--fg); --btn-fg: var(--bg); border-color: var(--fg); }
+.btn-sm{ padding: .7rem 1.1rem; }
+
+a:focus-visible, button:focus-visible{
+  outline: 2px solid var(--stamp);
+  outline-offset: 3px;
+}
+
+/* ---------- fotografia ---------- */
+
+/* regra do sistema: toda foto editorial é P&B.
+   Cor apenas onde há rótulo — garrafas e artes de rótulo. */
+.ph{
+  background-color: var(--surface-2);
+  background-size: cover;
+  background-position: center;
+  filter: var(--photo);
+}
+
+/* ---------- movimento: um gesto orquestrado, mais nada ---------- */
+
+.rise{ opacity: 0; transform: translateY(14px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.3,1); }
+.rise.is-in{ opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{ transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  .rise{ opacity: 1; transform: none; }
+}
+/* ============================================================
+   CABEÇALHO E RODAPÉ — compartilhados entre as páginas do site
+   ============================================================ */
+
+.hdr{
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 90;
+  border-bottom: 1px solid transparent;
+  transition: background .28s ease, border-color .28s ease;
+}
+.hdr.is-stuck{
+  background: var(--bg);
+  border-bottom-color: var(--rule);
+}
+/* páginas internas já nascem com o cabeçalho sólido */
+.hdr.is-solid{ background: var(--bg); border-bottom-color: var(--rule); }
+
+.hdr-in{
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2.5rem);
+  height: 74px;
+}
+.logo{
+  display: block;
+  width: 148px;
+  height: 56px;
+  flex: none;
+  background-image: var(--img-logo);
+  background-size: contain;
+  background-position: left center;
+  background-repeat: no-repeat;
+  filter: brightness(0) opacity(.92);
+}
+:root[data-theme="dark"] .logo{ filter: brightness(0) invert(1) opacity(.9); }
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .logo{ filter: brightness(0) invert(1) opacity(.9); }
+}
+
+.nav{
+  display: none;
+  margin-left: auto;
+  gap: clamp(1rem, 2vw, 1.9rem);
+}
+@media (min-width: 1000px){ .nav{ display: flex; } }
+.nav a{
+  font-family: var(--mono);
+  font-size: .6875rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--fg);
+  padding: .35rem 0;
+  border-bottom: 1px solid transparent;
+  transition: border-color .18s ease, color .18s ease;
+  white-space: nowrap;
+}
+.nav a:hover{ border-bottom-color: var(--fg); }
+.nav a[aria-current]{ border-bottom-color: var(--stamp); color: var(--stamp); }
+
+.hdr-end{ display: flex; align-items: center; gap: .9rem; margin-left: auto; }
+@media (min-width: 1000px){ .hdr-end{ margin-left: 0; } }
+.cart{
+  font-family: var(--mono);
+  font-size: .6875rem;
+  letter-spacing: .16em;
+  color: var(--fg);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.cart:hover{ color: var(--stamp); }
+.burger{
+  display: grid;
+  place-items: center;
+  width: 38px; height: 38px;
+  background: none;
+  border: 1px solid var(--rule);
+  color: var(--fg);
+  cursor: pointer;
+}
+@media (min-width: 1000px){ .burger{ display: none; } }
+.burger span{ display: block; width: 15px; height: 1px; background: currentColor; box-shadow: 0 -4px currentColor, 0 4px currentColor; }
+
+/* ---------- rodapé ---------- */
+
+.foot{ background: var(--surface); border-top: 1px solid var(--rule); }
+.foot-top{
+  display: grid;
+  grid-template-columns: minmax(0,1fr);
+  gap: clamp(2rem, 4vw, 3rem);
+  padding-block: clamp(3rem, 6vw, 5rem) clamp(2rem, 4vw, 3rem);
+}
+@media (min-width: 880px){ .foot-top{ grid-template-columns: minmax(0, 1.2fr) repeat(3, minmax(0,1fr)); } }
+/* a única aparição em escala do logotipo — e o único uso amplo da tinta vinho */
+.foot-logo{
+  width: min(340px, 100%);
+  aspect-ratio: 760 / 285;
+  background-image: var(--img-logo);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left top;
+  filter: var(--logo-tint);
+}
+.foot h3{
+  font-family: var(--mono); font-size: .6875rem; letter-spacing: .175em;
+  text-transform: uppercase; color: var(--fg-2); margin: 0 0 1rem;
+  padding-bottom: .6rem; border-bottom: 1px solid var(--rule);
+}
+.foot ul{ list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; font-size: .9rem; }
+.foot a{ color: var(--fg); text-decoration: none; }
+.foot a:hover{ color: var(--stamp); text-decoration: underline; text-underline-offset: 3px; }
+.foot address{ font-style: normal; font-size: .9rem; color: var(--fg-2); line-height: 1.55; }
+.foot-legal{
+  border-top: 1px solid var(--rule);
+  padding-block: 1.4rem 2.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem 1.5rem;
+  align-items: baseline;
+  font-family: var(--mono);
+  font-size: .625rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+}
+.foot-legal .warn{ color: var(--stamp); }
+
+/* ============================================================
+   PÁGINA DO CLUBE
+   ============================================================ */
+
+.chero{ padding-top: 74px; }
+.chero-grid{ display: grid; grid-template-columns: minmax(0,1fr); }
+@media (min-width: 940px){
+  .chero-grid{ grid-template-columns: minmax(0, 1fr) minmax(0, 42%); align-items: stretch; }
+}
+.chero-left{
+  padding-block: clamp(2.5rem, 6vw, 5rem) clamp(2.5rem, 5vw, 4rem);
+  padding-right: clamp(0rem, 3vw, 3rem);
+  display: flex; flex-direction: column; align-items: start;
+  gap: clamp(1.3rem, 2.4vw, 1.9rem);
+}
+/* a caixa é foto de rótulo — mantém a cor, pela regra do sistema */
+.chero-photo{
+  min-height: 62vw;
+  background-image: var(--img-box);
+  background-size: cover;
+  background-position: center;
+}
+@media (min-width: 940px){
+  .chero-photo{ min-height: 0; margin-right: calc(-1 * var(--bleed)); }
+}
+.chero-cta{ display: flex; flex-wrap: wrap; gap: .75rem; }
+
+/* ---------- como funciona ---------- */
+
+.how{
+  display: grid; grid-template-columns: minmax(0,1fr); gap: 1px;
+  background: var(--rule); border: 1px solid var(--rule);
+}
+@media (min-width: 760px){ .how{ grid-template-columns: repeat(3, minmax(0,1fr)); } }
+.how-step{ background: var(--bg); padding: clamp(1.3rem, 2.4vw, 2rem); }
+.how-n{ font-family: var(--mono); font-size: .6875rem; letter-spacing: .175em; color: var(--stamp); }
+.how-t{ font-family: var(--serif); font-size: 1.45rem; line-height: 1.12; letter-spacing: -.018em; margin: .5rem 0 .55rem; }
+.how-step p{ font-size: .92rem; color: var(--fg-2); margin: 0; }
+
+/* ---------- o que chega ---------- */
+
+.box-grid{ display: grid; grid-template-columns: minmax(0,1fr); gap: clamp(2rem, 4vw, 3.5rem); align-items: center; }
+@media (min-width: 900px){ .box-grid{ grid-template-columns: minmax(0, 44%) minmax(0,1fr); } }
+.box-photo{
+  aspect-ratio: 1;
+  background-image: var(--img-seal);
+  background-size: cover;
+  background-position: center;
+  border: 1px solid var(--rule);
+  filter: var(--photo);
+}
+.incl{ margin: 0; border-top: 1px solid var(--fg); }
+.incl-row{
+  display: grid; grid-template-columns: minmax(0,1fr);
+  gap: .2rem 2rem; padding: 1.05rem 0; border-bottom: 1px solid var(--rule-soft);
+}
+@media (min-width: 620px){ .incl-row{ grid-template-columns: minmax(0, 14rem) minmax(0,1fr); align-items: baseline; } }
+.incl-t{ font-family: var(--serif); font-size: 1.15rem; line-height: 1.2; letter-spacing: -.015em; }
+.incl-row p{ margin: 0; font-size: .9rem; color: var(--fg-2); }
+
+/* ---------- planos ---------- */
+
+.plans{
+  display: grid; grid-template-columns: minmax(0,1fr); gap: 1px;
+  background: var(--rule); border: 1px solid var(--rule);
+}
+@media (min-width: 820px){ .plans{ grid-template-columns: repeat(3, minmax(0,1fr)); } }
+.plan{ background: var(--bg); padding: clamp(1.3rem, 2.4vw, 2rem); display: flex; flex-direction: column; }
+.plan.is-featured{ background: var(--surface); }
+.plan-tag{
+  font-family: var(--mono); font-size: .625rem; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--stamp); border: 1px solid currentColor; padding: .2rem .45rem;
+  align-self: start; margin-bottom: .8rem;
+}
+.plan-n{ font-family: var(--serif); font-size: clamp(1.7rem, 2.4vw, 2.1rem); line-height: 1; letter-spacing: -.02em; margin: 0 0 .4rem; }
+.plan-for{ font-size: .9rem; color: var(--fg-2); margin: 0 0 1.3rem; min-height: 2.6em; }
+.plan-p{
+  font-family: var(--mono); font-size: 1.35rem; letter-spacing: .01em;
+  font-variant-numeric: tabular-nums; margin: 0 0 1.2rem; padding-bottom: 1.2rem;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.plan-p small{ font-size: .625rem; letter-spacing: .16em; text-transform: uppercase; color: var(--fg-2); }
+.plan ul{ list-style: none; margin: 0 0 1.6rem; padding: 0; display: grid; gap: .55rem; font-size: .9rem; color: var(--fg-2); }
+.plan li{ padding-left: 1.2rem; text-indent: -1.2rem; }
+.plan li::before{ content: "—"; color: var(--fg); margin-right: .4rem; }
+.plan .btn{ margin-top: auto; justify-content: center; }
+
+/* ---------- incluso em todos ---------- */
+
+.perks{
+  display: grid; grid-template-columns: minmax(0,1fr); gap: 1px;
+  background: var(--rule); border: 1px solid var(--rule);
+}
+@media (min-width: 640px){ .perks{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (min-width: 1000px){ .perks{ grid-template-columns: repeat(4, minmax(0,1fr)); } }
+.perk{ background: var(--bg); padding: clamp(1.2rem, 2vw, 1.6rem); }
+.perk h3{ font-family: var(--serif); font-weight: 400; font-size: 1.2rem; line-height: 1.15; letter-spacing: -.015em; margin: .5rem 0 .4rem; }
+.perk p{ font-size: .875rem; color: var(--fg-2); margin: 0; }
+
+/* ---------- perguntas ---------- */
+
+.faq{ border-top: 1px solid var(--fg); }
+.faq details{ border-bottom: 1px solid var(--rule-soft); }
+.faq summary{
+  cursor: pointer; list-style: none; padding: 1.15rem 2.5rem 1.15rem 0; position: relative;
+  font-family: var(--serif); font-size: clamp(1.1rem, 1.6vw, 1.3rem); line-height: 1.25; letter-spacing: -.015em;
+}
+.faq summary::-webkit-details-marker{ display: none; }
+.faq summary::after{
+  content: "+"; position: absolute; right: .35rem; top: 50%; transform: translateY(-50%);
+  font-family: var(--mono); font-size: 1.1rem; color: var(--fg-2);
+}
+.faq details[open] summary::after{ content: "–"; }
+.faq summary:focus-visible{ outline: 2px solid var(--stamp); outline-offset: 2px; }
+.faq-a{ padding: 0 2.5rem 1.3rem 0; margin: 0; font-size: .95rem; color: var(--fg-2); max-width: 68ch; }
+
+/* ---------- fechamento ---------- */
+
+.close{ position: relative; color: #EFEAE1; }
+.close-bg{
+  position: absolute; inset: 0;
+  background-image: var(--img-harvest);
+  background-size: cover; background-position: center 40%;
+  filter: grayscale(1) contrast(1.08) brightness(.38);
+}
+.close-bg::after{
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(10,9,8,.8) 0%, rgba(10,9,8,.55) 60%, rgba(10,9,8,.35) 100%);
+}
+.close-in{ position: relative; padding-block: clamp(4rem, 8vw, 7rem); }
+.close .lab{ color: rgba(239,234,225,.6); }
+.close p{ color: rgba(239,234,225,.8); max-width: 46ch; margin: 1.2rem 0 0; }
+.close .btn{ --btn-bg: #EFEAE1; --btn-fg: #15130F; border-color: #EFEAE1; margin-top: 1.8rem; }
+.close .btn:hover{ --btn-bg: var(--stamp); --btn-fg: #F4EFE7; border-color: var(--stamp); }
+</style>
+
+<header class="hdr" id="hdr">
+  <div class="wrap hdr-in">
+    <a href="index.html" aria-label="Sanabria — página inicial"><span class="logo"></span></a>
+    <nav class="nav" aria-label="Principal">
+      <a href="index.html#estante"      data-nav="vinhos">Vinhos</a>
+      <a href="index.html#metodo"       data-nav="metodo">O método</a>
+      <a href="clube.html"            data-nav="clube" aria-current="page">O clube</a>
+      <a href="index.html#experiencias" data-nav="experiencias">Experiências</a>
+      <a href="index.html#historia"     data-nav="historia">História</a>
+      <a href="index.html#rodape"       data-nav="contato">Contato</a>
+    </nav>
+    <div class="hdr-end">
+      <a class="cart" href="index.html#estante">Sacola&nbsp;(0)</a>
+      <a class="btn btn-sm" href="clube.html">Assinar</a>
+      <button class="burger" type="button" aria-label="Abrir menu"><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="chero">
+    <div class="wrap chero-grid">
+      <div class="chero-left">
+        <p class="lab">Clube Sanabria · assinatura mensal</p>
+
+        <h1 class="d1" style="font-size:clamp(2.7rem, 6.4vw, 5.4rem);">Um vinho que você não escolheu — <em>e vai gostar.</em></h1>
+
+        <p class="lede">Todo mês, Carlos separa rótulos da safra corrente e manda para a sua casa antes de eles chegarem à loja. Sem taxa de adesão e com frete grátis em todos os planos.</p>
+
+        <div class="chero-cta">
+          <a class="btn" href="#planos">Escolher um plano</a>
+          <a class="btn btn-ghost" href="#como">Como funciona</a>
+        </div>
+      </div>
+
+      <div class="chero-photo" role="img" aria-label="Caixa Sanabria aberta, com três garrafas de rótulos ilustrados"></div>
+    </div>
+  </section>
+
+  <!-- ===================== COMO FUNCIONA ===================== -->
+  <section class="band band-pad" id="como">
+    <div class="wrap">
+      <div class="shead rise">
+        <p class="shead-n">01 / Como funciona</p>
+        <h2 class="d2">Três passos e pronto.</h2>
+        <p class="copy">Sem fidelidade e sem letra miúda. Você escolhe o tamanho da caixa; o resto é com a gente.</p>
+      </div>
+
+      <div class="how rise">
+        <div class="how-step">
+          <p class="how-n">Passo 01</p>
+          <h3 class="how-t">Escolha o plano</h3>
+          <p>Dois, três ou seis vinhos por mês. Dá para trocar de plano ou pausar quando quiser, direto na sua conta.</p>
+        </div>
+        <div class="how-step">
+          <p class="how-n">Passo 02</p>
+          <h3 class="how-t">Carlos monta a caixa</h3>
+          <p>A seleção muda todo mês e acompanha o que acabou de sair da safra — inclusive rótulos que ainda não foram para a loja.</p>
+        </div>
+        <div class="how-step">
+          <p class="how-n">Passo 03</p>
+          <h3 class="how-t">Chega na sua casa</h3>
+          <p>Frete grátis para todo o Brasil, com embalagem preparada para transporte de vinho. Se uma garrafa chegar com problema, a gente repõe.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== O QUE CHEGA ===================== -->
+  <section class="band band-pad">
+    <div class="wrap">
+      <div class="shead rise">
+        <p class="shead-n">02 / Na caixa</p>
+        <h2 class="d2">O que vem dentro.</h2>
+      </div>
+
+      <div class="box-grid rise">
+        <div class="box-photo" role="img" aria-label="Lacre de cera com o mascote da Sanabria em relevo, no gargalo da garrafa"></div>
+        <dl class="incl">
+          <div class="incl-row">
+            <span class="incl-t">Os vinhos do mês</span>
+            <p>Rótulos da safra corrente, escolhidos um a um. Nunca repetem dentro do mesmo ano de assinatura.</p>
+          </div>
+          <div class="incl-row">
+            <span class="incl-t">A ficha de cada rótulo</span>
+            <p>Uva, safra, tempo de fermentação, temperatura de serviço e sugestões de harmonização — na linguagem de quem fez o vinho.</p>
+          </div>
+          <div class="incl-row">
+            <span class="incl-t">A carta do enólogo</span>
+            <p>Por que aqueles vinhos, naquele mês. O que a safra fez de diferente e o que prestar atenção na taça.</p>
+          </div>
+          <div class="incl-row">
+            <span class="incl-t">Brindes e edições limitadas</span>
+            <p>Ao longo do ano chegam peças que não estão à venda: rótulos de produção curta, taças e as artes originais impressas.</p>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PLANOS ===================== -->
+  <section class="band band-pad" id="planos">
+    <div class="wrap">
+      <div class="shead rise">
+        <p class="shead-n">03 / Planos</p>
+        <h2 class="d2">Escolha o tamanho da sua&nbsp;caixa.</h2>
+        <p class="copy">Todos os valores são mensais, com frete incluído. Trocar de plano ou cancelar não tem multa.</p>
+      </div>
+
+      <div class="plans rise">
+        <div class="plan">
+          <p class="lab">Entrada</p>
+          <h3 class="plan-n">Vindima</h3>
+          <p class="plan-for">Ideal para quem está começando e quer boas descobertas.</p>
+          <p class="plan-p">R$ 215 <small>/ mês</small></p>
+          <ul>
+            <li>2 vinhos por mês</li>
+            <li>Frete grátis para todo o Brasil</li>
+            <li>Ficha técnica e carta do enólogo</li>
+            <li>Brindes exclusivos ao longo do ano</li>
+          </ul>
+          <a class="btn btn-ghost" href="#planos">Assinar o Vindima</a>
+        </div>
+
+        <div class="plan is-featured">
+          <span class="plan-tag">Mais assinado</span>
+          <h3 class="plan-n">Evolução</h3>
+          <p class="plan-for">Mais rótulos, para ampliar a sua coleção de vinhos.</p>
+          <p class="plan-p">R$ 320 <small>/ mês</small></p>
+          <ul>
+            <li>3 vinhos por mês</li>
+            <li>Frete grátis para todo o Brasil</li>
+            <li>Ficha técnica e carta do enólogo</li>
+            <li>Brindes exclusivos ao longo do ano</li>
+            <li>Prioridade nos lançamentos de produção curta</li>
+          </ul>
+          <a class="btn" href="#planos">Assinar o Evolução</a>
+        </div>
+
+        <div class="plan">
+          <p class="lab">Comunidade</p>
+          <h3 class="plan-n">Famiglia</h3>
+          <p class="plan-for">Pra quem quer viver o mundo do vinho em comunidade.</p>
+          <p class="plan-p">R$ 599 <small>/ mês</small></p>
+          <ul>
+            <li>6 vinhos por mês</li>
+            <li>Frete grátis para todo o Brasil</li>
+            <li>Ficha técnica e carta do enólogo</li>
+            <li>Brindes exclusivos ao longo do ano</li>
+            <li>1 degustação online por mês com o enólogo</li>
+            <li>Condição especial nas experiências em domicílio</li>
+          </ul>
+          <a class="btn btn-ghost" href="#planos">Assinar o Famiglia</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== INCLUSO EM TODOS ===================== -->
+  <section class="band band-pad">
+    <div class="wrap">
+      <div class="shead rise">
+        <p class="shead-n">04 / Em todos</p>
+        <h2 class="d2">O que não muda de plano para&nbsp;plano.</h2>
+      </div>
+
+      <div class="perks rise">
+        <div class="perk">
+          <p class="lab">Sempre</p>
+          <h3>Frete grátis</h3>
+          <p>Para todo o Brasil, em qualquer plano, sem valor mínimo.</p>
+        </div>
+        <div class="perk">
+          <p class="lab">Sempre</p>
+          <h3>Sem fidelidade</h3>
+          <p>Pause, troque de plano ou cancele quando quiser, sem multa.</p>
+        </div>
+        <div class="perk">
+          <p class="lab">Sempre</p>
+          <h3>Antes da loja</h3>
+          <p>Assinantes recebem os lançamentos antes de eles entrarem no site.</p>
+        </div>
+        <div class="perk">
+          <p class="lab">Sempre</p>
+          <h3>Garrafa quebrada, garrafa nova</h3>
+          <p>Chegou com problema? A gente repõe sem discussão.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PERGUNTAS ===================== -->
+  <section class="band band-pad">
+    <div class="wrap">
+      <div class="shead rise">
+        <p class="shead-n">05 / Perguntas</p>
+        <h2 class="d2">O que costumam perguntar.</h2>
+      </div>
+
+      <div class="faq rise">
+        <details>
+          <summary>Posso escolher os vinhos?</summary>
+          <p class="faq-a">Não — e essa é a graça. A curadoria é do Carlos, e é o que faz o clube valer a pena: você recebe rótulos que provavelmente não escolheria sozinho. Se algum estilo não funciona para você (um espumante, um laranja), é só avisar no cadastro que ele fica fora das suas caixas.</p>
+        </details>
+        <details>
+          <summary>Quando é feita a cobrança e quando a caixa chega?</summary>
+          <p class="faq-a">A cobrança é mensal, na mesma data da sua assinatura. A caixa sai nos dias seguintes e o prazo de entrega varia com a região — você recebe o código de rastreio assim que ela é postada.</p>
+        </details>
+        <details>
+          <summary>Posso pular um mês?</summary>
+          <p class="faq-a">Pode. Dá para pausar a assinatura pela sua conta, sem perder o histórico nem as condições do seu plano. Ao voltar, você retoma de onde parou.</p>
+        </details>
+        <details>
+          <summary>E se eu não gostar de um vinho?</summary>
+          <p class="faq-a">Fale com a gente. Vinho natural tem variação de safra para safra e nem todo rótulo agrada todo mundo — faz parte. Se um vinho não funcionou para você, isso entra no seu perfil e ajusta as próximas caixas.</p>
+        </details>
+        <details>
+          <summary>Dá para presentear alguém?</summary>
+          <p class="faq-a">Sim. Você pode assinar em nome de outra pessoa e definir por quantos meses. A primeira caixa vai com um cartão escrito por você.</p>
+        </details>
+        <details>
+          <summary>O clube tem os mesmos vinhos da loja?</summary>
+          <p class="faq-a">Em parte. Muitos rótulos chegam ao clube antes de entrarem na loja, e alguns são de produção tão curta que ficam só entre os assinantes.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FECHAMENTO ===================== -->
+  <section class="close">
+    <div class="close-bg" role="img" aria-label="Colheita manual de uvas tintas no vinhedo"></div>
+    <div class="wrap close-in">
+      <p class="lab">Comece pela safra corrente</p>
+      <h2 class="d2" style="margin-top:1rem; max-width:16ch;">A próxima caixa fecha no fim do&nbsp;mês.</h2>
+      <p>Assine até lá e o primeiro envio já vai com os rótulos desta safra.</p>
+      <a class="btn" href="#planos">Escolher um plano</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot" id="rodape">
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <div class="foot-logo" role="img" aria-label="Sanabria — Laboratório de Vinhos Naturais"></div>
+        <p class="lab" style="margin-top:1.4rem; max-width:26ch; line-height:1.9;">Vinhos feitos com amor no sul do Brasil, para o mundo.</p>
+      </div>
+
+      <div>
+        <h3>Comprar</h3>
+        <ul>
+          <li><a href="index.html#estante">Todos os vinhos</a></li>
+          <li><a href="index.html#estante">Kits e seleções</a></li>
+          <li><a href="clube.html">Clube Sanabria</a></li>
+          <li><a href="index.html#experiencias">Experiências em domicílio</a></li>
+          <li><a href="index.html#estante">Frete e prazos</a></li>
+          <li><a href="index.html#estante">Trocas e devoluções</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>A casa</h3>
+        <ul>
+          <li><a href="index.html#historia">Nossa história</a></li>
+          <li><a href="index.html#metodo">Como o vinho é feito</a></li>
+          <li><a href="index.html#rotulos">Os rótulos</a></li>
+          <li><a href="index.html#historia">Prêmios</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Falar com a gente</h3>
+        <address>
+          Atendimento de segunda a sexta,<br>
+          das 9h às 18h<br><br>
+          <a href="index.html#rodape">WhatsApp (54) 99934-3049</a><br>
+          <a href="index.html#rodape">Instagram @sanabriavinhos</a>
+        </address>
+      </div>
+    </div>
+
+    <div class="foot-legal">
+      <span>© 2026 Sanabria Vinhos</span>
+      <span class="num">CNPJ 43.303.066/0001-63</span>
+      <span class="warn">Venda proibida para menores de 18 anos</span>
+      <span class="warn">Aprecie com moderação</span>
+      <span style="margin-left:auto;">
+        <a href="proposta.html" style="color:var(--stamp);">Mock de apresentação — ver a proposta</a>
+      </span>
+    </div>
+  </div>
+</footer>
+<script>
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hdr = document.getElementById('hdr');
+  var shelf = document.querySelector('.reveal-color');
+
+  if (reduce) {
+    document.querySelectorAll('.rise').forEach(function (el) { el.classList.add('is-in'); });
+    if (shelf) shelf.classList.add('is-live');
+  }
+
+  /* Uma varredura por quadro cobre tudo: o estado do cabeçalho, as entradas
+     e a revelação de cor. Diferente de um IntersectionObserver, ela também
+     acerta os blocos que ficaram para trás quando o usuário pula direto para
+     uma âncora — que de outro modo continuariam invisíveis. */
+  var ticking = false;
+
+  function frame() {
+    ticking = false;
+    if (hdr) hdr.classList.toggle('is-stuck', window.scrollY > 40);
+    if (reduce) return;
+
+    var vh = window.innerHeight;
+    document.querySelectorAll('.rise:not(.is-in)').forEach(function (el) {
+      if (el.getBoundingClientRect().top < vh * 0.88) el.classList.add('is-in');
+    });
+
+    /* o único gesto orquestrado do site: as garrafas ganham cor */
+    if (shelf && !shelf.classList.contains('is-live')
+        && shelf.getBoundingClientRect().top < vh * 0.82) {
+      shelf.classList.add('is-live');
+    }
+  }
+
+  function schedule() {
+    if (!ticking) { ticking = true; window.requestAnimationFrame(frame); }
+  }
+
+  frame();
+  window.addEventListener('scroll', schedule, { passive: true });
+  window.addEventListener('resize', schedule, { passive: true });
+})();
+</script>
+
+</body>
+</html>

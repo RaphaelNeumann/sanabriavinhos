@@ -2,14 +2,23 @@
 """
 Gera as duas saídas a partir de src/:
 
-  dist/  — arquivo único com as imagens embutidas como data-URI.
-           É o formato exigido pelos Artifacts (a CSP bloqueia hosts externos).
-
   docs/  — site estático para GitHub Pages: imagens como arquivos de verdade,
            documento HTML completo com <head>, e HTML ~60x menor.
 
+  dist/  — arquivo único com as imagens embutidas como data-URI.
+           É o formato exigido pelos Artifacts (a CSP bloqueia hosts externos).
+
+Os fontes em src/ são fragmentos com marcadores que este script substitui:
+
+  /*__ASSETS__*/  as imagens (data-URI ou url(img/…), conforme a saída)
+  /*__BASE__*/    src/_base.css     — tokens e primitivas
+  /*__CHROME__*/  src/_chrome.css   — cabeçalho e rodapé
+  <!--__HEADER__-->  <!--__FOOTER__-->  <!--__SCRIPT__-->
+  __HOME__        raiz do site, relativa à página
+
 Uso: python3 build.py
 """
+import base64
 import pathlib
 import re
 import shutil
@@ -21,34 +30,47 @@ FINAL = ROOT / "assets" / "final"
 DIST = ROOT / "dist"
 SITE = ROOT / "docs"   # GitHub Pages só aceita "/" ou "/docs" como origem
 
-PLACEHOLDER = "/*__ASSETS__*/"
-
 # og:image e canonical precisam de URL absoluta — a maioria dos scrapers ignora
 # caminho relativo. A conta tem domínio próprio, então não é *.github.io.
 BASE = "https://rneumann.me/sanabriavinhos/"
 
-# no formato Artifact as páginas se referenciam pelas URLs publicadas
-ARTIFACT_MOCK = "https://claude.ai/code/artifact/670a4853-7382-4cab-ba32-b1b3de072b0d"
-ARTIFACT_PROPOSTA = "https://claude.ai/code/artifact/df94392e-f15f-46f9-965a-eca6888ad49a"
-
 PAGES = [
     {
         "src": "mock.html",
-        "dist": "mock-sanabria.html",
         "out": "index.html",
+        "dist": "mock-sanabria.html",
+        "nav": None,
         "assets": None,                       # todas
         "desc": "Mock da nova home da Sanabria — Laboratório de Vinhos Naturais. "
                 "Tudo em preto e branco; só os rótulos têm cor.",
     },
     {
+        "src": "clube.html",
+        "out": "clube.html",
+        "dist": "clube-sanabria.html",
+        "nav": "clube",
+        "assets": None,
+        "desc": "Clube Sanabria: assinatura mensal de vinhos naturais, com curadoria "
+                "do enólogo e frete grátis em todos os planos.",
+    },
+    {
         "src": "proposta.html",
-        "dist": "proposta-sanabria.html",
         "out": "proposta.html",
+        "dist": "proposta-sanabria.html",
+        "nav": None,
         "assets": ["logo"],                   # a proposta só usa o logotipo
         "desc": "Proposta de redesign para sanabriavinhos.com: diagnóstico do site "
                 "atual, sistema de design e instruções priorizadas.",
     },
 ]
+
+PARTIALS = {
+    "/*__BASE__*/":      "_base.css",
+    "/*__CHROME__*/":    "_chrome.css",
+    "<!--__HEADER__-->": "_header.html",
+    "<!--__FOOTER__-->": "_footer.html",
+    "<!--__SCRIPT__-->": "_script.html",
+}
 
 DOC = """<!doctype html>
 <html lang="pt-BR">
@@ -88,23 +110,31 @@ def read_assets():
 
 
 def css_inline(assets, only):
-    import base64
-    rows = []
-    for name, (mime, data, _) in assets.items():
-        if only and name not in only:
-            continue
-        b64 = base64.b64encode(data).decode()
-        rows.append(f'  --img-{name}:url("data:{mime};base64,{b64}");')
+    rows = [
+        f'  --img-{n}:url("data:{mime};base64,{base64.b64encode(data).decode()}");'
+        for n, (mime, data, _) in assets.items() if not only or n in only
+    ]
     return ":root{\n" + "\n".join(rows) + "\n}"
 
 
-def css_files(assets, only, prefix="img/"):
-    rows = []
-    for name, (_, _, ext) in assets.items():
-        if only and name not in only:
-            continue
-        rows.append(f'  --img-{name}:url("{prefix}{name}{ext}");')
+def css_files(assets, only):
+    rows = [
+        f'  --img-{n}:url("img/{n}{ext}");'
+        for n, (_, _, ext) in assets.items() if not only or n in only
+    ]
     return ":root{\n" + "\n".join(rows) + "\n}"
+
+
+def expand(fragment, nav):
+    """Aplica as parciais e marca o item de menu da página atual."""
+    for marker, name in PARTIALS.items():
+        if marker in fragment:
+            fragment = fragment.replace(marker, (SRC / name).read_text().rstrip())
+    if nav:
+        fragment = fragment.replace(
+            f'data-nav="{nav}"', f'data-nav="{nav}" aria-current="page"'
+        )
+    return fragment
 
 
 def split_title(fragment):
@@ -120,7 +150,8 @@ def main():
     DIST.mkdir(exist_ok=True)
     (SITE / "img").mkdir(parents=True, exist_ok=True)
 
-    # imagens como arquivos, para o site estático
+    # imagens viram arquivos de verdade no site estático
+    live = {f"{n}{ext}" for n, (_, _, ext) in assets.items()} | {"favicon.png", "og.png"}
     for name, (_, data, ext) in assets.items():
         (SITE / "img" / f"{name}{ext}").write_bytes(data)
     # favicon e og:image ficam fora de assets/final de propósito: não devem
@@ -129,34 +160,39 @@ def main():
         f = FINAL.parent / extra
         if f.exists():
             shutil.copy(f, SITE / "img" / extra)
+    # imagens que saíram do projeto não podem ficar para trás em docs/
+    for f in (SITE / "img").iterdir():
+        if f.name not in live:
+            f.unlink()
+            print(f"removido  docs/img/{f.name}")
     (SITE / ".nojekyll").write_text("")
 
     for page in PAGES:
-        fragment = (SRC / page["src"]).read_text()
-        if PLACEHOLDER not in fragment:
-            sys.exit(f"!! {page['src']}: placeholder ausente")
+        fragment = expand((SRC / page["src"]).read_text(), page["nav"])
+        title, body_src = split_title(fragment)
 
-        # --- artifact: arquivo único ---
-        one = fragment.replace(PLACEHOLDER, css_inline(assets, page["assets"]))
-        one = one.replace("__PROPOSTA__", ARTIFACT_PROPOSTA)
-        (DIST / page["dist"]).write_text(one)
+        # --- artifact: arquivo único. As páginas irmãs ficam no site público,
+        #     senão os links quebram fora do contexto do Artifact.
+        one = body_src.replace("/*__ASSETS__*/", css_inline(assets, page["assets"]))
+        one = one.replace("__HOME__", BASE)   # antes do regex: vira href absoluto
+        one = re.sub(r'href="(?!https?:|#)([^"]*)"',
+                     lambda m: f'href="{BASE}{m.group(1)}"', one)
+        (DIST / page["dist"]).write_text(f"<title>{title}</title>\n{one}")
 
-        # --- site estático ---
-        title, body = split_title(fragment)
-        body = body.replace(PLACEHOLDER, css_files(assets, page["assets"]))
-        # entre páginas do site, os links são relativos
-        body = body.replace("__PROPOSTA__", "proposta.html")
-        body = body.replace(ARTIFACT_MOCK, "./")
+        # --- site estático: tudo relativo ---
+        body = body_src.replace("/*__ASSETS__*/", css_files(assets, page["assets"]))
+        body = body.replace("__HOME__", "" if page["out"] == "index.html" else "index.html")
+        body = body.replace('href=""', 'href="./"')   # link nu para a própria home
         canonical = BASE + ("" if page["out"] == "index.html" else page["out"])
         doc = DOC.format(title=title, desc=page["desc"], og=BASE + "img/og.png",
                          canonical=canonical, body=body)
         (SITE / page["out"]).write_text(doc)
 
-        print(f"{'dist/' + page['dist']:34} {len(one)/1024/1024:6.2f} MB")
-        print(f"{'docs/' + page['out']:34} {len(doc)/1024:6.1f} KB")
+        print(f"{'docs/' + page['out']:30} {len(doc)/1024:7.1f} KB"
+              f"    {'dist/' + page['dist']:24} {len(one)/1024/1024:5.2f} MB")
 
     total = sum(len(d) for _, d, _ in assets.values())
-    print(f"{'docs/img/ (' + str(len(assets)) + ' imagens)':34} {total/1024:6.1f} KB")
+    print(f"{'docs/img/ (' + str(len(assets)) + ' imagens)':30} {total/1024:7.1f} KB")
 
 
 if __name__ == "__main__":

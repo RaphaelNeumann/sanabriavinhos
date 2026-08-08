@@ -1,262 +1,11 @@
 <title>Sanabria — Laboratório de Vinhos Naturais</title>
 <style>
 /*__ASSETS__*/
+/*__BASE__*/
+/*__CHROME__*/
 
 /* ============================================================
-   SANABRIA — SISTEMA
-   Tese: tudo em preto e branco; a cor só existe onde há rótulo.
-   ============================================================ */
-
-:root{
-  /* superfícies e tinta — neutros quentes, deslocados para o oliva
-     do traço do logotipo; nada de cinza puro */
-  --bg:        #E9E6DE;
-  --surface:   #FDFCFA;
-  --surface-2: #DFDBD1;
-  --fg:        #15130F;
-  --fg-2:      #5F5A50;
-  --rule:      #C7C2B6;
-  --rule-soft: #D6D2C7;
-  --stamp:     #8A2F1D;   /* segunda tinta. uma só função. */
-  --on-stamp:  #F4EFE7;
-  --logo-tint: none;
-
-  --serif: "Times New Roman", Times, "Liberation Serif", serif;
-  --mono:  ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Courier New", monospace;
-  --sans:  "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
-
-  --wrap: 1280px;
-  --pad: clamp(1.25rem, 4vw, 3.25rem);
-  --photo: grayscale(1) contrast(1.06) brightness(.98);
-  /* distância entre a borda do conteúdo e a borda da janela — usada para sangrar */
-  --bleed: calc((100vw - min(100vw, var(--wrap))) / 2 + var(--pad));
-}
-
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:        #131210;
-    --surface:   #1B1917;
-    --surface-2: #242119;
-    --fg:        #EAE7DF;
-    --fg-2:      #9A9488;
-    --rule:      #35322B;
-    --rule-soft: #2A2722;
-    --stamp:     #DE7A5C;
-    --on-stamp:  #17140F;
-    --photo: grayscale(1) contrast(1.02) brightness(.9);
-    --logo-tint: brightness(1.7) saturate(.9);
-  }
-}
-:root[data-theme="dark"]{
-  --bg:        #131210;
-  --surface:   #1B1917;
-  --surface-2: #242119;
-  --fg:        #EAE7DF;
-  --fg-2:      #9A9488;
-  --rule:      #35322B;
-  --rule-soft: #2A2722;
-  --stamp:     #DE7A5C;
-  --on-stamp:  #17140F;
-  --photo: grayscale(1) contrast(1.02) brightness(.9);
-  --logo-tint: brightness(1.7) saturate(.9);
-}
-
-*, *::before, *::after{ box-sizing: border-box; }
-
-body{
-  margin: 0;
-  background: var(--bg);
-  color: var(--fg);
-  font-family: var(--sans);
-  font-size: 1rem;
-  line-height: 1.65;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-}
-
-/* ---------- primitivas tipográficas ---------- */
-
-.d1, .d2, .d3{
-  font-family: var(--serif);
-  font-weight: 400;
-  text-wrap: balance;
-  margin: 0;
-}
-.d1{ font-size: clamp(3.1rem, 8.2vw, 7.2rem); line-height: .88;  letter-spacing: -.032em; }
-.d2{ font-size: clamp(2.1rem, 4.4vw, 3.75rem); line-height: .96; letter-spacing: -.026em; }
-.d3{ font-size: clamp(1.45rem, 2.3vw, 2.05rem); line-height: 1.1; letter-spacing: -.016em; }
-.d1 em, .d2 em, .d3 em{ font-style: italic; }
-
-.lab{
-  font-family: var(--mono);
-  font-size: .6875rem;
-  letter-spacing: .175em;
-  text-transform: uppercase;
-  color: var(--fg-2);
-  margin: 0;
-}
-.lede{
-  font-size: clamp(1.02rem, 1.25vw, 1.18rem);
-  line-height: 1.6;
-  color: var(--fg-2);
-  max-width: 34ch;
-  margin: 0;
-}
-.copy{ color: var(--fg-2); max-width: 62ch; margin: 0; }
-.num{ font-variant-numeric: tabular-nums; }
-
-/* ---------- estrutura ---------- */
-
-.wrap{
-  width: 100%;
-  max-width: var(--wrap);
-  margin-inline: auto;
-  padding-inline: var(--pad);
-}
-.band{ border-top: 1px solid var(--rule); }
-.band-pad{ padding-block: clamp(3.5rem, 7vw, 6.5rem); }
-
-/* cabeçalho de seção: número de série + título, como etiqueta de amostra */
-.shead{
-  display: grid;
-  grid-template-columns: minmax(0,1fr);
-  gap: 1.5rem;
-  align-items: end;
-  margin-bottom: clamp(2rem, 4vw, 3.5rem);
-}
-@media (min-width: 860px){
-  .shead{ grid-template-columns: 8rem minmax(0,1fr) minmax(0, 22rem); gap: 2.5rem; }
-}
-.shead-n{
-  font-family: var(--mono);
-  font-size: .6875rem;
-  letter-spacing: .175em;
-  color: var(--fg-2);
-  padding-top: .55rem;
-  border-top: 1px solid var(--fg);
-}
-
-/* ---------- botões ---------- */
-
-.btn{
-  --btn-fg: var(--on-stamp);
-  --btn-bg: var(--fg);
-  display: inline-flex;
-  align-items: center;
-  gap: .6rem;
-  font-family: var(--mono);
-  font-size: .6875rem;
-  letter-spacing: .175em;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: var(--btn-fg);
-  background: var(--btn-bg);
-  border: 1px solid var(--fg);
-  border-radius: 0;
-  padding: .95rem 1.5rem;
-  transition: background .18s ease, color .18s ease;
-}
-.btn:hover{ --btn-bg: var(--stamp); border-color: var(--stamp); --btn-fg: var(--on-stamp); }
-.btn-ghost{ --btn-bg: transparent; --btn-fg: var(--fg); }
-.btn-ghost:hover{ --btn-bg: var(--fg); --btn-fg: var(--bg); border-color: var(--fg); }
-.btn-sm{ padding: .7rem 1.1rem; }
-
-a:focus-visible, button:focus-visible{
-  outline: 2px solid var(--stamp);
-  outline-offset: 3px;
-}
-
-/* ---------- fotografia ---------- */
-
-.ph{
-  background-color: var(--surface-2);
-  background-size: cover;
-  background-position: center;
-  filter: var(--photo);   /* regra do sistema: toda foto editorial é P&B */
-}
-
-/* ============================================================
-   CABEÇALHO — dois estados, transparente -> papel
-   ============================================================ */
-
-.hdr{
-  position: fixed;
-  inset: 0 0 auto 0;
-  z-index: 90;
-  border-bottom: 1px solid transparent;
-  transition: background .28s ease, border-color .28s ease;
-}
-.hdr.is-stuck{
-  background: var(--bg);
-  border-bottom-color: var(--rule);
-}
-.hdr-in{
-  display: flex;
-  align-items: center;
-  gap: clamp(1rem, 3vw, 2.5rem);
-  height: 74px;
-}
-.logo{
-  display: block;
-  width: 148px;
-  height: 56px;
-  flex: none;
-  background-image: var(--img-logo);
-  background-size: contain;
-  background-position: left center;
-  background-repeat: no-repeat;
-  filter: brightness(0) opacity(.92);
-}
-:root[data-theme="dark"] .logo{ filter: brightness(0) invert(1) opacity(.9); }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]) .logo{ filter: brightness(0) invert(1) opacity(.9); }
-}
-
-.nav{
-  display: none;
-  margin-left: auto;
-  gap: clamp(1rem, 2vw, 1.9rem);
-}
-@media (min-width: 1000px){ .nav{ display: flex; } }
-.nav a{
-  font-family: var(--mono);
-  font-size: .6875rem;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: var(--fg);
-  padding: .35rem 0;
-  border-bottom: 1px solid transparent;
-  transition: border-color .18s ease, color .18s ease;
-}
-.nav a:hover{ border-bottom-color: var(--fg); }
-.nav a[aria-current]{ border-bottom-color: var(--stamp); color: var(--stamp); }
-
-.hdr-end{ display: flex; align-items: center; gap: .9rem; margin-left: auto; }
-@media (min-width: 1000px){ .hdr-end{ margin-left: 0; } }
-.cart{
-  font-family: var(--mono);
-  font-size: .6875rem;
-  letter-spacing: .16em;
-  color: var(--fg);
-  text-decoration: none;
-  white-space: nowrap;
-}
-.cart:hover{ color: var(--stamp); }
-.burger{
-  display: grid;
-  place-items: center;
-  width: 38px; height: 38px;
-  background: none;
-  border: 1px solid var(--rule);
-  color: var(--fg);
-  cursor: pointer;
-}
-@media (min-width: 1000px){ .burger{ display: none; } }
-.burger span{ display: block; width: 15px; height: 1px; background: currentColor; box-shadow: 0 -4px currentColor, 0 4px currentColor; }
-
-/* ============================================================
-   HERO
+   HOME
    ============================================================ */
 
 .hero{ padding-top: 74px; }
@@ -292,18 +41,11 @@ a:focus-visible, button:focus-visible{
   background-image: var(--img-hero);
 }
 @media (min-width: 940px){
-  .hero-photo{
-    min-height: 0;
-    margin-right: calc(-1 * var(--bleed));   /* sangra até a borda direita */
-  }
+  .hero-photo{ min-height: 0; margin-right: calc(-1 * var(--bleed)); }
 }
 
 /* ficha da casa — o registro do laboratório */
-.ficha{
-  width: 100%;
-  border-top: 1px solid var(--fg);
-  margin-top: .5rem;
-}
+.ficha{ width: 100%; border-top: 1px solid var(--fg); margin-top: .5rem; }
 .ficha dl{
   display: grid;
   grid-template-columns: 1fr auto;
@@ -314,18 +56,12 @@ a:focus-visible, button:focus-visible{
   letter-spacing: .1em;
   text-transform: uppercase;
 }
-.ficha dt, .ficha dd{
-  margin: 0;
-  padding: .62rem 0;
-  border-bottom: 1px solid var(--rule-soft);
-}
+.ficha dt, .ficha dd{ margin: 0; padding: .62rem 0; border-bottom: 1px solid var(--rule-soft); }
 .ficha dt{ color: var(--fg-2); }
 .ficha dd{ text-align: right; color: var(--fg); font-variant-numeric: tabular-nums; }
 .ficha .hi{ color: var(--stamp); }
 
-/* ============================================================
-   TRÊS PORTAS — barra flutuante sobre o hero
-   ============================================================ */
+/* ---------- três portas ---------- */
 
 .doors{ position: relative; z-index: 5; }
 @media (min-width: 940px){ .doors{ margin-top: -3.5rem; } }
@@ -350,13 +86,7 @@ a:focus-visible, button:focus-visible{
   .door:last-child{ border-right: 0; }
 }
 .door:hover{ background: var(--bg); }
-.door-t{
-  font-family: var(--serif);
-  font-size: 1.5rem;
-  line-height: 1.1;
-  letter-spacing: -.015em;
-  margin: .5rem 0 .35rem;
-}
+.door-t{ font-family: var(--serif); font-size: 1.5rem; line-height: 1.1; letter-spacing: -.015em; margin: .5rem 0 .35rem; }
 .door-d{ font-size: .9rem; color: var(--fg-2); margin: 0; }
 .door-go{
   display: inline-block;
@@ -369,9 +99,7 @@ a:focus-visible, button:focus-visible{
   padding-bottom: 2px;
 }
 
-/* ============================================================
-   01 · A ESTANTE — o momento de cor
-   ============================================================ */
+/* ---------- 01 · a estante: o momento de cor ---------- */
 
 .shelf{
   display: grid;
@@ -405,22 +133,13 @@ a:focus-visible, button:focus-visible{
   transition-delay: calc(var(--i, 0) * 110ms);
 }
 /* a revelação: quando a estante entra em cena, só as garrafas ganham cor */
-.shelf.is-live .bot-img{ filter: grayscale(0) contrast(1); }
+.reveal-color.is-live .bot-img{ filter: grayscale(0) contrast(1); }
+@media (prefers-reduced-motion: reduce){ .bot-img{ filter: grayscale(0) contrast(1); } }
 
-.bot-name{
-  font-family: var(--serif);
-  font-size: 1.32rem;
-  line-height: 1.12;
-  letter-spacing: -.015em;
-  margin: 1.1rem 0 .2rem;
-}
+.bot-name{ font-family: var(--serif); font-size: 1.32rem; line-height: 1.12; letter-spacing: -.015em; margin: 1.1rem 0 .2rem; }
 .bot-sub{
-  font-family: var(--mono);
-  font-size: .625rem;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--fg-2);
-  margin: 0 0 .9rem;
+  font-family: var(--mono); font-size: .625rem; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--fg-2); margin: 0 0 .9rem;
 }
 .bot-spec{
   display: grid;
@@ -446,24 +165,13 @@ a:focus-visible, button:focus-visible{
   border-top: 1px solid var(--fg);
 }
 .bot-price{
-  font-family: var(--mono);
-  font-size: .95rem;
-  letter-spacing: .02em;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
+  font-family: var(--mono); font-size: .95rem; letter-spacing: .02em;
+  font-variant-numeric: tabular-nums; white-space: nowrap;
 }
-.bot-buy{
-  font-family: var(--mono);
-  font-size: .625rem;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--fg-2);
-}
+.bot-buy{ font-family: var(--mono); font-size: .625rem; letter-spacing: .16em; text-transform: uppercase; color: var(--fg-2); }
 .bot:hover .bot-buy{ color: var(--stamp); }
 
-/* ============================================================
-   02 · O MÉTODO
-   ============================================================ */
+/* ---------- 02 · o método ---------- */
 
 .steps{
   display: grid;
@@ -476,24 +184,11 @@ a:focus-visible, button:focus-visible{
 @media (min-width: 1080px){ .steps{ grid-template-columns: repeat(4, minmax(0,1fr)); } }
 .step{ background: var(--bg); padding: clamp(1.2rem, 2vw, 1.7rem); }
 .step-img{ aspect-ratio: 1; background-size: cover; background-position: center; margin-bottom: 1.1rem; }
-.step-n{
-  font-family: var(--mono);
-  font-size: .6875rem;
-  letter-spacing: .175em;
-  color: var(--stamp);
-}
-.step-t{
-  font-family: var(--serif);
-  font-size: 1.3rem;
-  line-height: 1.15;
-  letter-spacing: -.015em;
-  margin: .45rem 0 .5rem;
-}
+.step-n{ font-family: var(--mono); font-size: .6875rem; letter-spacing: .175em; color: var(--stamp); }
+.step-t{ font-family: var(--serif); font-size: 1.3rem; line-height: 1.15; letter-spacing: -.015em; margin: .45rem 0 .5rem; }
 .step p{ font-size: .9rem; color: var(--fg-2); margin: 0; }
 
-/* ============================================================
-   03 · OS RÓTULOS
-   ============================================================ */
+/* ---------- 03 · os rótulos ---------- */
 
 .labels-grid{ display: grid; grid-template-columns: minmax(0,1fr); gap: clamp(2rem, 4vw, 3.5rem); align-items: center; }
 @media (min-width: 900px){ .labels-grid{ grid-template-columns: minmax(0, 1fr) minmax(0, 46%); } }
@@ -516,49 +211,66 @@ a:focus-visible, button:focus-visible{
   border: 1px solid var(--rule);
 }
 
-/* ============================================================
-   04 · O BUTECO — faixa sangrada
-   ============================================================ */
+/* ---------- 04 · o clube: faixa sangrada ---------- */
 
-.buteco{ position: relative; color: #EFEAE1; }
-.buteco-bg{
+.club{ position: relative; color: #EFEAE1; }
+.club-bg{
   position: absolute;
   inset: 0;
-  background-image: var(--img-toast);
+  background-image: var(--img-seal);
   background-size: cover;
-  background-position: center 38%;
-  filter: grayscale(1) contrast(1.12) brightness(.42);
+  background-position: center 45%;
+  filter: grayscale(1) contrast(1.08) brightness(.4);
 }
-/* véu que garante o contraste do texto independentemente do recorte da foto */
-.buteco-bg::after{
+.club-bg::after{
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(10,9,8,.72) 0%, rgba(10,9,8,.5) 55%, rgba(10,9,8,.3) 100%);
+  background: linear-gradient(90deg, rgba(10,9,8,.78) 0%, rgba(10,9,8,.58) 55%, rgba(10,9,8,.34) 100%);
 }
-.buteco-in{ position: relative; padding-block: clamp(4rem, 9vw, 8rem); }
-.buteco .lab{ color: rgba(239,234,225,.62); }
-.buteco .d2{ max-width: 20ch; }
-.buteco-cols{
+.club-in{ position: relative; padding-block: clamp(4rem, 9vw, 8rem); }
+.club .lab{ color: rgba(239,234,225,.62); }
+.club .d2{ max-width: 18ch; }
+.club-lede{ color: rgba(239,234,225,.8); margin: 1.4rem 0 0; max-width: 46ch; }
+
+.club-plans{
   display: grid;
   grid-template-columns: minmax(0,1fr);
-  gap: clamp(1.5rem, 3vw, 3rem);
+  gap: 1px;
+  background: rgba(239,234,225,.22);
+  border: 1px solid rgba(239,234,225,.22);
   margin-top: clamp(2rem, 4vw, 3rem);
 }
-@media (min-width: 820px){ .buteco-cols{ grid-template-columns: minmax(0,1.3fr) repeat(2, minmax(0,1fr)); } }
-.buteco p{ color: rgba(239,234,225,.78); margin: 0; max-width: 46ch; }
-.buteco-fact{ border-top: 1px solid rgba(239,234,225,.3); padding-top: .8rem; }
-.buteco-fact dt{
-  font-family: var(--mono); font-size: .625rem; letter-spacing: .16em;
-  text-transform: uppercase; color: rgba(239,234,225,.6); margin: 0 0 .4rem;
-}
-.buteco-fact dd{ margin: 0; font-size: .95rem; line-height: 1.5; }
-.buteco .btn{ --btn-bg: #EFEAE1; --btn-fg: #15130F; border-color: #EFEAE1; margin-top: 1.6rem; }
-.buteco .btn:hover{ --btn-bg: var(--stamp); --btn-fg: #F4EFE7; border-color: var(--stamp); }
+@media (min-width: 720px){ .club-plans{ grid-template-columns: repeat(3, minmax(0,1fr)); } }
+.club-plan{ padding: clamp(1.1rem, 2vw, 1.5rem); background: rgba(10,9,8,.45); }
+.club-plan .lab{ color: rgba(239,234,225,.5); }
+.club-plan h3{ font-family: var(--serif); font-weight: 400; font-size: 1.4rem; letter-spacing: -.015em; margin: .4rem 0 .3rem; }
+.club-plan p{ margin: 0; font-family: var(--mono); font-size: .8rem; letter-spacing: .06em; font-variant-numeric: tabular-nums; color: rgba(239,234,225,.85); }
+.club-cta{ display: flex; flex-wrap: wrap; gap: .75rem; margin-top: clamp(1.8rem, 3vw, 2.4rem); }
+.club .btn{ --btn-bg: #EFEAE1; --btn-fg: #15130F; border-color: #EFEAE1; }
+.club .btn:hover{ --btn-bg: var(--stamp); --btn-fg: #F4EFE7; border-color: var(--stamp); }
+.club .btn-ghost{ --btn-bg: transparent; --btn-fg: #EFEAE1; border-color: rgba(239,234,225,.5); }
+.club .btn-ghost:hover{ --btn-bg: #EFEAE1; --btn-fg: #15130F; border-color: #EFEAE1; }
 
-/* ============================================================
-   05 · LINHA DO TEMPO
-   ============================================================ */
+/* ---------- 05 · experiências em domicílio ---------- */
+
+.xp{ display: grid; grid-template-columns: minmax(0,1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+@media (min-width: 760px){ .xp{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+.xp-card{ background: var(--bg); display: flex; flex-direction: column; }
+.xp-img{ aspect-ratio: 3 / 2; background-size: cover; }
+.xp-body{ padding: clamp(1.2rem, 2.2vw, 1.8rem); display: flex; flex-direction: column; flex: 1; }
+.xp-t{ font-family: var(--serif); font-size: clamp(1.4rem, 2vw, 1.75rem); line-height: 1.12; letter-spacing: -.018em; margin: .5rem 0 .6rem; }
+.xp-body p{ font-size: .92rem; color: var(--fg-2); margin: 0 0 1.2rem; }
+.xp-meta{
+  margin: 0 0 1.3rem; padding-top: .8rem; border-top: 1px solid var(--rule-soft);
+  display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: .1rem .8rem;
+  font-family: var(--mono); font-size: .625rem; letter-spacing: .1em; text-transform: uppercase;
+}
+.xp-meta dt{ color: var(--fg-2); margin: 0; }
+.xp-meta dd{ margin: 0 0 .3rem; }
+.xp-card .btn{ margin-top: auto; align-self: start; }
+
+/* ---------- 06 · linha do tempo ---------- */
 
 .tl-grid{ display: grid; grid-template-columns: minmax(0,1fr); gap: clamp(2rem, 4vw, 3.5rem); }
 @media (min-width: 900px){ .tl-grid{ grid-template-columns: minmax(0, 30%) minmax(0,1fr); } }
@@ -580,122 +292,14 @@ a:focus-visible, button:focus-visible{
 }
 @media (min-width: 640px){ .tl-row{ grid-template-columns: 6rem minmax(0,1fr); } }
 .tl-y{
-  font-family: var(--mono);
-  font-size: .8rem;
-  letter-spacing: .08em;
-  color: var(--stamp);
-  font-variant-numeric: tabular-nums;
-  padding-top: .2rem;
+  font-family: var(--mono); font-size: .8rem; letter-spacing: .08em;
+  color: var(--stamp); font-variant-numeric: tabular-nums; padding-top: .2rem;
 }
 .tl-t{ font-family: var(--serif); font-size: 1.25rem; line-height: 1.2; letter-spacing: -.015em; margin: 0 0 .25rem; }
 .tl-row p{ margin: 0; font-size: .9rem; color: var(--fg-2); max-width: 58ch; }
-
-/* ============================================================
-   06 · O CLUBE
-   ============================================================ */
-
-.club-grid{ display: grid; grid-template-columns: minmax(0,1fr); gap: clamp(2rem, 4vw, 3rem); }
-@media (min-width: 1000px){ .club-grid{ grid-template-columns: minmax(0, 34%) minmax(0,1fr); align-items: start; } }
-.club-photo{
-  aspect-ratio: 4 / 3;
-  background-image: var(--img-box);
-  background-size: cover;
-  background-position: center;
-  border: 1px solid var(--rule);
-}
-.plans{ display: grid; grid-template-columns: minmax(0,1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
-@media (min-width: 700px){ .plans{ grid-template-columns: repeat(3, minmax(0,1fr)); } }
-.plan{ background: var(--bg); padding: clamp(1.2rem, 2vw, 1.7rem); display: flex; flex-direction: column; }
-.plan-n{ font-family: var(--serif); font-size: 1.45rem; letter-spacing: -.015em; margin: .4rem 0 .3rem; }
-.plan-p{
-  font-family: var(--mono); font-size: 1.05rem; letter-spacing: .02em;
-  font-variant-numeric: tabular-nums; margin: 0 0 1rem; padding-bottom: 1rem;
-  border-bottom: 1px solid var(--rule-soft);
-}
-.plan-p small{ font-size: .625rem; letter-spacing: .16em; text-transform: uppercase; color: var(--fg-2); }
-.plan ul{ list-style: none; margin: 0 0 1.4rem; padding: 0; display: grid; gap: .45rem; font-size: .875rem; color: var(--fg-2); }
-.plan li{ padding-left: 1.2rem; text-indent: -1.2rem; }
-.plan li::before{ content: "—"; color: var(--fg); margin-right: .4rem; }
-.plan .btn{ margin-top: auto; justify-content: center; }
-
-/* ============================================================
-   RODAPÉ
-   ============================================================ */
-
-.foot{ background: var(--surface); border-top: 1px solid var(--rule); }
-.foot-top{
-  display: grid;
-  grid-template-columns: minmax(0,1fr);
-  gap: clamp(2rem, 4vw, 3rem);
-  padding-block: clamp(3rem, 6vw, 5rem) clamp(2rem, 4vw, 3rem);
-}
-@media (min-width: 880px){ .foot-top{ grid-template-columns: minmax(0, 1.2fr) repeat(3, minmax(0,1fr)); } }
-/* a única aparição em escala do logotipo — e o único uso amplo da tinta vinho */
-.foot-logo{
-  width: min(340px, 100%);
-  aspect-ratio: 760 / 285;
-  background-image: var(--img-logo);
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: left top;
-  filter: var(--logo-tint);
-}
-.foot h3{
-  font-family: var(--mono); font-size: .6875rem; letter-spacing: .175em;
-  text-transform: uppercase; color: var(--fg-2); margin: 0 0 1rem;
-  padding-bottom: .6rem; border-bottom: 1px solid var(--rule);
-}
-.foot ul{ list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; font-size: .9rem; }
-.foot a{ color: var(--fg); text-decoration: none; }
-.foot a:hover{ color: var(--stamp); text-decoration: underline; text-underline-offset: 3px; }
-.foot address{ font-style: normal; font-size: .9rem; color: var(--fg-2); line-height: 1.55; }
-.foot-legal{
-  border-top: 1px solid var(--rule);
-  padding-block: 1.4rem 2.5rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: .6rem 1.5rem;
-  align-items: baseline;
-  font-family: var(--mono);
-  font-size: .625rem;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--fg-2);
-}
-.foot-legal .warn{ color: var(--stamp); }
-
-/* ============================================================
-   MOVIMENTO — um gesto orquestrado, mais nada
-   ============================================================ */
-
-.rise{ opacity: 0; transform: translateY(14px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.3,1); }
-.rise.is-in{ opacity: 1; transform: none; }
-
-@media (prefers-reduced-motion: reduce){
-  *, *::before, *::after{ transition-duration: .01ms !important; animation-duration: .01ms !important; }
-  .rise{ opacity: 1; transform: none; }
-  .bot-img{ filter: grayscale(0) contrast(1); }   /* sem animação, a cor já está lá */
-}
 </style>
 
-<header class="hdr" id="hdr">
-  <div class="wrap hdr-in">
-    <a href="#" aria-label="Sanabria — página inicial"><span class="logo"></span></a>
-    <nav class="nav" aria-label="Principal">
-      <a href="#estante" aria-current="page">Vinhos</a>
-      <a href="#metodo">O método</a>
-      <a href="#buteco">O buteco</a>
-      <a href="#clube">O clube</a>
-      <a href="#historia">História</a>
-      <a href="#rodape">Contato</a>
-    </nav>
-    <div class="hdr-end">
-      <a class="cart" href="#estante">Sacola&nbsp;(0)</a>
-      <a class="btn btn-sm" href="#clube">Assinar</a>
-      <button class="burger" type="button" aria-label="Abrir menu"><span></span></button>
-    </div>
-  </div>
-</header>
+<!--__HEADER__-->
 
 <main>
 
@@ -710,11 +314,11 @@ a:focus-visible, button:focus-visible{
 
         <h1 class="d1">Uva, tempo e levedura&nbsp;nativa.<br><em>Mais nada.</em></h1>
 
-        <p class="lede">Vinhos de baixa intervenção feitos por Carlos Sanabria com uvas da Serra Gaúcha — e servidos direto da torneira no nosso buteco, na Asa Norte.</p>
+        <p class="lede">Vinhos de baixa intervenção feitos por Carlos Sanabria com uvas da Serra Gaúcha — e entregues em todo o Brasil.</p>
 
         <div class="hero-cta">
           <a class="btn" href="#estante">Ver a estante</a>
-          <a class="btn btn-ghost" href="#buteco">Ir ao buteco</a>
+          <a class="btn btn-ghost" href="clube.html">Conheça o clube</a>
         </div>
 
         <div class="ficha">
@@ -742,17 +346,17 @@ a:focus-visible, button:focus-visible{
           <p class="door-d">Tintos, brancos, laranjas, rosés e pét-nats. Entrega para todo o Brasil.</p>
           <span class="door-go">Comprar vinho</span>
         </a>
-        <a class="door" href="#buteco">
-          <p class="lab">O buteco</p>
-          <p class="door-t">18 rótulos na torneira</p>
-          <p class="door-d">Asa Norte, Brasília. De terça a sábado, das 17h às 23h.</p>
-          <span class="door-go">Ver o espaço</span>
-        </a>
-        <a class="door" href="#clube">
+        <a class="door" href="clube.html">
           <p class="lab">O clube</p>
           <p class="door-t">Vinho novo todo mês</p>
           <p class="door-d">Três planos, frete grátis em todos e degustação com o enólogo.</p>
-          <span class="door-go">Assinar</span>
+          <span class="door-go">Conheça o clube</span>
+        </a>
+        <a class="door" href="#experiencias">
+          <p class="lab">Experiências</p>
+          <p class="door-t">O enólogo na sua casa</p>
+          <p class="door-d">Jantar harmonizado e degustação premium, conduzidos por Carlos.</p>
+          <span class="door-go">Ver experiências</span>
         </a>
       </div>
     </div>
@@ -767,7 +371,7 @@ a:focus-visible, button:focus-visible{
         <p class="copy">Cada rótulo é uma pintura encomendada a um ilustrador diferente. É a única coisa nesta página que não abre mão de cor — e a razão de todo o resto abrir.</p>
       </div>
 
-      <div class="shelf" id="shelf">
+      <div class="shelf reveal-color">
 
         <a class="bot" href="#estante">
           <div class="bot-img" style="--i:0; background-image: var(--img-b1);" role="img" aria-label="Garrafa do vinho habla, Habla, habla, com rótulo ilustrado de um gato de óculos escuros"></div>
@@ -892,12 +496,12 @@ a:focus-visible, button:focus-visible{
   </section>
 
   <!-- ===================== 03 · OS RÓTULOS ===================== -->
-  <section class="band band-pad">
+  <section class="band band-pad" id="rotulos">
     <div class="wrap">
       <div class="shead rise">
         <p class="shead-n">03 / Rótulos</p>
         <h2 class="d2">Cada garrafa leva o nome de alguém que fez&nbsp;barulho.</h2>
-        <p class="copy">As artes são pinturas originais, encomendadas rótulo a rótulo. Os quadros ficam no buteco — as garrafas vão embora.</p>
+        <p class="copy">As artes são pinturas originais, encomendadas rótulo a rótulo — e emolduradas depois que a safra acaba.</p>
       </div>
 
       <div class="labels-grid rise">
@@ -911,34 +515,91 @@ a:focus-visible, button:focus-visible{
     </div>
   </section>
 
-  <!-- ===================== 04 · O BUTECO ===================== -->
-  <section class="buteco" id="buteco">
-    <div class="buteco-bg" role="img" aria-label="Brinde com taças de vinho tinto no salão do Buteco Sanabria"></div>
-    <div class="wrap buteco-in">
-      <p class="lab">04 / Buteco de vinho</p>
-      <h2 class="d2" style="margin-top:1rem;">A informalidade do boteco. Os vinhos da&nbsp;serra.</h2>
+  <!-- ===================== 04 · O CLUBE ===================== -->
+  <section class="club" id="clube">
+    <div class="club-bg" role="img" aria-label="Lacre de cera rosa com o mascote da Sanabria em relevo, no gargalo da garrafa"></div>
+    <div class="wrap club-in">
+      <p class="lab">04 / Clube Sanabria</p>
+      <h2 class="d2" style="margin-top:1rem;">Um vinho que você não escolheu — e vai&nbsp;gostar.</h2>
+      <p class="club-lede">Todo mês, Carlos separa rótulos da safra corrente e manda para a sua casa antes de eles chegarem à loja. Frete grátis em todos os planos.</p>
 
-      <div class="buteco-cols">
-        <p>Mais que um bar: 18 rótulos exclusivos servidos direto da torneira, em taça ou em copo, como pede a casa. No subsolo, a cave recebe jantares harmonizados e eventos fechados.</p>
-        <div class="buteco-fact">
-          <dt>Endereço</dt>
-          <dd>SCRN 709/710, Bloco F, Loja 29<br>Asa Norte · Brasília/DF</dd>
+      <div class="club-plans">
+        <div class="club-plan">
+          <p class="lab">Entrada</p>
+          <h3>Vindima</h3>
+          <p>R$ 215 / mês · 2 vinhos</p>
         </div>
-        <div class="buteco-fact">
-          <dt>Funcionamento</dt>
-          <dd>Terça a sábado<br>17h às 23h</dd>
+        <div class="club-plan">
+          <p class="lab">Mais rótulos</p>
+          <h3>Evolução</h3>
+          <p>R$ 320 / mês · 3 vinhos</p>
+        </div>
+        <div class="club-plan">
+          <p class="lab">Comunidade</p>
+          <h3>Famiglia</h3>
+          <p>R$ 599 / mês · 6 vinhos</p>
         </div>
       </div>
 
-      <a class="btn" href="#buteco">Reservar a cave</a>
+      <div class="club-cta">
+        <a class="btn" href="clube.html">Conheça o clube</a>
+        <a class="btn btn-ghost" href="clube.html#planos">Ver os planos</a>
+      </div>
     </div>
   </section>
 
-  <!-- ===================== 05 · HISTÓRIA ===================== -->
+  <!-- ===================== 05 · EXPERIÊNCIAS ===================== -->
+  <section class="band band-pad" id="experiencias">
+    <div class="wrap">
+      <div class="shead rise">
+        <p class="shead-n">05 / Experiências</p>
+        <h2 class="d2">O enólogo vai até a sua&nbsp;casa.</h2>
+        <p class="copy">Não é preciso ir à serra para entender um vinho natural. Carlos leva as garrafas, conduz a mesa e explica o que está acontecendo em cada taça.</p>
+      </div>
+
+      <div class="xp rise">
+        <article class="xp-card">
+          <div class="xp-img ph" style="background-image: var(--img-dinner);" role="img" aria-label="Pratos sendo finalizados à mão sobre a mesa, em um jantar harmonizado"></div>
+          <div class="xp-body">
+            <p class="lab">Para a mesa toda</p>
+            <h3 class="xp-t">Jantar harmonizado com o enólogo</h3>
+            <p>Um menu combinado com você, harmonizado rótulo a rótulo. Carlos apresenta cada vinho entre um prato e outro — de onde veio a uva, o que a safra fez com ela, por que aquele par funciona.</p>
+            <dl class="xp-meta">
+              <div><dt>Formato</dt><dd>Na sua casa</dd></div>
+              <div><dt>Duração</dt><dd>Cerca de 4h</dd></div>
+              <div><dt>Convidados</dt><dd>Até 12</dd></div>
+              <div><dt>Vinhos</dt><dd>5 rótulos</dd></div>
+            </dl>
+            <a class="btn" href="#experiencias">Pedir uma proposta</a>
+          </div>
+        </article>
+
+        <article class="xp-card">
+          <div class="xp-img ph" style="background-image: var(--img-host); background-position: center 62%;" role="img" aria-label="Carlos Sanabria conduzindo uma degustação em volta de uma mesa posta com taças"></div>
+          <div class="xp-body">
+            <p class="lab">Para um grupo pequeno</p>
+            <h3 class="xp-t">Degustação premium a domicílio</h3>
+            <p>Uma degustação guiada, com taças, fichas e a roda de aromas na mesa. Feita para quem quer sair sabendo o que procurar numa taça — e não só se o vinho é bom.</p>
+            <dl class="xp-meta">
+              <div><dt>Formato</dt><dd>Na sua casa</dd></div>
+              <div><dt>Duração</dt><dd>Cerca de 2h</dd></div>
+              <div><dt>Convidados</dt><dd>Até 8</dd></div>
+              <div><dt>Vinhos</dt><dd>6 rótulos</dd></div>
+            </dl>
+            <a class="btn btn-ghost" href="#experiencias">Pedir uma proposta</a>
+          </div>
+        </article>
+      </div>
+
+      <p class="lab rise" style="margin-top:1.5rem;">Assinantes do plano Famiglia têm condição especial nas duas experiências.</p>
+    </div>
+  </section>
+
+  <!-- ===================== 06 · HISTÓRIA ===================== -->
   <section class="band band-pad" id="historia">
     <div class="wrap">
       <div class="shead rise">
-        <p class="shead-n">05 / História</p>
+        <p class="shead-n">06 / História</p>
         <h2 class="d2">Três gerações entre as&nbsp;parreiras.</h2>
         <p class="copy">A Sanabria leva o nome do avô. Ele plantava e vendia a uva; o neto passou a assinar o que sai da garrafa.</p>
       </div>
@@ -978,7 +639,7 @@ a:focus-visible, button:focus-visible{
             <span class="tl-y num">2020</span>
             <div>
               <h3 class="tl-t">Brasília</h3>
-              <p>A operação se muda para o Distrito Federal: feiras de rua, entrega por aplicativo e, depois, o buteco na Asa Norte.</p>
+              <p>A operação se muda para o Distrito Federal: feiras de rua e entrega por aplicativo.</p>
             </div>
           </div>
           <div class="tl-row">
@@ -993,154 +654,7 @@ a:focus-visible, button:focus-visible{
     </div>
   </section>
 
-  <!-- ===================== 06 · O CLUBE ===================== -->
-  <section class="band band-pad" id="clube">
-    <div class="wrap">
-      <div class="shead rise">
-        <p class="shead-n">06 / Clube</p>
-        <h2 class="d2">Vinho novo em casa, todo&nbsp;mês.</h2>
-        <p class="copy">Frete grátis em todos os planos. Você recebe os rótulos antes de eles chegarem à loja — e pode trocar o que não gostar.</p>
-      </div>
-
-      <div class="club-grid rise">
-        <div class="club-photo" role="img" aria-label="Caixa Sanabria aberta com três garrafas de rótulos ilustrados"></div>
-        <div class="plans">
-          <div class="plan">
-            <p class="lab">Entrada</p>
-            <h3 class="plan-n">Vindima</h3>
-            <p class="plan-p">R$ 215 <small>/ mês</small></p>
-            <ul>
-              <li>2 vinhos por mês</li>
-              <li>Frete grátis</li>
-              <li>Brindes exclusivos</li>
-            </ul>
-            <a class="btn btn-ghost btn-sm" href="#clube">Assinar</a>
-          </div>
-          <div class="plan">
-            <p class="lab">Mais rótulos</p>
-            <h3 class="plan-n">Evolução</h3>
-            <p class="plan-p">R$ 320 <small>/ mês</small></p>
-            <ul>
-              <li>3 vinhos por mês</li>
-              <li>Frete grátis</li>
-              <li>Conteúdo sobre cada safra</li>
-            </ul>
-            <a class="btn btn-ghost btn-sm" href="#clube">Assinar</a>
-          </div>
-          <div class="plan">
-            <p class="lab">Comunidade</p>
-            <h3 class="plan-n">Famiglia</h3>
-            <p class="plan-p">R$ 599 <small>/ mês</small></p>
-            <ul>
-              <li>6 vinhos por mês</li>
-              <li>Frete grátis</li>
-              <li>1 degustação por mês com o enólogo</li>
-            </ul>
-            <a class="btn btn-sm" href="#clube">Assinar</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
 </main>
 
-<!-- ===================== RODAPÉ ===================== -->
-<footer class="foot" id="rodape">
-  <div class="wrap">
-    <div class="foot-top">
-      <div>
-        <div class="foot-logo" role="img" aria-label="Sanabria — Laboratório de Vinhos Naturais"></div>
-        <p class="lab" style="margin-top:1.4rem; max-width:26ch; line-height:1.9;">Vinhos feitos com amor no sul do Brasil, para o mundo.</p>
-      </div>
-
-      <div>
-        <h3>Comprar</h3>
-        <ul>
-          <li><a href="#estante">Todos os vinhos</a></li>
-          <li><a href="#estante">Kits e seleções</a></li>
-          <li><a href="#clube">Clube Sanabria</a></li>
-          <li><a href="#estante">Camisetas e acessórios</a></li>
-          <li><a href="#estante">Frete e prazos</a></li>
-          <li><a href="#estante">Trocas e devoluções</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h3>A casa</h3>
-        <ul>
-          <li><a href="#historia">Nossa história</a></li>
-          <li><a href="#metodo">Como o vinho é feito</a></li>
-          <li><a href="#buteco">Buteco de vinho</a></li>
-          <li><a href="#buteco">Experiências e degustações</a></li>
-          <li><a href="#historia">Prêmios</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h3>Falar com a gente</h3>
-        <address>
-          SCRN 709/710, Bloco F, Loja 29<br>
-          Asa Norte · Brasília/DF<br><br>
-          Terça a sábado, 17h–23h<br><br>
-          <a href="#rodape">WhatsApp (54) 99934-3049</a><br>
-          <a href="#rodape">Instagram @sanabriavinhos</a>
-        </address>
-      </div>
-    </div>
-
-    <div class="foot-legal">
-      <span>© 2026 Sanabria Vinhos</span>
-      <span class="num">CNPJ 43.303.066/0001-63</span>
-      <span class="warn">Venda proibida para menores de 18 anos</span>
-      <span class="warn">Aprecie com moderação</span>
-      <span style="margin-left:auto;">
-        <a href="__PROPOSTA__" style="color:var(--stamp);">Mock de apresentação — ver a proposta</a>
-      </span>
-    </div>
-  </div>
-</footer>
-
-<script>
-(function () {
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var hdr = document.getElementById('hdr');
-  var shelf = document.getElementById('shelf');
-
-  if (reduce) {
-    document.querySelectorAll('.rise').forEach(function (el) { el.classList.add('is-in'); });
-    if (shelf) shelf.classList.add('is-live');
-  }
-
-  /* Uma varredura por quadro cobre tudo: o estado do cabeçalho, as entradas
-     e a revelação da estante. Diferente de um IntersectionObserver, ela também
-     acerta os blocos que ficaram para trás quando o usuário pula direto para
-     uma âncora — que de outro modo continuariam invisíveis. */
-  var ticking = false;
-
-  function frame() {
-    ticking = false;
-    hdr.classList.toggle('is-stuck', window.scrollY > 40);
-    if (reduce) return;
-
-    var vh = window.innerHeight;
-    document.querySelectorAll('.rise:not(.is-in)').forEach(function (el) {
-      if (el.getBoundingClientRect().top < vh * 0.88) el.classList.add('is-in');
-    });
-
-    /* o único gesto orquestrado da página: a estante ganha cor */
-    if (shelf && !shelf.classList.contains('is-live')
-        && shelf.getBoundingClientRect().top < vh * 0.82) {
-      shelf.classList.add('is-live');
-    }
-  }
-
-  function schedule() {
-    if (!ticking) { ticking = true; window.requestAnimationFrame(frame); }
-  }
-
-  frame();
-  window.addEventListener('scroll', schedule, { passive: true });
-  window.addEventListener('resize', schedule, { passive: true });
-})();
-</script>
+<!--__FOOTER__-->
+<!--__SCRIPT__-->
