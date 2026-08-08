@@ -171,6 +171,26 @@ a:focus-visible{ outline: 2px solid var(--stamp); outline-offset: 3px; }
 
 .note{ border-left: 2px solid var(--stamp); padding-left: 1rem; font-size: .9rem; color: var(--fg-2); }
 
+/* o aviso que não pode passar despercebido */
+.warn{
+  margin-top: 1.75rem;
+  border: 1px solid var(--stamp);
+  padding: clamp(1.3rem, 3vw, 2.25rem);
+  background: var(--surface);
+}
+.warn-grid{
+  display: grid;
+  grid-template-columns: minmax(0,1fr);
+  gap: 1.4rem;
+  margin-top: clamp(1.4rem, 3vw, 2rem);
+  padding-top: clamp(1.2rem, 2.5vw, 1.6rem);
+  border-top: 1px solid var(--rule);
+}
+@media (min-width: 640px){ .warn-grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (min-width: 1000px){ .warn-grid{ grid-template-columns: repeat(4, minmax(0,1fr)); } }
+.warn-grid h4{ margin-bottom: .4rem; }
+.warn-grid p{ font-size: .875rem; color: var(--fg-2); }
+
 .shot{
   border: 1px solid var(--rule);
   aspect-ratio: 16/9;
@@ -595,10 +615,12 @@ footer.end{ border-top: 1px solid var(--fg); padding-block: 2rem 3rem; }
 
     <div class="grid g2">
       <div class="cell">
-        <h4>Recomendação: Wix Studio</h4>
-        <p style="margin-top:.5rem;">O site está no editor clássico do Wix, cujo posicionamento absoluto é a causa direta do mobile quebrado. O <strong>Wix Studio</strong> é outro editor dentro da mesma conta: suporta CSS grid real, breakpoints e CSS customizado — o suficiente para executar este design fielmente.</p>
-        <p style="margin-top:.7rem;">A vantagem decisiva: <strong>Wix Stores, Bookings e Pricing Plans continuam os mesmos</strong>. Catálogo, pedidos, assinantes do Clube e agendamentos de Experiências não migram — só o front-end é reconstruído. Sair para Shopify ou WordPress significaria remontar as quatro coisas do zero.</p>
+        <h4>Recomendação: Wix Studio, por <em>branch</em></h4>
+        <p style="margin-top:.5rem;">O site está no editor clássico do Wix, cujo posicionamento absoluto é a causa direta do mobile quebrado. O <strong>Wix Studio</strong> suporta CSS grid real, breakpoints e CSS customizado — o suficiente para executar este design fielmente.</p>
+        <p style="margin-top:.7rem;">Não existe conversão: um site do editor clássico nunca vira um site Studio. O caminho é criar uma <strong>branch</strong> (<em>Sites → ações do site → “Create a version on Studio”</em>) — um segundo editor para o mesmo site. Ela <strong>divide o painel com o original</strong>: produtos, contatos e dados de negócio são os mesmos, e os apps se reinstalam sozinhos. Só o design é refeito, e o site atual continua no ar enquanto isso.</p>
+        <p style="margin-top:.7rem;">Por isso Studio e não Shopify ou WordPress: sair do Wix significaria remontar catálogo, pedidos, assinantes do Clube e agendamentos do zero.</p>
       </div>
+
       <div class="cell">
         <h4>Decisões que dependem de você</h4>
         <ul class="plain" style="margin-top:.9rem;">
@@ -612,6 +634,32 @@ footer.end{ border-top: 1px solid var(--fg); padding-block: 2rem 3rem; }
         </ul>
       </div>
     </div>
+
+    <div class="warn">
+      <p class="lab" style="color:var(--stamp);">Antes de atravessar</p>
+      <h3 style="margin:.7rem 0 .9rem;">Publicar a branch é irreversível.</h3>
+      <p class="copy">Publicar a versão Studio <strong>despublica automaticamente a branch do editor clássico, e não é possível voltar e republicar a original.</strong> Não é “experimenta e vê” — é construir inteiro, conferir tudo, e então atravessar uma vez só.</p>
+      <div class="warn-grid">
+        <div>
+          <h4>Trocar a conta para Studio</h4>
+          <p>Não custa nada e é reversível. Os sites atuais seguem editáveis no clássico. É só pré-requisito.</p>
+        </div>
+        <div>
+          <h4>Planos</h4>
+          <p>Criar a branch exige plano Premium no site. <strong>Publicar</strong> exige um plano Wix Studio.</p>
+        </div>
+        <div>
+          <h4>SEO</h4>
+          <p>Publicar uma nova branch pode afetar o ranqueamento. Vale mapear URLs e redirecionamentos antes.</p>
+        </div>
+        <div>
+          <h4>Verifique os apps primeiro</h4>
+          <p>A documentação avisa que algumas partes não são transferidas e que certos apps não têm suporte — sem listar quais. Com assinantes pagando todo mês, esse é o primeiro teste, e é barato de fazer.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="note" style="margin-top:1.5rem;">A branch leva semanas. Os itens P0 não esperam por ela — corrija-os no editor clássico agora. O trabalho não se perde: conteúdo mora no painel, que as duas branches compartilham.</p>
 
     <p class="note" style="margin-top:1.5rem;">Sobre as imagens: o mock usa as fotos reais do site atual, convertidas para P&amp;B por filtro. Isso funciona e já melhora muito — mas os packshots continuam sendo garrafas seguradas por mãos, cada uma num fundo diferente. <strong>Uma sessão de packshots em fundo neutro</strong> é o investimento de maior retorno visual depois do redesign em si.</p>
   </div>
