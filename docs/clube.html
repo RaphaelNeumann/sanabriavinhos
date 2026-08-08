@@ -301,17 +301,106 @@ a:focus-visible, button:focus-visible{
   white-space: nowrap;
 }
 .cart:hover{ color: var(--stamp); }
+/* em telas estreitas o cabeçalho não comporta tudo, e o que sobrava de fora
+   era justamente o botão do menu. A sacola vive no menu. */
+@media (max-width: 720px){ .cart{ display: none; } }
+@media (max-width: 400px){
+  .logo{ width: 118px; }
+  .hdr-end .btn-sm{ padding: .7rem .8rem; letter-spacing: .12em; }
+}
 .burger{
   display: grid;
   place-items: center;
-  width: 38px; height: 38px;
+  width: 40px; height: 40px;
   background: none;
   border: 1px solid var(--rule);
   color: var(--fg);
   cursor: pointer;
+  padding: 0;
 }
 @media (min-width: 1000px){ .burger{ display: none; } }
-.burger span{ display: block; width: 15px; height: 1px; background: currentColor; box-shadow: 0 -4px currentColor, 0 4px currentColor; }
+
+/* três traços que viram um X: o traço do meio gira, o de baixo aparece
+   girado no sentido oposto e os outros dois somem */
+.burger-i{
+  position: relative;
+  display: block;
+  width: 16px; height: 1px;
+  background: currentColor;
+  box-shadow: 0 -5px currentColor, 0 5px currentColor;
+  transition: box-shadow .12s ease, transform .22s ease;
+}
+.burger-i::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  opacity: 0;
+  transform: rotate(90deg);
+  transition: opacity .12s ease;
+}
+:root.menu-open .burger-i{ box-shadow: none; transform: rotate(45deg); }
+:root.menu-open .burger-i::after{ opacity: 1; }
+
+.sr-only{
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+
+/* ---------- menu no celular ---------- */
+
+:root.menu-open{ overflow: hidden; }
+:root.menu-open .hdr{ background: var(--bg); border-bottom-color: var(--rule); }
+
+.menu{
+  position: fixed;
+  inset: 74px 0 0 0;          /* começa abaixo do cabeçalho, que continua visível */
+  z-index: 80;                /* atrás do cabeçalho (90), à frente do conteúdo */
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 0 var(--pad) calc(var(--pad) + 1rem);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity .22s ease, visibility .22s ease;
+}
+:root.menu-open .menu{ visibility: visible; opacity: 1; }
+@media (min-width: 1000px){ .menu{ display: none; } }
+
+.menu-nav{ display: flex; flex-direction: column; border-top: 1px solid var(--rule); }
+.menu-nav a{
+  font-family: var(--serif);
+  font-size: clamp(1.9rem, 8vw, 2.6rem);
+  line-height: 1.05;
+  letter-spacing: -.025em;
+  color: var(--fg);
+  text-decoration: none;
+  padding: clamp(.85rem, 3.2vw, 1.15rem) 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.menu-nav a[aria-current]{ color: var(--stamp); }
+
+.menu-foot{
+  margin-top: auto;
+  padding-top: clamp(1.75rem, 6vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 1.25rem;
+}
+.menu-foot .btn{ align-self: stretch; justify-content: center; }
+.menu-cart{
+  font-family: var(--mono); font-size: .6875rem; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--fg); text-decoration: none;
+  border-bottom: 1px solid var(--fg); padding-bottom: 2px;
+}
+.menu-contato{ font-style: normal; line-height: 2; }
+
+@media (prefers-reduced-motion: reduce){
+  .menu, .burger-i, .burger-i::after{ transition: none; }
+}
 
 /* ---------- rodapé ---------- */
 
@@ -726,10 +815,33 @@ a:focus-visible, button:focus-visible{
     <div class="hdr-end">
       <a class="cart" href="index.html#estante">Sacola&nbsp;(0)</a>
       <a class="btn btn-sm" href="#planos">Assinar</a>
-      <button class="burger" type="button" aria-label="Abrir menu"><span></span></button>
+      <button class="burger" type="button" id="burger" aria-expanded="false" aria-controls="menu">
+        <span class="burger-i" aria-hidden="true"></span>
+        <span class="sr-only">Abrir menu</span>
+      </button>
     </div>
   </div>
 </header>
+
+<div class="menu" id="menu">
+  <nav class="menu-nav" aria-label="Menu">
+    <a href="index.html#estante"      data-nav="vinhos">Vinhos</a>
+    <a href="index.html#metodo"       data-nav="metodo">O método</a>
+    <a href="clube.html"         data-nav="clube" aria-current="page">O clube</a>
+    <a href="index.html#experiencias" data-nav="experiencias">Experiências</a>
+    <a href="index.html#historia"     data-nav="historia">História</a>
+    <a href="index.html#rodape"       data-nav="contato">Contato</a>
+  </nav>
+
+  <div class="menu-foot">
+    <a class="btn" href="#planos">Assinar o clube</a>
+    <a class="menu-cart" href="index.html#estante">Sacola (0)</a>
+    <address class="lab menu-contato">
+      WhatsApp (54) 99934-3049<br>
+      Instagram @sanabriavinhos
+    </address>
+  </div>
+</div>
 
 <main>
 
@@ -1048,6 +1160,70 @@ a:focus-visible, button:focus-visible{
   frame();
   window.addEventListener('scroll', schedule, { passive: true });
   window.addEventListener('resize', schedule, { passive: true });
+})();
+
+/* ---------- menu no celular ---------- */
+(function () {
+  var raiz = document.documentElement;
+  var botao = document.getElementById('burger');
+  var menu = document.getElementById('menu');
+  if (!botao || !menu) return;
+
+  var rotulo = botao.querySelector('.sr-only');
+  var itens = menu.querySelectorAll('a');
+
+  function abre(sim) {
+    raiz.classList.toggle('menu-open', sim);
+    botao.setAttribute('aria-expanded', String(sim));
+    if (rotulo) rotulo.textContent = sim ? 'Fechar menu' : 'Abrir menu';
+    if (sim && itens.length) itens[0].focus();
+  }
+
+  botao.addEventListener('click', function () {
+    abre(!raiz.classList.contains('menu-open'));
+  });
+
+  var semAnima = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  itens.forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var href = a.getAttribute('href') || '';
+      abre(false);
+
+      /* Só âncora desta página. Link para outra página segue o caminho normal. */
+      if (href.indexOf('#') !== 0) return;
+      var alvo = document.getElementById(href.slice(1));
+      if (!alvo) return;
+
+      /* A rolagem é feita à mão porque a trava sai no mesmo instante em que o
+         navegador calcularia o destino — e aí ele não rola. Chamada direta, e
+         não dentro de requestAnimationFrame: em aba de segundo plano o rAF é
+         estrangulado e o callback poderia nunca rodar. scrollIntoView já força
+         o recálculo de layout, então a trava recém-removida vale aqui. */
+      e.preventDefault();
+      alvo.scrollIntoView({ behavior: semAnima ? 'auto' : 'smooth', block: 'start' });
+      if (history.replaceState) history.replaceState(null, '', href);
+    });
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (!raiz.classList.contains('menu-open')) return;
+
+    if (e.key === 'Escape') { abre(false); botao.focus(); return; }
+    if (e.key !== 'Tab') return;
+
+    /* o cabeçalho continua visível por cima do menu, então o Tab circula
+       entre os itens e os controles do cabeçalho — nada do conteúdo atrás */
+    var foco = [].slice.call(menu.querySelectorAll('a')).concat([botao]);
+    var primeiro = foco[0], ultimo = foco[foco.length - 1];
+    if (e.shiftKey && document.activeElement === primeiro) { e.preventDefault(); ultimo.focus(); }
+    else if (!e.shiftKey && document.activeElement === ultimo) { e.preventDefault(); primeiro.focus(); }
+  });
+
+  /* girou o aparelho ou passou para o desktop: o menu não faz mais sentido */
+  window.matchMedia('(min-width: 1000px)').addEventListener('change', function (e) {
+    if (e.matches) abre(false);
+  });
 })();
 </script>
 

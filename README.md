@@ -112,3 +112,5 @@ Dá para combinar: `?tema=claro&idade`.
 - `alt` / `aria-label` em toda imagem de conteúdo; foco de teclado visível
 - Portão de idade bloqueando roda, toque e teclado até a confirmação, com foco preso
   no diálogo e resposta lembrada por 30 dias (`?idade` na URL reabre, para demonstrar)
+- Menu de celular abaixo de 1000px: Esc fecha e devolve o foco ao botão, o Tab circula
+  dentro dele, e escolher um item fecha o menu e rola até a seção

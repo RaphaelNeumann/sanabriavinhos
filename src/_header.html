@@ -12,7 +12,30 @@
     <div class="hdr-end">
       <a class="cart" href="__HOME__#estante">Sacola&nbsp;(0)</a>
       <a class="btn btn-sm" href="__ASSINAR__">Assinar</a>
-      <button class="burger" type="button" aria-label="Abrir menu"><span></span></button>
+      <button class="burger" type="button" id="burger" aria-expanded="false" aria-controls="menu">
+        <span class="burger-i" aria-hidden="true"></span>
+        <span class="sr-only">Abrir menu</span>
+      </button>
     </div>
   </div>
 </header>
+
+<div class="menu" id="menu">
+  <nav class="menu-nav" aria-label="Menu">
+    <a href="__HOME__#estante"      data-nav="vinhos">Vinhos</a>
+    <a href="__HOME__#metodo"       data-nav="metodo">O método</a>
+    <a href="__NAV_CLUBE__"         data-nav="clube">O clube</a>
+    <a href="__HOME__#experiencias" data-nav="experiencias">Experiências</a>
+    <a href="__HOME__#historia"     data-nav="historia">História</a>
+    <a href="__HOME__#rodape"       data-nav="contato">Contato</a>
+  </nav>
+
+  <div class="menu-foot">
+    <a class="btn" href="__ASSINAR__">Assinar o clube</a>
+    <a class="menu-cart" href="__HOME__#estante">Sacola (0)</a>
+    <address class="lab menu-contato">
+      WhatsApp (54) 99934-3049<br>
+      Instagram @sanabriavinhos
+    </address>
+  </div>
+</div>

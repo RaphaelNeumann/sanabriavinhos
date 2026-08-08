@@ -40,4 +40,68 @@
   window.addEventListener('scroll', schedule, { passive: true });
   window.addEventListener('resize', schedule, { passive: true });
 })();
+
+/* ---------- menu no celular ---------- */
+(function () {
+  var raiz = document.documentElement;
+  var botao = document.getElementById('burger');
+  var menu = document.getElementById('menu');
+  if (!botao || !menu) return;
+
+  var rotulo = botao.querySelector('.sr-only');
+  var itens = menu.querySelectorAll('a');
+
+  function abre(sim) {
+    raiz.classList.toggle('menu-open', sim);
+    botao.setAttribute('aria-expanded', String(sim));
+    if (rotulo) rotulo.textContent = sim ? 'Fechar menu' : 'Abrir menu';
+    if (sim && itens.length) itens[0].focus();
+  }
+
+  botao.addEventListener('click', function () {
+    abre(!raiz.classList.contains('menu-open'));
+  });
+
+  var semAnima = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  itens.forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var href = a.getAttribute('href') || '';
+      abre(false);
+
+      /* Só âncora desta página. Link para outra página segue o caminho normal. */
+      if (href.indexOf('#') !== 0) return;
+      var alvo = document.getElementById(href.slice(1));
+      if (!alvo) return;
+
+      /* A rolagem é feita à mão porque a trava sai no mesmo instante em que o
+         navegador calcularia o destino — e aí ele não rola. Chamada direta, e
+         não dentro de requestAnimationFrame: em aba de segundo plano o rAF é
+         estrangulado e o callback poderia nunca rodar. scrollIntoView já força
+         o recálculo de layout, então a trava recém-removida vale aqui. */
+      e.preventDefault();
+      alvo.scrollIntoView({ behavior: semAnima ? 'auto' : 'smooth', block: 'start' });
+      if (history.replaceState) history.replaceState(null, '', href);
+    });
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (!raiz.classList.contains('menu-open')) return;
+
+    if (e.key === 'Escape') { abre(false); botao.focus(); return; }
+    if (e.key !== 'Tab') return;
+
+    /* o cabeçalho continua visível por cima do menu, então o Tab circula
+       entre os itens e os controles do cabeçalho — nada do conteúdo atrás */
+    var foco = [].slice.call(menu.querySelectorAll('a')).concat([botao]);
+    var primeiro = foco[0], ultimo = foco[foco.length - 1];
+    if (e.shiftKey && document.activeElement === primeiro) { e.preventDefault(); ultimo.focus(); }
+    else if (!e.shiftKey && document.activeElement === ultimo) { e.preventDefault(); primeiro.focus(); }
+  });
+
+  /* girou o aparelho ou passou para o desktop: o menu não faz mais sentido */
+  window.matchMedia('(min-width: 1000px)').addEventListener('change', function (e) {
+    if (e.matches) abre(false);
+  });
+})();
 </script>
