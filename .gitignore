@@ -1,0 +1,9 @@
+# downloads intermediários do build-assets.sh
+assets/raw/
+
+# versão de arquivo único (gerada; 2,4 MB de data-URI)
+dist/
+
+.DS_Store
+__pycache__/
+*.pyc

@@ -1,0 +1,605 @@
+<title>Sanabria — Proposta de redesign</title>
+<style>
+/*__ASSETS__*/
+
+/* Mesmo sistema do mock: proposta e protótipo se leem como uma peça só. */
+
+:root{
+  --bg:        #E9E6DE;
+  --surface:   #FDFCFA;
+  --surface-2: #DFDBD1;
+  --fg:        #15130F;
+  --fg-2:      #5F5A50;
+  --rule:      #C7C2B6;
+  --rule-soft: #D6D2C7;
+  --stamp:     #8A2F1D;
+  --on-stamp:  #F4EFE7;
+  --ok:        #3F6B44;
+  --logo-tint: none;
+  --photo: grayscale(1) contrast(1.06) brightness(.98);
+
+  --serif: "Times New Roman", Times, "Liberation Serif", serif;
+  --mono:  ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Courier New", monospace;
+  --sans:  "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --wrap: 1120px;
+  --pad: clamp(1.25rem, 4vw, 3rem);
+}
+
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg: #131210; --surface: #1B1917; --surface-2: #242119;
+    --fg: #EAE7DF; --fg-2: #9A9488; --rule: #35322B; --rule-soft: #2A2722;
+    --stamp: #DE7A5C; --on-stamp: #17140F; --ok: #86B78C;
+    --logo-tint: brightness(1.7) saturate(.9);
+    --photo: grayscale(1) contrast(1.02) brightness(.9);
+  }
+}
+:root[data-theme="dark"]{
+  --bg: #131210; --surface: #1B1917; --surface-2: #242119;
+  --fg: #EAE7DF; --fg-2: #9A9488; --rule: #35322B; --rule-soft: #2A2722;
+  --stamp: #DE7A5C; --on-stamp: #17140F; --ok: #86B78C;
+  --logo-tint: brightness(1.7) saturate(.9);
+  --photo: grayscale(1) contrast(1.02) brightness(.9);
+}
+
+*, *::before, *::after{ box-sizing: border-box; }
+
+body{
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+.wrap{ width: 100%; max-width: var(--wrap); margin-inline: auto; padding-inline: var(--pad); }
+
+h1, h2, h3, h4{ font-family: var(--serif); font-weight: 400; letter-spacing: -.02em; text-wrap: balance; margin: 0; }
+h1{ font-size: clamp(2.6rem, 6.4vw, 5rem); line-height: .95; }
+h2{ font-size: clamp(1.9rem, 3.4vw, 2.9rem); line-height: 1.02; }
+h3{ font-size: clamp(1.3rem, 2vw, 1.6rem); line-height: 1.15; }
+h4{ font-size: 1.12rem; line-height: 1.25; }
+
+p{ margin: 0; }
+.stack > * + *{ margin-top: 1rem; }
+.copy{ color: var(--fg-2); max-width: 68ch; }
+.lede{ font-size: clamp(1.05rem, 1.4vw, 1.25rem); line-height: 1.55; color: var(--fg-2); max-width: 56ch; }
+
+.lab{
+  font-family: var(--mono); font-size: .6875rem; letter-spacing: .175em;
+  text-transform: uppercase; color: var(--fg-2); margin: 0;
+}
+.num{ font-variant-numeric: tabular-nums; }
+
+/* ---- seções ---- */
+.sec{ border-top: 1px solid var(--rule); padding-block: clamp(2.75rem, 5.5vw, 4.75rem); }
+.shead{ display: grid; gap: 1.25rem; margin-bottom: clamp(1.75rem, 3.5vw, 2.75rem); }
+@media (min-width: 900px){ .shead{ grid-template-columns: 9rem minmax(0,1fr); gap: 2.5rem; align-items: start; } }
+.shead-n{ font-family: var(--mono); font-size: .6875rem; letter-spacing: .175em; color: var(--fg-2); padding-top: .5rem; border-top: 1px solid var(--fg); }
+
+/* ---- capa ---- */
+.cover{ padding-block: clamp(2.5rem, 6vw, 5rem) clamp(2.5rem, 5vw, 4rem); }
+.cover-logo{
+  width: min(300px, 70%); aspect-ratio: 760/285;
+  background-image: var(--img-logo); background-size: contain;
+  background-repeat: no-repeat; background-position: left center;
+  filter: var(--logo-tint); margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+.cover-meta{
+  display: grid; gap: .1rem 2rem; margin-top: 2.5rem;
+  grid-template-columns: minmax(0,1fr);
+  font-family: var(--mono); font-size: .6875rem; letter-spacing: .1em; text-transform: uppercase;
+  border-top: 1px solid var(--fg);
+}
+@media (min-width: 700px){ .cover-meta{ grid-template-columns: repeat(3, minmax(0,1fr)); } }
+.cover-meta div{ padding: .8rem 0; border-bottom: 1px solid var(--rule-soft); }
+.cover-meta dt{ color: var(--fg-2); }
+.cover-meta dd{ margin: .2rem 0 0; }
+
+/* ---- tabelas ---- */
+.tw{ overflow-x: auto; border: 1px solid var(--rule); }
+table{ border-collapse: collapse; width: 100%; min-width: 640px; font-size: .9rem; }
+th, td{ text-align: left; padding: .75rem .9rem; border-bottom: 1px solid var(--rule-soft); vertical-align: top; }
+thead th{
+  font-family: var(--mono); font-size: .625rem; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--fg-2); background: var(--surface); border-bottom: 1px solid var(--fg); white-space: nowrap;
+}
+tbody tr:last-child td{ border-bottom: 0; }
+td.k{ font-family: var(--mono); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--fg-2); white-space: nowrap; }
+.bad{ color: var(--stamp); }
+.good{ color: var(--ok); }
+
+/* ---- cartões / listas ---- */
+.grid{ display: grid; gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.g2{ grid-template-columns: minmax(0,1fr); }
+@media (min-width: 720px){ .g2{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+.g3{ grid-template-columns: minmax(0,1fr); }
+@media (min-width: 640px){ .g3{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (min-width: 980px){ .g3{ grid-template-columns: repeat(3, minmax(0,1fr)); } }
+.cell{ background: var(--bg); padding: clamp(1.1rem, 2vw, 1.6rem); }
+.cell h4{ margin-bottom: .4rem; }
+.cell p{ font-size: .9rem; color: var(--fg-2); }
+
+/* ---- prioridades ---- */
+.pri{ margin: 0; border-top: 1px solid var(--fg); }
+.pri-row{ display: grid; grid-template-columns: minmax(0,1fr); gap: .35rem 1.5rem; padding: 1.1rem 0; border-bottom: 1px solid var(--rule-soft); }
+@media (min-width: 800px){ .pri-row{ grid-template-columns: 3.5rem minmax(0, 20rem) minmax(0,1fr); align-items: baseline; } }
+.pri-tag{
+  font-family: var(--mono); font-size: .625rem; letter-spacing: .14em; text-transform: uppercase;
+  border: 1px solid currentColor; padding: .15rem .4rem; justify-self: start; white-space: nowrap;
+}
+.p0{ color: var(--stamp); }
+.p1{ color: var(--fg); }
+.p2{ color: var(--fg-2); }
+.pri-t{ font-family: var(--serif); font-size: 1.15rem; line-height: 1.2; letter-spacing: -.015em; }
+.pri-row p{ font-size: .9rem; color: var(--fg-2); }
+
+/* ---- amostras do sistema ---- */
+.swatches{ display: grid; grid-template-columns: repeat(auto-fit, minmax(122px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.sw{ background: var(--bg); padding: .8rem; }
+.sw-chip{ height: 62px; border: 1px solid var(--rule); }
+.sw-n{ font-family: var(--mono); font-size: .625rem; letter-spacing: .1em; text-transform: uppercase; margin-top: .55rem; display: block; }
+.sw-h{ font-family: var(--mono); font-size: .625rem; color: var(--fg-2); display: block; }
+
+.spec{ border: 1px solid var(--rule); padding: clamp(1.1rem, 2vw, 1.7rem); background: var(--surface); }
+.spec + .spec{ border-top: 0; }
+.spec-eg{ display: block; margin-bottom: .6rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.eg-d{ font-family: var(--serif); font-size: clamp(2rem, 4vw, 3rem); line-height: 1; letter-spacing: -.03em; }
+.eg-m{ font-family: var(--mono); font-size: .6875rem; letter-spacing: .175em; text-transform: uppercase; }
+.eg-b{ font-family: var(--sans); font-size: 1rem; line-height: 1.6; }
+
+/* ---- destaque ---- */
+.thesis{
+  border: 1px solid var(--fg);
+  padding: clamp(1.5rem, 3.5vw, 3rem);
+  background: var(--surface);
+}
+.thesis q{ font-family: var(--serif); font-size: clamp(1.6rem, 3.4vw, 2.6rem); line-height: 1.08; letter-spacing: -.025em; quotes: none; display: block; }
+
+.cta{
+  display: inline-flex; gap: .6rem; align-items: center;
+  font-family: var(--mono); font-size: .6875rem; letter-spacing: .175em; text-transform: uppercase;
+  text-decoration: none; color: var(--on-stamp); background: var(--fg);
+  border: 1px solid var(--fg); padding: .95rem 1.5rem;
+}
+.cta:hover{ background: var(--stamp); border-color: var(--stamp); }
+a{ color: var(--fg); text-underline-offset: 3px; }
+a:focus-visible{ outline: 2px solid var(--stamp); outline-offset: 3px; }
+
+.note{ border-left: 2px solid var(--stamp); padding-left: 1rem; font-size: .9rem; color: var(--fg-2); }
+
+.shot{
+  border: 1px solid var(--rule);
+  aspect-ratio: 16/9;
+  background-size: cover; background-position: center;
+}
+.mono-photo{ filter: var(--photo); }
+
+/* Recuo pendente em fluxo inline: um grid aqui quebraria a linha em itens
+   separados sempre que houvesse <strong> ou <span> no meio do texto. */
+ul.plain{ list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; font-size: .9rem; color: var(--fg-2); }
+ul.plain li{ padding-left: 1.25rem; text-indent: -1.25rem; }
+ul.plain li::before{ content: "—"; color: var(--fg); margin-right: .4rem; }
+
+footer.end{ border-top: 1px solid var(--fg); padding-block: 2rem 3rem; }
+</style>
+
+<div class="wrap cover">
+  <div class="cover-logo" role="img" aria-label="Sanabria — Laboratório de Vinhos Naturais"></div>
+  <p class="lab">Proposta de redesign · sanabriavinhos.com</p>
+  <h1 style="margin:1.25rem 0 1.5rem;">Tudo em preto e&nbsp;branco.<br>Só o vinho tem&nbsp;cor.</h1>
+  <p class="lede">Uma direção de design que transforma a restrição cromática em argumento de marca — e que resolve, de quebra, o maior problema visual do site atual.</p>
+
+  <dl class="cover-meta">
+    <div><dt>Referência estrutural</dt><dd>vinicolaserradosol.com.br</dd></div>
+    <div><dt>Identidade</dt><dd>Sanabria, monocromática</dd></div>
+    <div><dt>Entregas</dt><dd>Diagnóstico · Sistema · Mock navegável</dd></div>
+  </dl>
+</div>
+
+<!-- =========================================================== -->
+<section class="sec">
+  <div class="wrap">
+    <div class="shead">
+      <p class="shead-n">01 / Tese</p>
+      <div>
+        <h2>Por que preto e branco resolve um problema real</h2>
+      </div>
+    </div>
+
+    <div class="thesis stack">
+      <q>Tudo em preto e branco. Só o vinho tem cor.</q>
+      <p class="copy">A auditoria encontrou <strong>quatro linguagens fotográficas incompatíveis</strong> convivendo no site atual: retratos de luz dura, vinhedo em luz natural, packshots em fundos diferentes a cada foto, e o buteco em luz quente noturna. Nenhum tratamento comum. É a principal razão de o site parecer improvisado.</p>
+      <p class="copy">Converter <em>toda</em> a fotografia editorial para monocromático unifica as quatro linguagens de uma vez — sem refotografar nada. E abre espaço para o ativo mais forte e mais desperdiçado da marca: os <strong>rótulos ilustrados</strong>, que são pinturas originais encomendadas rótulo a rótulo.</p>
+      <p class="copy">A regra do sistema é uma linha só: <strong>a cor só existe onde há rótulo.</strong> Pessoas, lugar e processo em P&amp;B; garrafas e artes de rótulo em cor plena. Na home, isso vira um gesto: a estante de vinhos entra em cena monocromática e ganha cor conforme aparece na tela. É o único momento de animação orquestrada da página.</p>
+    </div>
+
+    <div class="grid g2" style="margin-top:2rem;">
+      <div class="cell">
+        <p class="lab">Antes</p>
+        <h4 style="margin-top:.5rem;">Uma cor fazendo tudo</h4>
+        <p>O vinho <span class="num">#8A2F1D</span> é simultaneamente título, botão, fundo de seção, rodapé e logotipo. Sem cor de apoio, sem acento, sem neutros estruturados, sem cores semânticas.</p>
+      </div>
+      <div class="cell">
+        <p class="lab">Depois</p>
+        <h4 style="margin-top:.5rem;">Duas tintas, como uma serigrafia</h4>
+        <p>Papel e tinta preta carregam o site inteiro. O vinho <span class="num">#8A2F1D</span> vira <em>segunda tinta</em>: aparece como carimbo em premiações, no dado que importa e no logotipo do rodapé. Ganha força justamente por ser raro.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+<section class="sec">
+  <div class="wrap">
+    <div class="shead">
+      <p class="shead-n">02 / Modelo</p>
+      <div>
+        <h2>O que o site da Serra do Sol faz bem</h2>
+        <p class="copy" style="margin-top:1rem;">Engenharia reversa do CSS e da estrutura. O achado mais útil: <strong>o site é quase estático</strong> — zero AOS, GSAP ou motion effects. A sofisticação vem inteiramente de composição, tipografia e ilustração. Isso derruba a suposição de que precisamos de muita animação.</p>
+      </div>
+    </div>
+
+    <div class="tw">
+      <table>
+        <caption class="lab" style="text-align:left; padding:.75rem .9rem; border-bottom:1px solid var(--rule-soft);">Sistema extraído do modelo</caption>
+        <tbody>
+          <tr><td class="k">Paleta</td><td>Branco + creme <span class="num">#FFF5E8</span> / <span class="num">#E6DBCD</span> + dourado-bronze <span class="num">#A6804C</span>. <strong>Nenhum bordô.</strong> Uma cor de marca só, tokenizada.</td></tr>
+          <tr><td class="k">Tipografia</td><td>Duas famílias: Cardo (serifa) em todos os títulos, botões e números; Inter em 100% do corpo a 14px/1.71. Hierarquia por <em>escala</em> (65 → 24 → 14px), não por peso. <code>letter-spacing: normal</code> em todo o site.</td></tr>
+          <tr><td class="k">Botões</td><td><code>border-radius: 0</code>. Três variantes só. Hover praticamente sem mudança de cor.</td></tr>
+          <tr><td class="k">Layout</td><td>Container 1140px. Profundidade por <strong>margens negativas</strong>: hero em <code>-180px</code> sob o header, barra de atalhos em <code>-100px</code> invadindo o hero.</td></tr>
+          <tr><td class="k">Header</td><td>Dois headers empilhados: transparente com logo branco sobre o hero, creme com logo colorido + carrinho após o scroll.</td></tr>
+          <tr><td class="k">Ficha</td><td>Quatro pares rótulo/valor ao lado da garrafa: Safra · Teor Alcoólico · Uvas · Guarda. É o que transforma card de e-commerce em conteúdo editorial.</td></tr>
+          <tr><td class="k">Movimento</td><td>Carrosséis, troca de header, hover de menu e <code>scale(1.05)</code> no Instagram. Nada além disso.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid g3" style="margin-top:1.75rem;">
+      <div class="cell">
+        <h4>O que copiamos</h4>
+        <ul class="plain" style="margin-top:.7rem;">
+          <li>Header duplo transparente → sólido</li>
+          <li>Barra de três atalhos flutuando sobre o hero</li>
+          <li>Ficha técnica ao lado da garrafa</li>
+          <li>Hierarquia por escala, não por peso</li>
+          <li>Contenção de movimento</li>
+        </ul>
+      </div>
+      <div class="cell">
+        <h4>O que adaptamos</h4>
+        <ul class="plain" style="margin-top:.7rem;">
+          <li>Creme + dourado vira papel + tinta preta</li>
+          <li>Ondas e folhas em PNG viram réguas de 1px</li>
+          <li>Colagens de fotos viram sangria fotográfica</li>
+          <li>Cardo/Inter vira Times/mono/Helvetica</li>
+        </ul>
+      </div>
+      <div class="cell">
+        <h4>O que não copiamos</h4>
+        <ul class="plain" style="margin-top:.7rem;">
+          <li>Numerais gigantes <span class="num">O1/O2/O3</span> decorativos</li>
+          <li>Títulos manuscritos em PNG (a Sanabria já tem lettering próprio no logo)</li>
+          <li>Rodapé sem mapa do site</li>
+          <li>Carrossel escondendo o catálogo</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+<section class="sec">
+  <div class="wrap">
+    <div class="shead">
+      <p class="shead-n">03 / Comparação</p>
+      <div><h2>Onde está a distância</h2></div>
+    </div>
+
+    <div class="tw">
+      <table>
+        <thead>
+          <tr><th>Dimensão</th><th>Sanabria hoje</th><th>Serra do Sol</th><th>Proposta</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="k">Plataforma</td>
+            <td>Wix clássico · 198 requisições, 91 <code>&lt;script&gt;</code></td>
+            <td>WordPress + Elementor Pro</td>
+            <td>Wix Studio (ver §07)</td>
+          </tr>
+          <tr>
+            <td class="k">Mobile</td>
+            <td class="bad">Quebrado — <span class="num">482px</span> de overflow horizontal a 500px de viewport</td>
+            <td>3 breakpoints funcionais</td>
+            <td class="good">Zero overflow a 390px (verificado no mock)</td>
+          </tr>
+          <tr>
+            <td class="k">Tipografia</td>
+            <td class="bad">4 famílias (Syne, Avenir, Poppins, Roboto) sem sistema</td>
+            <td>2 famílias, escala definida</td>
+            <td>3 papéis: display, dados, corpo</td>
+          </tr>
+          <tr>
+            <td class="k">Hierarquia</td>
+            <td class="bad">3 <code>&lt;h1&gt;</code> na home (73/55/46px). O maior é “Nossa História”, não a proposta de valor</td>
+            <td>1 H1, escala clara</td>
+            <td>1 H1 por página, escala fixa</td>
+          </tr>
+          <tr>
+            <td class="k">Botões</td>
+            <td class="bad">4 raios (100/50/15/0px), 4 alturas, 4 cores para a mesma função</td>
+            <td>3 variantes, radius 0</td>
+            <td>2 variantes, radius 0</td>
+          </tr>
+          <tr>
+            <td class="k">Ficha de produto</td>
+            <td class="bad">Inexistente. Subtítulo idêntico em 100% dos itens: “Conheça nossos vinhos.”</td>
+            <td>4 campos por rótulo</td>
+            <td>4 campos visíveis + ficha completa na PDP</td>
+          </tr>
+          <tr>
+            <td class="k">Preço</td>
+            <td class="bad">Desconto de 10% permanente em 100% do catálogo — “promoção” que nunca acaba</td>
+            <td>Preço único</td>
+            <td>Preço único; promoção vira exceção</td>
+          </tr>
+          <tr>
+            <td class="k">Navegação</td>
+            <td class="bad">8 itens planos. “Camisetas” leva a um catálogo de vinhos</td>
+            <td>5 itens + CTA fixo</td>
+            <td>6 itens, rótulos honestos</td>
+          </tr>
+          <tr>
+            <td class="k">Endereço</td>
+            <td class="bad">Três endereços diferentes para uma única loja</td>
+            <td>Um endereço</td>
+            <td>Um endereço (precisa da sua confirmação)</td>
+          </tr>
+          <tr>
+            <td class="k">Conformidade</td>
+            <td class="bad">Sem verificação de idade, sem aviso legal, sem política de frete/trocas</td>
+            <td>Age gate ativo</td>
+            <td>Age gate + avisos + páginas legais</td>
+          </tr>
+          <tr>
+            <td class="k">Acessibilidade</td>
+            <td class="bad">26 de 39 imagens da home sem <code>alt</code></td>
+            <td>—</td>
+            <td><code>alt</code> em tudo; foco visível; <code>prefers-reduced-motion</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+<section class="sec">
+  <div class="wrap">
+    <div class="shead">
+      <p class="shead-n">04 / Sistema</p>
+      <div><h2>Os tokens</h2></div>
+    </div>
+
+    <p class="lab">Cor</p>
+    <div class="swatches" style="margin-top:.75rem;">
+      <div class="sw"><div class="sw-chip" style="background:#E9E6DE;"></div><span class="sw-n">Papel</span><span class="sw-h">#E9E6DE</span></div>
+      <div class="sw"><div class="sw-chip" style="background:#FDFCFA;"></div><span class="sw-n">Papel 2</span><span class="sw-h">#FDFCFA</span></div>
+      <div class="sw"><div class="sw-chip" style="background:#15130F;"></div><span class="sw-n">Tinta</span><span class="sw-h">#15130F</span></div>
+      <div class="sw"><div class="sw-chip" style="background:#5F5A50;"></div><span class="sw-n">Grafite</span><span class="sw-h">#5F5A50</span></div>
+      <div class="sw"><div class="sw-chip" style="background:#C7C2B6;"></div><span class="sw-n">Régua</span><span class="sw-h">#C7C2B6</span></div>
+      <div class="sw"><div class="sw-chip" style="background:#8A2F1D;"></div><span class="sw-n">2ª tinta</span><span class="sw-h">#8A2F1D</span></div>
+    </div>
+    <p class="note" style="margin-top:1rem;">Neutros deslocados para o quente — o mesmo desvio oliva do traço do logotipo. Cinza puro leria como “não escolhido”. No tema escuro a segunda tinta clareia para <span class="num">#DE7A5C</span> para manter contraste legível.</p>
+
+    <p class="lab" style="margin-top:2.5rem;">Tipografia</p>
+    <div style="margin-top:.75rem;">
+      <div class="spec">
+        <span class="spec-eg eg-d">Uva, tempo e levedura nativa.</span>
+        <p class="lab">Display · Times · peso 400 · <code>line-height .88</code> · <code>letter-spacing −.03em</code></p>
+      </div>
+      <div class="spec">
+        <span class="spec-eg eg-m">Safra 2025 · Serra Gaúcha · 750 ml</span>
+        <p class="lab">Dados · monoespaçada · <code>letter-spacing .175em</code> · caixa alta · 11px</p>
+      </div>
+      <div class="spec">
+        <span class="spec-eg eg-b">Vinhos de baixa intervenção feitos com uvas da Serra Gaúcha.</span>
+        <p class="lab">Corpo · Helvetica · 16px · <code>line-height 1.65</code></p>
+      </div>
+    </div>
+    <p class="note" style="margin-top:1rem;">Trio de <em>printed matter</em>, não de landing page. Times enorme e apertado carrega a voz editorial; a monoespaçada é a voz do contrarrótulo e do caderno de laboratório — o “Laboratório” do nome deixa de ser só uma palavra. Nenhuma das três depende de webfont, então não há risco de fallback silencioso nem custo de carregamento.</p>
+
+    <p class="lab" style="margin-top:2.5rem;">Layout e movimento</p>
+    <div class="grid g3" style="margin-top:.75rem;">
+      <div class="cell"><h4>Grade</h4><p>Container 1280px. Réguas de 1px sangrando de borda a borda separam as seções — não espaço em branco solto. Cada seção tem número de série na margem esquerda.</p></div>
+      <div class="cell"><h4>Fotografia</h4><p><code>grayscale(1)</code> em toda foto editorial. Cor apenas em garrafa e arte de rótulo. Uma regra, aplicável por qualquer pessoa que suba imagem no futuro.</p></div>
+      <div class="cell"><h4>Movimento</h4><p>Header que troca de estado, entradas discretas por scroll e <strong>um</strong> gesto orquestrado: a estante ganhando cor. Tudo desligado sob <code>prefers-reduced-motion</code>.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+<section class="sec">
+  <div class="wrap">
+    <div class="shead">
+      <p class="shead-n">05 / Instruções</p>
+      <div>
+        <h2>O que mudar, em ordem</h2>
+        <p class="copy" style="margin-top:1rem;">P0 são erros que custam venda ou criam risco legal — valem ser corrigidos no site atual <em>antes</em> mesmo do redesign. P1 é estrutura. P2 é acabamento.</p>
+      </div>
+    </div>
+
+    <div class="pri">
+      <div class="pri-row">
+        <span class="pri-tag p0">P0</span>
+        <span class="pri-t">Unificar o endereço</span>
+        <p>Rodapé, /contato e /buteco trazem <strong>três endereços diferentes</strong> (SCLN 708/709, CLN 407 e SCRN 709/710). O cliente não sabe aonde ir. Definir um e propagar para site, Google Business e Instagram.</p>
+      </div>
+      <div class="pri-row">
+        <span class="pri-tag p0">P0</span>
+        <span class="pri-t">Consertar “Camisetas”</span>
+        <p>O item de menu leva a <code>/shop-1</code>, um catálogo com 20+ vinhos e 2 peças de vestuário. O breadcrumb de um Pinot Noir diz literalmente <em>Início / Camisetas / habla, Habla, habla</em>. Unificar os dois catálogos e categorizar de verdade.</p>
+      </div>
+      <div class="pri-row">
+        <span class="pri-tag p0">P0</span>
+        <span class="pri-t">Conformidade de bebida alcoólica</span>
+        <p>Não há verificação de idade nem aviso legal, e o catálogo inclui destilado. Adicionar age gate, “venda proibida para menores de 18 anos” e “aprecie com moderação” no rodapé.</p>
+      </div>
+      <div class="pri-row">
+        <span class="pri-tag p0">P0</span>
+        <span class="pri-t">Frete, prazo, trocas e devoluções</span>
+        <p>Ausentes em todo o site, inclusive na página de produto. Para vinho — frágil e com restrição de transporte — é a barreira de conversão mais cara que existe hoje.</p>
+      </div>
+      <div class="pri-row">
+        <span class="pri-tag p0">P0</span>
+        <span class="pri-t">Encerrar o desconto permanente</span>
+        <p>100% do catálogo exibe “preço normal” riscado com exatamente −10%, sempre. Isso anula a percepção de promoção e configura preço de referência artificial. Publicar preço único.</p>
+      </div>
+
+      <div class="pri-row">
+        <span class="pri-tag p1">P1</span>
+        <span class="pri-t">Mobile que reflui</span>
+        <p>O layout não responde abaixo de ~980px — comportamento típico do editor clássico do Wix. É o item que mais depende da decisão de plataforma (§07).</p>
+      </div>
+      <div class="pri-row">
+        <span class="pri-tag p1">P1</span>
+        <span class="pri-t">Ficha técnica em todo rótulo</span>
+        <p>Hoje não há teor alcoólico, volume, uvas em campo estruturado, temperatura de serviço, guarda, região nem nº de garrafas. Para vinho natural — categoria que exige explicação — é a maior lacuna de conteúdo.</p>
+      </div>
+      <div class="pri-row">
+        <span class="pri-tag p1">P1</span>
+        <span class="pri-t">Explicar o que é vinho natural</span>
+        <p>É o núcleo do posicionamento e do próprio nome, mas só aparece numa frase enterrada em /sobre-nós. Vira seção fixa na home (“O método”, 4 etapas) e página própria.</p>
+      </div>
+      <div class="pri-row">
+        <span class="pri-tag p1">P1</span>
+        <span class="pri-t">Trazer a história de 1960 para a home</span>
+        <p>Três gerações, com foto de arquivo do avô Valdemar. É o maior diferencial de conteúdo da marca e hoje está na terceira dobra de uma página interna.</p>
+      </div>
+      <div class="pri-row">
+        <span class="pri-tag p1">P1</span>
+        <span class="pri-t">Dar página aos rótulos autorais</span>
+        <p>Nina Simone, BB King, Frida Kahlo, Gal Costa, Cartola, Cássia Eller, a Linha Blues — um sistema de marca completo, hoje sem nenhuma narrativa. As artes são pinturas originais; merecem coleção própria.</p>
+      </div>
+      <div class="pri-row">
+        <span class="pri-tag p1">P1</span>
+        <span class="pri-t">Conectar prêmios a rótulos</span>
+        <p>O site diz ter ouro no Descorchados 2024 mas não diz <em>qual vinho</em> ganhou. Selo por rótulo na estante e na PDP.</p>
+      </div>
+
+      <div class="pri-row">
+        <span class="pri-tag p2">P2</span>
+        <span class="pri-t">Um sistema de botões</span>
+        <p>Quatro tratamentos de canto viram dois: sólido e contorno, ambos <code>radius: 0</code>.</p>
+      </div>
+      <div class="pri-row">
+        <span class="pri-tag p2">P2</span>
+        <span class="pri-t">Um único chat</span>
+        <p>Wix Chat e widget de WhatsApp estão sobrepostos no mesmo canto, e um deles abre um balão automático <strong>em inglês</strong> num site 100% em português. Manter só o WhatsApp.</p>
+      </div>
+      <div class="pri-row">
+        <span class="pri-tag p2">P2</span>
+        <span class="pri-t">Revisão de texto</span>
+        <p>“frutas <em>vemelhas</em>”, “<em>fresvo</em>”, “<em>trás</em> a tona” na página de produto. Verificar também “Tina Tuner” (Turner) e “Jhon Lee” (John Lee Hooker).</p>
+      </div>
+      <div class="pri-row">
+        <span class="pri-tag p2">P2</span>
+        <span class="pri-t">Ampliar o logotipo</span>
+        <p>É o ativo de marca mais forte e aparece pequeno no header e no rodapé. O mascote já funciona isolado (a placa do buteco prova isso) e pode virar sistema de ícones e selos.</p>
+      </div>
+      <div class="pri-row">
+        <span class="pri-tag p2">P2</span>
+        <span class="pri-t">Corrigir o bug de moeda do Clube</span>
+        <p>Cada plano exibe o valor duas vezes, em formatos diferentes: <code>R$215</code> e <code>215R$</code>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+<section class="sec">
+  <div class="wrap">
+    <div class="shead">
+      <p class="shead-n">06 / Estrutura</p>
+      <div><h2>Nova arquitetura</h2></div>
+    </div>
+
+    <div class="grid g2">
+      <div class="cell">
+        <p class="lab">Menu — de 8 itens planos para 6 honestos</p>
+        <ul class="plain" style="margin-top:.9rem;">
+          <li><strong>Vinhos</strong> — com filtros por estilo (tinto, branco, laranja, rosé, pét-nat, clarete), uva, safra e ocasião</li>
+          <li><strong>O método</strong> — o que é vinho natural, as 4 etapas</li>
+          <li><strong>O buteco</strong> — espaço físico, cave, reservas</li>
+          <li><strong>O clube</strong> — assinatura</li>
+          <li><strong>História</strong> — 1960 → hoje, prêmios</li>
+          <li><strong>Contato</strong></li>
+        </ul>
+        <p class="note" style="margin-top:1rem;">“Experiências” e “Camisetas” saem do primeiro nível: a primeira vira sub-seção do Buteco, a segunda uma categoria dentro de Vinhos.</p>
+      </div>
+      <div class="cell">
+        <p class="lab">Home — 9 blocos</p>
+        <ul class="plain" style="margin-top:.9rem;">
+          <li>Header duplo (transparente → papel)</li>
+          <li>Hero tipográfico + ficha da casa</li>
+          <li>Três portas: estante · buteco · clube</li>
+          <li><span class="num">01</span> A estante — o momento de cor</li>
+          <li><span class="num">02</span> O método — 4 etapas</li>
+          <li><span class="num">03</span> Os rótulos — nomes e pinturas</li>
+          <li><span class="num">04</span> O buteco — faixa sangrada</li>
+          <li><span class="num">05</span> História — 1960 → 2024</li>
+          <li><span class="num">06</span> O clube + rodapé completo</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="margin-top:1.75rem;">
+      <p class="lab">Páginas que não existem e precisam existir</p>
+      <p class="copy" style="margin-top:.7rem;">Frete e prazos · Trocas e devoluções · Política de privacidade · Termos de uso · O que é vinho natural · Prêmios · FAQ. Nenhuma delas está no site hoje.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+<section class="sec">
+  <div class="wrap">
+    <div class="shead">
+      <p class="shead-n">07 / Execução</p>
+      <div><h2>Plataforma e pendências</h2></div>
+    </div>
+
+    <div class="grid g2">
+      <div class="cell">
+        <h4>Recomendação: Wix Studio</h4>
+        <p style="margin-top:.5rem;">O site está no editor clássico do Wix, cujo posicionamento absoluto é a causa direta do mobile quebrado. O <strong>Wix Studio</strong> é outro editor dentro da mesma conta: suporta CSS grid real, breakpoints e CSS customizado — o suficiente para executar este design fielmente.</p>
+        <p style="margin-top:.7rem;">A vantagem decisiva: <strong>Wix Stores, Bookings e Pricing Plans continuam os mesmos</strong>. Catálogo, pedidos, assinantes do Clube e agendamentos de Experiências não migram — só o front-end é reconstruído. Sair para Shopify ou WordPress significaria remontar as quatro coisas do zero.</p>
+      </div>
+      <div class="cell">
+        <h4>Decisões que dependem de você</h4>
+        <ul class="plain" style="margin-top:.9rem;">
+          <li><strong>Endereço definitivo</strong> — no mock usei o da página do Buteco (SCRN 709/710, Bloco F, Loja 29). Precisa confirmar.</li>
+          <li><strong>E-mail de contato</strong> — não existe em lugar nenhum do site hoje.</li>
+          <li><strong>Ficha técnica</strong> — teor alcoólico, guarda, temperatura de serviço e nº de garrafas por rótulo. Só você tem esses dados.</li>
+          <li><strong>Qual rótulo ganhou qual medalha</strong> no Descorchados 2024.</li>
+          <li><strong>Manter ou encerrar</strong> o desconto de 10% permanente.</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="note" style="margin-top:1.5rem;">Sobre as imagens: o mock usa as fotos reais do site atual, convertidas para P&amp;B por filtro. Isso funciona e já melhora muito — mas os packshots continuam sendo garrafas seguradas por mãos, cada uma num fundo diferente. <strong>Uma sessão de packshots em fundo neutro</strong> é o investimento de maior retorno visual depois do redesign em si.</p>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+<footer class="end">
+  <div class="wrap">
+    <p class="lab">Próximo passo</p>
+    <h3 style="margin:.8rem 0 1.4rem;">Abrir o mock navegável da home</h3>
+    <p class="copy" style="margin-bottom:1.6rem;">Ele funciona em tela cheia e no celular, tem tema claro e escuro, e usa as fotos e os rótulos reais da Sanabria.</p>
+    <a class="cta" href="https://claude.ai/code/artifact/670a4853-7382-4cab-ba32-b1b3de072b0d">Ver o mock</a>
+  </div>
+</footer>

@@ -1,0 +1,1188 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sanabria — Laboratório de Vinhos Naturais</title>
+<meta name="description" content="Mock da nova home da Sanabria — Laboratório de Vinhos Naturais. Tudo em preto e branco; só os rótulos têm cor.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="img/favicon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sanabria — Laboratório de Vinhos Naturais">
+<meta property="og:description" content="Mock da nova home da Sanabria — Laboratório de Vinhos Naturais. Tudo em preto e branco; só os rótulos têm cor.">
+<meta property="og:image" content="https://raphaelneumann.github.io/sanabriavinhos/img/og.png">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+<style>
+:root{
+  --img-art:url("img/art.jpg");
+  --img-b1:url("img/b1.jpg");
+  --img-b2:url("img/b2.png");
+  --img-b3:url("img/b3.jpg");
+  --img-b4:url("img/b4.jpg");
+  --img-b5:url("img/b5.jpg");
+  --img-b6:url("img/b6.jpg");
+  --img-box:url("img/box.jpg");
+  --img-cave:url("img/cave.jpg");
+  --img-facade:url("img/facade.jpg");
+  --img-family:url("img/family.jpg");
+  --img-flask:url("img/flask.jpg");
+  --img-harvest:url("img/harvest.jpg");
+  --img-hero:url("img/hero.jpg");
+  --img-lab:url("img/lab.jpg");
+  --img-logo:url("img/logo.png");
+  --img-press:url("img/press.jpg");
+  --img-seal:url("img/seal.jpg");
+  --img-sign:url("img/sign.jpg");
+  --img-toast:url("img/toast.jpg");
+  --img-tray:url("img/tray.jpg");
+  --img-vineyard:url("img/vineyard.jpg");
+}
+
+/* ============================================================
+   SANABRIA — SISTEMA
+   Tese: tudo em preto e branco; a cor só existe onde há rótulo.
+   ============================================================ */
+
+:root{
+  /* superfícies e tinta — neutros quentes, deslocados para o oliva
+     do traço do logotipo; nada de cinza puro */
+  --bg:        #E9E6DE;
+  --surface:   #FDFCFA;
+  --surface-2: #DFDBD1;
+  --fg:        #15130F;
+  --fg-2:      #5F5A50;
+  --rule:      #C7C2B6;
+  --rule-soft: #D6D2C7;
+  --stamp:     #8A2F1D;   /* segunda tinta. uma só função. */
+  --on-stamp:  #F4EFE7;
+  --logo-tint: none;
+
+  --serif: "Times New Roman", Times, "Liberation Serif", serif;
+  --mono:  ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Courier New", monospace;
+  --sans:  "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+
+  --wrap: 1280px;
+  --pad: clamp(1.25rem, 4vw, 3.25rem);
+  --photo: grayscale(1) contrast(1.06) brightness(.98);
+  /* distância entre a borda do conteúdo e a borda da janela — usada para sangrar */
+  --bleed: calc((100vw - min(100vw, var(--wrap))) / 2 + var(--pad));
+}
+
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:        #131210;
+    --surface:   #1B1917;
+    --surface-2: #242119;
+    --fg:        #EAE7DF;
+    --fg-2:      #9A9488;
+    --rule:      #35322B;
+    --rule-soft: #2A2722;
+    --stamp:     #DE7A5C;
+    --on-stamp:  #17140F;
+    --photo: grayscale(1) contrast(1.02) brightness(.9);
+    --logo-tint: brightness(1.7) saturate(.9);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:        #131210;
+  --surface:   #1B1917;
+  --surface-2: #242119;
+  --fg:        #EAE7DF;
+  --fg-2:      #9A9488;
+  --rule:      #35322B;
+  --rule-soft: #2A2722;
+  --stamp:     #DE7A5C;
+  --on-stamp:  #17140F;
+  --photo: grayscale(1) contrast(1.02) brightness(.9);
+  --logo-tint: brightness(1.7) saturate(.9);
+}
+
+*, *::before, *::after{ box-sizing: border-box; }
+
+body{
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ---------- primitivas tipográficas ---------- */
+
+.d1, .d2, .d3{
+  font-family: var(--serif);
+  font-weight: 400;
+  text-wrap: balance;
+  margin: 0;
+}
+.d1{ font-size: clamp(3.1rem, 8.2vw, 7.2rem); line-height: .88;  letter-spacing: -.032em; }
+.d2{ font-size: clamp(2.1rem, 4.4vw, 3.75rem); line-height: .96; letter-spacing: -.026em; }
+.d3{ font-size: clamp(1.45rem, 2.3vw, 2.05rem); line-height: 1.1; letter-spacing: -.016em; }
+.d1 em, .d2 em, .d3 em{ font-style: italic; }
+
+.lab{
+  font-family: var(--mono);
+  font-size: .6875rem;
+  letter-spacing: .175em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+  margin: 0;
+}
+.lede{
+  font-size: clamp(1.02rem, 1.25vw, 1.18rem);
+  line-height: 1.6;
+  color: var(--fg-2);
+  max-width: 34ch;
+  margin: 0;
+}
+.copy{ color: var(--fg-2); max-width: 62ch; margin: 0; }
+.num{ font-variant-numeric: tabular-nums; }
+
+/* ---------- estrutura ---------- */
+
+.wrap{
+  width: 100%;
+  max-width: var(--wrap);
+  margin-inline: auto;
+  padding-inline: var(--pad);
+}
+.band{ border-top: 1px solid var(--rule); }
+.band-pad{ padding-block: clamp(3.5rem, 7vw, 6.5rem); }
+
+/* cabeçalho de seção: número de série + título, como etiqueta de amostra */
+.shead{
+  display: grid;
+  grid-template-columns: minmax(0,1fr);
+  gap: 1.5rem;
+  align-items: end;
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+}
+@media (min-width: 860px){
+  .shead{ grid-template-columns: 8rem minmax(0,1fr) minmax(0, 22rem); gap: 2.5rem; }
+}
+.shead-n{
+  font-family: var(--mono);
+  font-size: .6875rem;
+  letter-spacing: .175em;
+  color: var(--fg-2);
+  padding-top: .55rem;
+  border-top: 1px solid var(--fg);
+}
+
+/* ---------- botões ---------- */
+
+.btn{
+  --btn-fg: var(--on-stamp);
+  --btn-bg: var(--fg);
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  font-family: var(--mono);
+  font-size: .6875rem;
+  letter-spacing: .175em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--btn-fg);
+  background: var(--btn-bg);
+  border: 1px solid var(--fg);
+  border-radius: 0;
+  padding: .95rem 1.5rem;
+  transition: background .18s ease, color .18s ease;
+}
+.btn:hover{ --btn-bg: var(--stamp); border-color: var(--stamp); --btn-fg: var(--on-stamp); }
+.btn-ghost{ --btn-bg: transparent; --btn-fg: var(--fg); }
+.btn-ghost:hover{ --btn-bg: var(--fg); --btn-fg: var(--bg); border-color: var(--fg); }
+.btn-sm{ padding: .7rem 1.1rem; }
+
+a:focus-visible, button:focus-visible{
+  outline: 2px solid var(--stamp);
+  outline-offset: 3px;
+}
+
+/* ---------- fotografia ---------- */
+
+.ph{
+  background-color: var(--surface-2);
+  background-size: cover;
+  background-position: center;
+  filter: var(--photo);   /* regra do sistema: toda foto editorial é P&B */
+}
+
+/* ============================================================
+   CABEÇALHO — dois estados, transparente -> papel
+   ============================================================ */
+
+.hdr{
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 90;
+  border-bottom: 1px solid transparent;
+  transition: background .28s ease, border-color .28s ease;
+}
+.hdr.is-stuck{
+  background: var(--bg);
+  border-bottom-color: var(--rule);
+}
+.hdr-in{
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2.5rem);
+  height: 74px;
+}
+.logo{
+  display: block;
+  width: 148px;
+  height: 56px;
+  flex: none;
+  background-image: var(--img-logo);
+  background-size: contain;
+  background-position: left center;
+  background-repeat: no-repeat;
+  filter: brightness(0) opacity(.92);
+}
+:root[data-theme="dark"] .logo{ filter: brightness(0) invert(1) opacity(.9); }
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .logo{ filter: brightness(0) invert(1) opacity(.9); }
+}
+
+.nav{
+  display: none;
+  margin-left: auto;
+  gap: clamp(1rem, 2vw, 1.9rem);
+}
+@media (min-width: 1000px){ .nav{ display: flex; } }
+.nav a{
+  font-family: var(--mono);
+  font-size: .6875rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--fg);
+  padding: .35rem 0;
+  border-bottom: 1px solid transparent;
+  transition: border-color .18s ease, color .18s ease;
+}
+.nav a:hover{ border-bottom-color: var(--fg); }
+.nav a[aria-current]{ border-bottom-color: var(--stamp); color: var(--stamp); }
+
+.hdr-end{ display: flex; align-items: center; gap: .9rem; margin-left: auto; }
+@media (min-width: 1000px){ .hdr-end{ margin-left: 0; } }
+.cart{
+  font-family: var(--mono);
+  font-size: .6875rem;
+  letter-spacing: .16em;
+  color: var(--fg);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.cart:hover{ color: var(--stamp); }
+.burger{
+  display: grid;
+  place-items: center;
+  width: 38px; height: 38px;
+  background: none;
+  border: 1px solid var(--rule);
+  color: var(--fg);
+  cursor: pointer;
+}
+@media (min-width: 1000px){ .burger{ display: none; } }
+.burger span{ display: block; width: 15px; height: 1px; background: currentColor; box-shadow: 0 -4px currentColor, 0 4px currentColor; }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+
+.hero{ padding-top: 74px; }
+.hero-grid{ display: grid; grid-template-columns: minmax(0,1fr); }
+@media (min-width: 940px){
+  .hero-grid{ grid-template-columns: minmax(0, 1fr) minmax(0, 40%); align-items: stretch; }
+}
+.hero-left{
+  padding-block: clamp(2.5rem, 6vw, 5.5rem) clamp(2.5rem, 5vw, 4rem);
+  padding-right: clamp(0rem, 3vw, 3rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.4rem, 2.6vw, 2.1rem);
+  align-items: start;
+}
+.hero-eyebrow{ display: flex; flex-wrap: wrap; align-items: center; gap: .55rem 1rem; }
+.stamp{
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: .625rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--stamp);
+  border: 1px solid currentColor;
+  padding: .28rem .5rem;
+  transform: rotate(-1.4deg);
+}
+.hero-cta{ display: flex; flex-wrap: wrap; gap: .75rem; }
+
+.hero-photo{
+  position: relative;
+  min-height: 58vw;
+  background-image: var(--img-hero);
+}
+@media (min-width: 940px){
+  .hero-photo{
+    min-height: 0;
+    margin-right: calc(-1 * var(--bleed));   /* sangra até a borda direita */
+  }
+}
+
+/* ficha da casa — o registro do laboratório */
+.ficha{
+  width: 100%;
+  border-top: 1px solid var(--fg);
+  margin-top: .5rem;
+}
+.ficha dl{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0;
+  margin: 0;
+  font-family: var(--mono);
+  font-size: .6875rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.ficha dt, .ficha dd{
+  margin: 0;
+  padding: .62rem 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.ficha dt{ color: var(--fg-2); }
+.ficha dd{ text-align: right; color: var(--fg); font-variant-numeric: tabular-nums; }
+.ficha .hi{ color: var(--stamp); }
+
+/* ============================================================
+   TRÊS PORTAS — barra flutuante sobre o hero
+   ============================================================ */
+
+.doors{ position: relative; z-index: 5; }
+@media (min-width: 940px){ .doors{ margin-top: -3.5rem; } }
+.doors-in{
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  display: grid;
+  grid-template-columns: minmax(0,1fr);
+}
+@media (min-width: 760px){ .doors-in{ grid-template-columns: repeat(3, minmax(0,1fr)); } }
+.door{
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  padding: clamp(1.4rem, 2.4vw, 1.9rem);
+  border-bottom: 1px solid var(--rule);
+  transition: background .18s ease;
+}
+.door:last-child{ border-bottom: 0; }
+@media (min-width: 760px){
+  .door{ border-bottom: 0; border-right: 1px solid var(--rule); }
+  .door:last-child{ border-right: 0; }
+}
+.door:hover{ background: var(--bg); }
+.door-t{
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  line-height: 1.1;
+  letter-spacing: -.015em;
+  margin: .5rem 0 .35rem;
+}
+.door-d{ font-size: .9rem; color: var(--fg-2); margin: 0; }
+.door-go{
+  display: inline-block;
+  margin-top: .8rem;
+  font-family: var(--mono);
+  font-size: .6875rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--fg);
+  padding-bottom: 2px;
+}
+
+/* ============================================================
+   01 · A ESTANTE — o momento de cor
+   ============================================================ */
+
+.shelf{
+  display: grid;
+  grid-template-columns: minmax(0,1fr);
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+}
+@media (min-width: 560px){ .shelf{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (min-width: 880px){ .shelf{ grid-template-columns: repeat(3, minmax(0,1fr)); } }
+
+.bot{
+  background: var(--bg);
+  padding: clamp(1rem, 2vw, 1.6rem);
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: background .2s ease;
+}
+.bot:hover{ background: var(--surface); }
+
+.bot-img{
+  aspect-ratio: 4 / 5;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--surface-2);
+  /* estado inicial: monocromático, como o resto da página */
+  filter: grayscale(1) contrast(1.04);
+  transition: filter .9s cubic-bezier(.2,.7,.3,1);
+  transition-delay: calc(var(--i, 0) * 110ms);
+}
+/* a revelação: quando a estante entra em cena, só as garrafas ganham cor */
+.shelf.is-live .bot-img{ filter: grayscale(0) contrast(1); }
+
+.bot-name{
+  font-family: var(--serif);
+  font-size: 1.32rem;
+  line-height: 1.12;
+  letter-spacing: -.015em;
+  margin: 1.1rem 0 .2rem;
+}
+.bot-sub{
+  font-family: var(--mono);
+  font-size: .625rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+  margin: 0 0 .9rem;
+}
+.bot-spec{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: .1rem .8rem;
+  margin: 0 0 1rem;
+  padding-top: .7rem;
+  border-top: 1px solid var(--rule-soft);
+  font-family: var(--mono);
+  font-size: .625rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.bot-spec dt{ color: var(--fg-2); margin: 0; }
+.bot-spec dd{ margin: 0 0 .3rem; font-variant-numeric: tabular-nums; }
+.bot-foot{
+  margin-top: auto;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: .8rem;
+  border-top: 1px solid var(--fg);
+}
+.bot-price{
+  font-family: var(--mono);
+  font-size: .95rem;
+  letter-spacing: .02em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.bot-buy{
+  font-family: var(--mono);
+  font-size: .625rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+}
+.bot:hover .bot-buy{ color: var(--stamp); }
+
+/* ============================================================
+   02 · O MÉTODO
+   ============================================================ */
+
+.steps{
+  display: grid;
+  grid-template-columns: minmax(0,1fr);
+  gap: 1px;
+  background: var(--rule);
+  border-block: 1px solid var(--rule);
+}
+@media (min-width: 620px){ .steps{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (min-width: 1080px){ .steps{ grid-template-columns: repeat(4, minmax(0,1fr)); } }
+.step{ background: var(--bg); padding: clamp(1.2rem, 2vw, 1.7rem); }
+.step-img{ aspect-ratio: 1; background-size: cover; background-position: center; margin-bottom: 1.1rem; }
+.step-n{
+  font-family: var(--mono);
+  font-size: .6875rem;
+  letter-spacing: .175em;
+  color: var(--stamp);
+}
+.step-t{
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  line-height: 1.15;
+  letter-spacing: -.015em;
+  margin: .45rem 0 .5rem;
+}
+.step p{ font-size: .9rem; color: var(--fg-2); margin: 0; }
+
+/* ============================================================
+   03 · OS RÓTULOS
+   ============================================================ */
+
+.labels-grid{ display: grid; grid-template-columns: minmax(0,1fr); gap: clamp(2rem, 4vw, 3.5rem); align-items: center; }
+@media (min-width: 900px){ .labels-grid{ grid-template-columns: minmax(0, 1fr) minmax(0, 46%); } }
+.names{
+  font-family: var(--serif);
+  font-size: clamp(1.7rem, 3.6vw, 3rem);
+  line-height: 1.18;
+  letter-spacing: -.022em;
+  margin: 0;
+  color: var(--fg-2);
+}
+.names b{ font-weight: 400; color: var(--fg); }
+.names i{ font-style: italic; }
+/* foto de arte de rótulo — a exceção cromática da regra */
+.art{
+  aspect-ratio: 3 / 2;
+  background-image: var(--img-art);
+  background-size: cover;
+  background-position: center;
+  border: 1px solid var(--rule);
+}
+
+/* ============================================================
+   04 · O BUTECO — faixa sangrada
+   ============================================================ */
+
+.buteco{ position: relative; color: #EFEAE1; }
+.buteco-bg{
+  position: absolute;
+  inset: 0;
+  background-image: var(--img-toast);
+  background-size: cover;
+  background-position: center 38%;
+  filter: grayscale(1) contrast(1.12) brightness(.42);
+}
+/* véu que garante o contraste do texto independentemente do recorte da foto */
+.buteco-bg::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(10,9,8,.72) 0%, rgba(10,9,8,.5) 55%, rgba(10,9,8,.3) 100%);
+}
+.buteco-in{ position: relative; padding-block: clamp(4rem, 9vw, 8rem); }
+.buteco .lab{ color: rgba(239,234,225,.62); }
+.buteco .d2{ max-width: 20ch; }
+.buteco-cols{
+  display: grid;
+  grid-template-columns: minmax(0,1fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+@media (min-width: 820px){ .buteco-cols{ grid-template-columns: minmax(0,1.3fr) repeat(2, minmax(0,1fr)); } }
+.buteco p{ color: rgba(239,234,225,.78); margin: 0; max-width: 46ch; }
+.buteco-fact{ border-top: 1px solid rgba(239,234,225,.3); padding-top: .8rem; }
+.buteco-fact dt{
+  font-family: var(--mono); font-size: .625rem; letter-spacing: .16em;
+  text-transform: uppercase; color: rgba(239,234,225,.6); margin: 0 0 .4rem;
+}
+.buteco-fact dd{ margin: 0; font-size: .95rem; line-height: 1.5; }
+.buteco .btn{ --btn-bg: #EFEAE1; --btn-fg: #15130F; border-color: #EFEAE1; margin-top: 1.6rem; }
+.buteco .btn:hover{ --btn-bg: var(--stamp); --btn-fg: #F4EFE7; border-color: var(--stamp); }
+
+/* ============================================================
+   05 · LINHA DO TEMPO
+   ============================================================ */
+
+.tl-grid{ display: grid; grid-template-columns: minmax(0,1fr); gap: clamp(2rem, 4vw, 3.5rem); }
+@media (min-width: 900px){ .tl-grid{ grid-template-columns: minmax(0, 30%) minmax(0,1fr); } }
+.tl-photo{
+  aspect-ratio: 4 / 5;
+  background-image: var(--img-family);
+  background-size: cover;
+  background-position: center;
+  filter: var(--photo);
+  align-self: start;
+}
+.tl{ margin: 0; border-top: 1px solid var(--rule); }
+.tl-row{
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0,1fr);
+  gap: clamp(1rem, 3vw, 2.5rem);
+  padding: clamp(1rem, 2vw, 1.4rem) 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+@media (min-width: 640px){ .tl-row{ grid-template-columns: 6rem minmax(0,1fr); } }
+.tl-y{
+  font-family: var(--mono);
+  font-size: .8rem;
+  letter-spacing: .08em;
+  color: var(--stamp);
+  font-variant-numeric: tabular-nums;
+  padding-top: .2rem;
+}
+.tl-t{ font-family: var(--serif); font-size: 1.25rem; line-height: 1.2; letter-spacing: -.015em; margin: 0 0 .25rem; }
+.tl-row p{ margin: 0; font-size: .9rem; color: var(--fg-2); max-width: 58ch; }
+
+/* ============================================================
+   06 · O CLUBE
+   ============================================================ */
+
+.club-grid{ display: grid; grid-template-columns: minmax(0,1fr); gap: clamp(2rem, 4vw, 3rem); }
+@media (min-width: 1000px){ .club-grid{ grid-template-columns: minmax(0, 34%) minmax(0,1fr); align-items: start; } }
+.club-photo{
+  aspect-ratio: 4 / 3;
+  background-image: var(--img-box);
+  background-size: cover;
+  background-position: center;
+  border: 1px solid var(--rule);
+}
+.plans{ display: grid; grid-template-columns: minmax(0,1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+@media (min-width: 700px){ .plans{ grid-template-columns: repeat(3, minmax(0,1fr)); } }
+.plan{ background: var(--bg); padding: clamp(1.2rem, 2vw, 1.7rem); display: flex; flex-direction: column; }
+.plan-n{ font-family: var(--serif); font-size: 1.45rem; letter-spacing: -.015em; margin: .4rem 0 .3rem; }
+.plan-p{
+  font-family: var(--mono); font-size: 1.05rem; letter-spacing: .02em;
+  font-variant-numeric: tabular-nums; margin: 0 0 1rem; padding-bottom: 1rem;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.plan-p small{ font-size: .625rem; letter-spacing: .16em; text-transform: uppercase; color: var(--fg-2); }
+.plan ul{ list-style: none; margin: 0 0 1.4rem; padding: 0; display: grid; gap: .45rem; font-size: .875rem; color: var(--fg-2); }
+.plan li{ padding-left: 1.2rem; text-indent: -1.2rem; }
+.plan li::before{ content: "—"; color: var(--fg); margin-right: .4rem; }
+.plan .btn{ margin-top: auto; justify-content: center; }
+
+/* ============================================================
+   RODAPÉ
+   ============================================================ */
+
+.foot{ background: var(--surface); border-top: 1px solid var(--rule); }
+.foot-top{
+  display: grid;
+  grid-template-columns: minmax(0,1fr);
+  gap: clamp(2rem, 4vw, 3rem);
+  padding-block: clamp(3rem, 6vw, 5rem) clamp(2rem, 4vw, 3rem);
+}
+@media (min-width: 880px){ .foot-top{ grid-template-columns: minmax(0, 1.2fr) repeat(3, minmax(0,1fr)); } }
+/* a única aparição em escala do logotipo — e o único uso amplo da tinta vinho */
+.foot-logo{
+  width: min(340px, 100%);
+  aspect-ratio: 760 / 285;
+  background-image: var(--img-logo);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left top;
+  filter: var(--logo-tint);
+}
+.foot h3{
+  font-family: var(--mono); font-size: .6875rem; letter-spacing: .175em;
+  text-transform: uppercase; color: var(--fg-2); margin: 0 0 1rem;
+  padding-bottom: .6rem; border-bottom: 1px solid var(--rule);
+}
+.foot ul{ list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; font-size: .9rem; }
+.foot a{ color: var(--fg); text-decoration: none; }
+.foot a:hover{ color: var(--stamp); text-decoration: underline; text-underline-offset: 3px; }
+.foot address{ font-style: normal; font-size: .9rem; color: var(--fg-2); line-height: 1.55; }
+.foot-legal{
+  border-top: 1px solid var(--rule);
+  padding-block: 1.4rem 2.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem 1.5rem;
+  align-items: baseline;
+  font-family: var(--mono);
+  font-size: .625rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+}
+.foot-legal .warn{ color: var(--stamp); }
+
+/* ============================================================
+   MOVIMENTO — um gesto orquestrado, mais nada
+   ============================================================ */
+
+.rise{ opacity: 0; transform: translateY(14px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.3,1); }
+.rise.is-in{ opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{ transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  .rise{ opacity: 1; transform: none; }
+  .bot-img{ filter: grayscale(0) contrast(1); }   /* sem animação, a cor já está lá */
+}
+</style>
+
+<header class="hdr" id="hdr">
+  <div class="wrap hdr-in">
+    <a href="#" aria-label="Sanabria — página inicial"><span class="logo"></span></a>
+    <nav class="nav" aria-label="Principal">
+      <a href="#estante" aria-current="page">Vinhos</a>
+      <a href="#metodo">O método</a>
+      <a href="#buteco">O buteco</a>
+      <a href="#clube">O clube</a>
+      <a href="#historia">História</a>
+      <a href="#rodape">Contato</a>
+    </nav>
+    <div class="hdr-end">
+      <a class="cart" href="#estante">Sacola&nbsp;(0)</a>
+      <a class="btn btn-sm" href="#clube">Assinar</a>
+      <button class="burger" type="button" aria-label="Abrir menu"><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <p class="lab">Laboratório de vinhos naturais</p>
+          <span class="stamp">Ouro · Descorchados 2024</span>
+        </div>
+
+        <h1 class="d1">Uva, tempo e levedura&nbsp;nativa.<br><em>Mais nada.</em></h1>
+
+        <p class="lede">Vinhos de baixa intervenção feitos por Carlos Sanabria com uvas da Serra Gaúcha — e servidos direto da torneira no nosso buteco, na Asa Norte.</p>
+
+        <div class="hero-cta">
+          <a class="btn" href="#estante">Ver a estante</a>
+          <a class="btn btn-ghost" href="#buteco">Ir ao buteco</a>
+        </div>
+
+        <div class="ficha">
+          <dl>
+            <dt>Primeira safra</dt>          <dd>2020</dd>
+            <dt>Gerações na uva</dt>         <dd>3 · desde 1960</dd>
+            <dt>Rótulos autorais</dt>        <dd>30+</dd>
+            <dt>Fermentação</dt>             <dd>Levedura nativa</dd>
+            <dt>Insumos enológicos</dt>      <dd class="hi">Nenhum</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="hero-photo ph" role="img" aria-label="Carlos Sanabria segurando um cacho de uvas verdes na cantina"></div>
+    </div>
+  </section>
+
+  <!-- ===================== TRÊS PORTAS ===================== -->
+  <section class="doors" aria-label="Atalhos">
+    <div class="wrap">
+      <div class="doors-in">
+        <a class="door" href="#estante">
+          <p class="lab">A estante</p>
+          <p class="door-t">30+ rótulos autorais</p>
+          <p class="door-d">Tintos, brancos, laranjas, rosés e pét-nats. Entrega para todo o Brasil.</p>
+          <span class="door-go">Comprar vinho</span>
+        </a>
+        <a class="door" href="#buteco">
+          <p class="lab">O buteco</p>
+          <p class="door-t">18 rótulos na torneira</p>
+          <p class="door-d">Asa Norte, Brasília. De terça a sábado, das 17h às 23h.</p>
+          <span class="door-go">Ver o espaço</span>
+        </a>
+        <a class="door" href="#clube">
+          <p class="lab">O clube</p>
+          <p class="door-t">Vinho novo todo mês</p>
+          <p class="door-d">Três planos, frete grátis em todos e degustação com o enólogo.</p>
+          <span class="door-go">Assinar</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 01 · A ESTANTE ===================== -->
+  <section class="band band-pad" id="estante">
+    <div class="wrap">
+      <div class="shead rise">
+        <p class="shead-n">01 / Estante</p>
+        <h2 class="d2">Tudo aqui é preto e&nbsp;branco. <em>Só o vinho tem cor.</em></h2>
+        <p class="copy">Cada rótulo é uma pintura encomendada a um ilustrador diferente. É a única coisa nesta página que não abre mão de cor — e a razão de todo o resto abrir.</p>
+      </div>
+
+      <div class="shelf" id="shelf">
+
+        <a class="bot" href="#estante">
+          <div class="bot-img" style="--i:0; background-image: var(--img-b1);" role="img" aria-label="Garrafa do vinho habla, Habla, habla, com rótulo ilustrado de um gato de óculos escuros"></div>
+          <h3 class="bot-name">habla, Habla, habla</h3>
+          <p class="bot-sub">Pinot Noir · tinto seco</p>
+          <dl class="bot-spec">
+            <div><dt>Safra</dt><dd>2025</dd></div>
+            <div><dt>Volume</dt><dd>750 ml</dd></div>
+            <div><dt>Estilo</dt><dd>Tinto</dd></div>
+            <div><dt>Origem</dt><dd>Serra Gaúcha</dd></div>
+          </dl>
+          <div class="bot-foot"><span class="bot-price">R$ 208,80</span><span class="bot-buy">Comprar</span></div>
+        </a>
+
+        <a class="bot" href="#estante">
+          <div class="bot-img" style="--i:1; background-image: var(--img-b2);" role="img" aria-label="Garrafa do vinho branco Vaca Profana com rótulo ilustrado"></div>
+          <h3 class="bot-name">Vaca Profana</h3>
+          <p class="bot-sub">Branco natural · homenagem a Gal Costa</p>
+          <dl class="bot-spec">
+            <div><dt>Safra</dt><dd>2023</dd></div>
+            <div><dt>Volume</dt><dd>750 ml</dd></div>
+            <div><dt>Estilo</dt><dd>Branco</dd></div>
+            <div><dt>Origem</dt><dd>Serra Gaúcha</dd></div>
+          </dl>
+          <div class="bot-foot"><span class="bot-price">R$ 256,50</span><span class="bot-buy">Comprar</span></div>
+        </a>
+
+        <a class="bot" href="#estante">
+          <div class="bot-img" style="--i:2; background-image: var(--img-b3);" role="img" aria-label="Garrafa do vinho Viva, a vida é uma festa, com rótulo ilustrado colorido"></div>
+          <h3 class="bot-name">Viva, a vida é uma&nbsp;festa</h3>
+          <p class="bot-sub">Gamay · tinto seco</p>
+          <dl class="bot-spec">
+            <div><dt>Safra</dt><dd>2025</dd></div>
+            <div><dt>Volume</dt><dd>750 ml</dd></div>
+            <div><dt>Estilo</dt><dd>Tinto</dd></div>
+            <div><dt>Origem</dt><dd>Serra Gaúcha</dd></div>
+          </dl>
+          <div class="bot-foot"><span class="bot-price">R$ 217,80</span><span class="bot-buy">Comprar</span></div>
+        </a>
+
+        <a class="bot" href="#estante">
+          <div class="bot-img" style="--i:3; background-image: var(--img-b4);" role="img" aria-label="Garrafa do rosé Mafaldinha com rótulo ilustrado"></div>
+          <h3 class="bot-name">Mafaldinha</h3>
+          <p class="bot-sub">Tannat · rosé seco</p>
+          <dl class="bot-spec">
+            <div><dt>Safra</dt><dd>2025</dd></div>
+            <div><dt>Volume</dt><dd>750 ml</dd></div>
+            <div><dt>Estilo</dt><dd>Rosé</dd></div>
+            <div><dt>Origem</dt><dd>Serra Gaúcha</dd></div>
+          </dl>
+          <div class="bot-foot"><span class="bot-price">R$ 189,00</span><span class="bot-buy">Comprar</span></div>
+        </a>
+
+        <a class="bot" href="#estante">
+          <div class="bot-img" style="--i:4; background-image: var(--img-b5);" role="img" aria-label="Garrafa do vinho UP, último voo livre, com rótulo ilustrado de balões"></div>
+          <h3 class="bot-name">UP, último voo&nbsp;livre</h3>
+          <p class="bot-sub">Ripasso · corte de país</p>
+          <dl class="bot-spec">
+            <div><dt>Safra</dt><dd>2025</dd></div>
+            <div><dt>Volume</dt><dd>750 ml</dd></div>
+            <div><dt>Estilo</dt><dd>Tinto</dd></div>
+            <div><dt>Origem</dt><dd>Serra Gaúcha</dd></div>
+          </dl>
+          <div class="bot-foot"><span class="bot-price">R$ 250,20</span><span class="bot-buy">Comprar</span></div>
+        </a>
+
+        <a class="bot" href="#estante">
+          <div class="bot-img" style="--i:5; background-image: var(--img-b6);" role="img" aria-label="Garrafa do clarete Frida Radiante com rótulo ilustrado"></div>
+          <h3 class="bot-name">Frida Radiante</h3>
+          <p class="bot-sub">Clarete · lançamento</p>
+          <dl class="bot-spec">
+            <div><dt>Safra</dt><dd>2025</dd></div>
+            <div><dt>Volume</dt><dd>750 ml</dd></div>
+            <div><dt>Estilo</dt><dd>Clarete</dd></div>
+            <div><dt>Origem</dt><dd>Serra Gaúcha</dd></div>
+          </dl>
+          <div class="bot-foot"><span class="bot-price">R$ 189,00</span><span class="bot-buy">Comprar</span></div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 02 · O MÉTODO ===================== -->
+  <section class="band band-pad" id="metodo">
+    <div class="wrap">
+      <div class="shead rise">
+        <p class="shead-n">02 / Método</p>
+        <h2 class="d2">O que <em>“natural”</em> significa aqui&nbsp;dentro.</h2>
+        <p class="copy">Não é selo nem categoria de marketing. É uma lista curta de coisas que a gente faz — e uma lista mais curta ainda de coisas que a gente não coloca na garrafa.</p>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="steps rise">
+        <div class="step">
+          <div class="step-img ph" style="background-image: var(--img-harvest);" role="img" aria-label="Colheita manual de uvas tintas em caixas"></div>
+          <p class="step-n">Etapa 01</p>
+          <h3 class="step-t">Pequeno produtor</h3>
+          <p>Uvas compradas de produtores parceiros da Serra Gaúcha, acompanhados no vinhedo o ano inteiro.</p>
+        </div>
+        <div class="step">
+          <div class="step-img ph" style="background-image: var(--img-press);" role="img" aria-label="Carlos Sanabria operando uma prensa vertical de madeira"></div>
+          <p class="step-n">Etapa 02</p>
+          <h3 class="step-t">Colheita e prensa manuais</h3>
+          <p>Cacho a cacho, sem máquina. A seleção acontece na mão, antes de a uva entrar na prensa.</p>
+        </div>
+        <div class="step">
+          <div class="step-img ph" style="background-image: var(--img-lab);" role="img" aria-label="Carlos Sanabria de jaleco analisando uma amostra de vinho no laboratório"></div>
+          <p class="step-n">Etapa 03</p>
+          <h3 class="step-t">Levedura nativa</h3>
+          <p>Semanas de fermentação espontânea, apenas com as leveduras que já vieram da casca. Nenhuma cepa comercial.</p>
+        </div>
+        <div class="step">
+          <div class="step-img ph" style="background-image: var(--img-flask);" role="img" aria-label="Carlos Sanabria observando uma amostra de vinho rosé contra a luz"></div>
+          <p class="step-n">Etapa 04</p>
+          <h3 class="step-t">Vinho vivo</h3>
+          <p>Sem insumos enológicos. O que entra na garrafa é uva — por isso cada safra tem uma identidade própria na taça.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 03 · OS RÓTULOS ===================== -->
+  <section class="band band-pad">
+    <div class="wrap">
+      <div class="shead rise">
+        <p class="shead-n">03 / Rótulos</p>
+        <h2 class="d2">Cada garrafa leva o nome de alguém que fez&nbsp;barulho.</h2>
+        <p class="copy">As artes são pinturas originais, encomendadas rótulo a rótulo. Os quadros ficam no buteco — as garrafas vão embora.</p>
+      </div>
+
+      <div class="labels-grid rise">
+        <p class="names">
+          <b>Nina Simone</b> · <b>BB King</b> · <b>Frida Kahlo</b> · <b>Gal Costa</b> ·
+          <b>Cartola</b> · <b>Cássia Eller</b> · <b>Chuck Berry</b> · <b>Van Gogh</b> ·
+          <b>Tom</b> · <b>Vinicius</b> · <i>e a Linha Blues inteira.</i>
+        </p>
+        <div class="art" role="img" aria-label="Duas garrafas Sanabria ao lado das pinturas originais dos seus rótulos, emolduradas"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 04 · O BUTECO ===================== -->
+  <section class="buteco" id="buteco">
+    <div class="buteco-bg" role="img" aria-label="Brinde com taças de vinho tinto no salão do Buteco Sanabria"></div>
+    <div class="wrap buteco-in">
+      <p class="lab">04 / Buteco de vinho</p>
+      <h2 class="d2" style="margin-top:1rem;">A informalidade do boteco. Os vinhos da&nbsp;serra.</h2>
+
+      <div class="buteco-cols">
+        <p>Mais que um bar: 18 rótulos exclusivos servidos direto da torneira, em taça ou em copo, como pede a casa. No subsolo, a cave recebe jantares harmonizados e eventos fechados.</p>
+        <div class="buteco-fact">
+          <dt>Endereço</dt>
+          <dd>SCRN 709/710, Bloco F, Loja 29<br>Asa Norte · Brasília/DF</dd>
+        </div>
+        <div class="buteco-fact">
+          <dt>Funcionamento</dt>
+          <dd>Terça a sábado<br>17h às 23h</dd>
+        </div>
+      </div>
+
+      <a class="btn" href="#buteco">Reservar a cave</a>
+    </div>
+  </section>
+
+  <!-- ===================== 05 · HISTÓRIA ===================== -->
+  <section class="band band-pad" id="historia">
+    <div class="wrap">
+      <div class="shead rise">
+        <p class="shead-n">05 / História</p>
+        <h2 class="d2">Três gerações entre as&nbsp;parreiras.</h2>
+        <p class="copy">A Sanabria leva o nome do avô. Ele plantava e vendia a uva; o neto passou a assinar o que sai da garrafa.</p>
+      </div>
+
+      <div class="tl-grid rise">
+        <div class="tl-photo" role="img" aria-label="Fotografia de arquivo de 1960: Valdemar e Iracema Sanabria com a filha Juliana no colo"></div>
+        <div class="tl">
+          <div class="tl-row">
+            <span class="tl-y num">1960</span>
+            <div>
+              <h3 class="tl-t">Valdemar Sanabria</h3>
+              <p>Técnico agrícola, o avô produzia uvas perto de Bento Gonçalves e revendia às grandes vinícolas da região. “É um trabalho duro e árduo, e que deve ser valorizado.”</p>
+            </div>
+          </div>
+          <div class="tl-row">
+            <span class="tl-y num">2009</span>
+            <div>
+              <h3 class="tl-t">Enologia no IFRS</h3>
+              <p>Carlos entra na faculdade de Enologia, em Bento Gonçalves.</p>
+            </div>
+          </div>
+          <div class="tl-row">
+            <span class="tl-y num">2016</span>
+            <div>
+              <h3 class="tl-t">Dez anos de Casa Valduga</h3>
+              <p>Uma década dentro de uma das maiores vinícolas do país. “Ali foi outra escola pra mim.”</p>
+            </div>
+          </div>
+          <div class="tl-row">
+            <span class="tl-y num">2020</span>
+            <div>
+              <h3 class="tl-t">A primeira safra própria</h3>
+              <p>Em plena pandemia, a primeira vinificação assinada — com o nome da família no rótulo.</p>
+            </div>
+          </div>
+          <div class="tl-row">
+            <span class="tl-y num">2020</span>
+            <div>
+              <h3 class="tl-t">Brasília</h3>
+              <p>A operação se muda para o Distrito Federal: feiras de rua, entrega por aplicativo e, depois, o buteco na Asa Norte.</p>
+            </div>
+          </div>
+          <div class="tl-row">
+            <span class="tl-y num">2024</span>
+            <div>
+              <h3 class="tl-t">Ouro, prata e bronze</h3>
+              <p>Primeira participação no Guia Descorchados, com três medalhas. Antes disso, 2º melhor tinto do Prêmio CNA 2023 e destaques em Wines of Brazil, Revista Gula e Revista Adega.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 06 · O CLUBE ===================== -->
+  <section class="band band-pad" id="clube">
+    <div class="wrap">
+      <div class="shead rise">
+        <p class="shead-n">06 / Clube</p>
+        <h2 class="d2">Vinho novo em casa, todo&nbsp;mês.</h2>
+        <p class="copy">Frete grátis em todos os planos. Você recebe os rótulos antes de eles chegarem à loja — e pode trocar o que não gostar.</p>
+      </div>
+
+      <div class="club-grid rise">
+        <div class="club-photo" role="img" aria-label="Caixa Sanabria aberta com três garrafas de rótulos ilustrados"></div>
+        <div class="plans">
+          <div class="plan">
+            <p class="lab">Entrada</p>
+            <h3 class="plan-n">Vindima</h3>
+            <p class="plan-p">R$ 215 <small>/ mês</small></p>
+            <ul>
+              <li>2 vinhos por mês</li>
+              <li>Frete grátis</li>
+              <li>Brindes exclusivos</li>
+            </ul>
+            <a class="btn btn-ghost btn-sm" href="#clube">Assinar</a>
+          </div>
+          <div class="plan">
+            <p class="lab">Mais rótulos</p>
+            <h3 class="plan-n">Evolução</h3>
+            <p class="plan-p">R$ 320 <small>/ mês</small></p>
+            <ul>
+              <li>3 vinhos por mês</li>
+              <li>Frete grátis</li>
+              <li>Conteúdo sobre cada safra</li>
+            </ul>
+            <a class="btn btn-ghost btn-sm" href="#clube">Assinar</a>
+          </div>
+          <div class="plan">
+            <p class="lab">Comunidade</p>
+            <h3 class="plan-n">Famiglia</h3>
+            <p class="plan-p">R$ 599 <small>/ mês</small></p>
+            <ul>
+              <li>6 vinhos por mês</li>
+              <li>Frete grátis</li>
+              <li>1 degustação por mês com o enólogo</li>
+            </ul>
+            <a class="btn btn-sm" href="#clube">Assinar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===================== RODAPÉ ===================== -->
+<footer class="foot" id="rodape">
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <div class="foot-logo" role="img" aria-label="Sanabria — Laboratório de Vinhos Naturais"></div>
+        <p class="lab" style="margin-top:1.4rem; max-width:26ch; line-height:1.9;">Vinhos feitos com amor no sul do Brasil, para o mundo.</p>
+      </div>
+
+      <div>
+        <h3>Comprar</h3>
+        <ul>
+          <li><a href="#estante">Todos os vinhos</a></li>
+          <li><a href="#estante">Kits e seleções</a></li>
+          <li><a href="#clube">Clube Sanabria</a></li>
+          <li><a href="#estante">Camisetas e acessórios</a></li>
+          <li><a href="#estante">Frete e prazos</a></li>
+          <li><a href="#estante">Trocas e devoluções</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>A casa</h3>
+        <ul>
+          <li><a href="#historia">Nossa história</a></li>
+          <li><a href="#metodo">Como o vinho é feito</a></li>
+          <li><a href="#buteco">Buteco de vinho</a></li>
+          <li><a href="#buteco">Experiências e degustações</a></li>
+          <li><a href="#historia">Prêmios</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Falar com a gente</h3>
+        <address>
+          SCRN 709/710, Bloco F, Loja 29<br>
+          Asa Norte · Brasília/DF<br><br>
+          Terça a sábado, 17h–23h<br><br>
+          <a href="#rodape">WhatsApp (54) 99934-3049</a><br>
+          <a href="#rodape">Instagram @sanabriavinhos</a>
+        </address>
+      </div>
+    </div>
+
+    <div class="foot-legal">
+      <span>© 2026 Sanabria Vinhos</span>
+      <span class="num">CNPJ 43.303.066/0001-63</span>
+      <span class="warn">Venda proibida para menores de 18 anos</span>
+      <span class="warn">Aprecie com moderação</span>
+      <span style="margin-left:auto;">
+        <a href="proposta.html" style="color:var(--stamp);">Mock de apresentação — ver a proposta</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hdr = document.getElementById('hdr');
+  var shelf = document.getElementById('shelf');
+
+  if (reduce) {
+    document.querySelectorAll('.rise').forEach(function (el) { el.classList.add('is-in'); });
+    if (shelf) shelf.classList.add('is-live');
+  }
+
+  /* Uma varredura por quadro cobre tudo: o estado do cabeçalho, as entradas
+     e a revelação da estante. Diferente de um IntersectionObserver, ela também
+     acerta os blocos que ficaram para trás quando o usuário pula direto para
+     uma âncora — que de outro modo continuariam invisíveis. */
+  var ticking = false;
+
+  function frame() {
+    ticking = false;
+    hdr.classList.toggle('is-stuck', window.scrollY > 40);
+    if (reduce) return;
+
+    var vh = window.innerHeight;
+    document.querySelectorAll('.rise:not(.is-in)').forEach(function (el) {
+      if (el.getBoundingClientRect().top < vh * 0.88) el.classList.add('is-in');
+    });
+
+    /* o único gesto orquestrado da página: a estante ganha cor */
+    if (shelf && !shelf.classList.contains('is-live')
+        && shelf.getBoundingClientRect().top < vh * 0.82) {
+      shelf.classList.add('is-live');
+    }
+  }
+
+  function schedule() {
+    if (!ticking) { ticking = true; window.requestAnimationFrame(frame); }
+  }
+
+  frame();
+  window.addEventListener('scroll', schedule, { passive: true });
+  window.addEventListener('resize', schedule, { passive: true });
+})();
+</script>
+
+</body>
+</html>
