@@ -20,7 +20,7 @@
   display: flex;
   align-items: center;
   gap: clamp(1rem, 3vw, 2.5rem);
-  height: 74px;
+  height: var(--hdr-h);
 }
 .logo{
   display: block;
@@ -124,7 +124,7 @@
 
 .menu{
   position: fixed;
-  inset: 74px 0 0 0;          /* começa abaixo do cabeçalho, que continua visível */
+  inset: var(--hdr-h) 0 0 0;          /* começa abaixo do cabeçalho, que continua visível */
   z-index: 80;                /* atrás do cabeçalho (90), à frente do conteúdo */
   background: var(--bg);
   display: flex;

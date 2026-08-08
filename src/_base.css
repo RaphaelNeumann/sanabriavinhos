@@ -23,6 +23,9 @@
 
   --wrap: 1280px;
   --pad: clamp(1.25rem, 4vw, 3.25rem);
+  /* altura do cabeçalho fixo, sem a borda. Um número só: o topo do conteúdo,
+     o recuo da âncora e o menu de celular saem todos daqui. */
+  --hdr-h: 74px;
   --photo: grayscale(1) contrast(1.06) brightness(.98);
   /* distância entre a borda do conteúdo e a borda da janela — para sangrar */
   --bleed: calc((100vw - min(100vw, var(--wrap))) / 2 + var(--pad));
@@ -60,8 +63,11 @@
 *, *::before, *::after{ box-sizing: border-box; }
 
 html{ scroll-behavior: smooth; }
-/* o cabeçalho é fixo: sem esta folga, a âncora esconde o topo da seção */
-section[id]{ scroll-margin-top: 82px; }
+/* O cabeçalho é fixo: sem esta folga, a âncora esconde o topo da seção.
+   Exatamente a altura dele, para que a régua de topo da seção fique embaixo
+   da borda do cabeçalho em vez de aparecer como uma segunda linha solta.
+   O ar vem do padding da própria seção. */
+section[id]{ scroll-margin-top: var(--hdr-h); }
 
 body{
   margin: 0;
