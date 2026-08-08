@@ -98,6 +98,10 @@
 
 *, *::before, *::after{ box-sizing: border-box; }
 
+html{ scroll-behavior: smooth; }
+/* o cabeçalho é fixo: sem esta folga, a âncora esconde o topo da seção */
+section[id]{ scroll-margin-top: 82px; }
+
 body{
   margin: 0;
   background: var(--bg);
@@ -219,6 +223,7 @@ a:focus-visible, button:focus-visible{
 
 @media (prefers-reduced-motion: reduce){
   *, *::before, *::after{ transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  html{ scroll-behavior: auto; }
   .rise{ opacity: 1; transform: none; }
 }
 /* ============================================================
@@ -491,14 +496,14 @@ a:focus-visible, button:focus-visible{
     <nav class="nav" aria-label="Principal">
       <a href="index.html#estante"      data-nav="vinhos">Vinhos</a>
       <a href="index.html#metodo"       data-nav="metodo">O método</a>
-      <a href="clube.html"            data-nav="clube" aria-current="page">O clube</a>
+      <a href="clube.html"         data-nav="clube" aria-current="page">O clube</a>
       <a href="index.html#experiencias" data-nav="experiencias">Experiências</a>
       <a href="index.html#historia"     data-nav="historia">História</a>
       <a href="index.html#rodape"       data-nav="contato">Contato</a>
     </nav>
     <div class="hdr-end">
       <a class="cart" href="index.html#estante">Sacola&nbsp;(0)</a>
-      <a class="btn btn-sm" href="clube.html">Assinar</a>
+      <a class="btn btn-sm" href="#planos">Assinar</a>
       <button class="burger" type="button" aria-label="Abrir menu"><span></span></button>
     </div>
   </div>

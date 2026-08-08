@@ -41,6 +41,9 @@ PAGES = [
         "dist": "mock-sanabria.html",
         "nav": None,
         "assets": None,                       # todas
+        # na home tudo é âncora — inclusive o clube, que só sai da página
+        # quando o visitante pede mais detalhe
+        "links": {"__NAV_CLUBE__": "#clube", "__ASSINAR__": "clube.html#planos"},
         "desc": "Mock da nova home da Sanabria — Laboratório de Vinhos Naturais. "
                 "Tudo em preto e branco; só os rótulos têm cor.",
     },
@@ -50,6 +53,7 @@ PAGES = [
         "dist": "clube-sanabria.html",
         "nav": "clube",
         "assets": None,
+        "links": {"__NAV_CLUBE__": "clube.html", "__ASSINAR__": "#planos"},
         "desc": "Clube Sanabria: assinatura mensal de vinhos naturais, com curadoria "
                 "do enólogo e frete grátis em todos os planos.",
     },
@@ -59,6 +63,7 @@ PAGES = [
         "dist": "proposta-sanabria.html",
         "nav": None,
         "assets": ["logo"],                   # a proposta só usa o logotipo
+        "links": {},                          # não usa o cabeçalho do site
         "desc": "Proposta de redesign para sanabriavinhos.com: diagnóstico do site "
                 "atual, sistema de design e instruções priorizadas.",
     },
@@ -169,6 +174,8 @@ def main():
 
     for page in PAGES:
         fragment = expand((SRC / page["src"]).read_text(), page["nav"])
+        for marker, target in page["links"].items():
+            fragment = fragment.replace(marker, target)
         title, body_src = split_title(fragment)
 
         # --- artifact: arquivo único. As páginas irmãs ficam no site público,
