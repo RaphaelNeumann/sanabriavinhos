@@ -12,7 +12,7 @@
 .hero{ padding-top: var(--hdr-h); }
 .hero-grid{ display: grid; grid-template-columns: minmax(0,1fr); }
 @media (min-width: 940px){
-  .hero-grid{ grid-template-columns: minmax(0, 1fr) minmax(0, 40%); align-items: stretch; }
+  .hero-grid{ grid-template-columns: minmax(0, 1fr) minmax(0, 37%); align-items: stretch; }
 }
 .hero-left{
   padding-block: clamp(2rem, 4vw, 3.5rem) clamp(2rem, 4vw, 3rem);
@@ -48,7 +48,15 @@
   background-image: var(--img-hero);
 }
 @media (min-width: 940px){
-  .hero-photo{ min-height: 0; margin-right: calc(-1 * var(--bleed)); }
+  .hero-photo{
+    min-height: 0;
+    margin-right: calc(-1 * var(--bleed));
+    /* A célula da foto é esticada até o fim da linha da grade, e a linha
+       inclui o respiro de baixo da coluna de texto. Sem descontar esse
+       respiro a foto passava da ficha da casa e entrava por baixo das três
+       portas. Acompanha o padding-block de .hero-left. */
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
 }
 
 /* ficha da casa — o registro do laboratório */
