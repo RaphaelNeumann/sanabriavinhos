@@ -22,6 +22,35 @@
    O Wix ainda escopa tudo com alta especificidade
    (#SITE_CONTAINER #main_MF#main_MF .css-editing-scope ...),
    então !important é desnecessário — nenhuma regra abaixo usa.
+
+   ------------------------------------------------------------
+   LIMITE DURO: O WIX FILTRA PROPRIEDADES DE LAYOUT
+
+   Medido em ago/2026. Escrevi
+
+     .hero{ height:auto; min-height:0; grid-template-rows:auto; }
+     .hero > div:last-child{ display:grid; grid-template-columns:… ; gap:0 }
+
+   e o Wix gerou
+
+     .wixui-hero { }                      <- vazio
+     .wixui-hero > div:last-child { gap:0px }   <- só o gap
+
+   height, min-height, grid-template-rows, display e
+   grid-template-columns foram REMOVIDOS. Sem erro, sem aviso.
+
+   O que passa: font-family, font-size, font-weight, line-height,
+   letter-spacing, text-transform, color, background, filter,
+   padding, gap.
+
+   O que não passa: dimensão, posicionamento e definição de grade.
+
+   Consequência prática — a divisão de trabalho é:
+
+     EDITOR  estrutura, colunas, altura das seções, breakpoints,
+             sangria, posição. Tudo que é caixa.
+     CSS     tipografia, cor, tratamento de foto, espaçamento
+             interno, detalhe. Tudo que é pintura.
    ------------------------------------------------------------ */
 
 :root{
