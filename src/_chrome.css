@@ -57,7 +57,10 @@
   white-space: nowrap;
 }
 .nav a:hover{ border-bottom-color: var(--fg); }
-.nav a[aria-current]{ border-bottom-color: var(--stamp); color: var(--stamp); }
+/* A página atual é marcada só pelo traço. A segunda tinta em texto de
+   menu compete com o carimbo do hero e, no tema escuro, o link fica
+   laranja no meio de uma fileira branca. */
+.nav a[aria-current]{ border-bottom-color: var(--fg); }
 
 .hdr-end{ display: flex; align-items: center; gap: .9rem; margin-left: auto; }
 @media (min-width: 1000px){ .hdr-end{ margin-left: 0; } }
@@ -149,7 +152,7 @@
   padding: clamp(.85rem, 3.2vw, 1.15rem) 0;
   border-bottom: 1px solid var(--rule-soft);
 }
-.menu-nav a[aria-current]{ color: var(--stamp); }
+.menu-nav a[aria-current]{ color: var(--fg); }
 
 .menu-foot{
   margin-top: auto;

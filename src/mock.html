@@ -15,13 +15,19 @@
   .hero-grid{ grid-template-columns: minmax(0, 1fr) minmax(0, 40%); align-items: stretch; }
 }
 .hero-left{
-  padding-block: clamp(2.5rem, 6vw, 5.5rem) clamp(2.5rem, 5vw, 4rem);
+  padding-block: clamp(2rem, 4vw, 3.5rem) clamp(2rem, 4vw, 3rem);
   padding-right: clamp(0rem, 3vw, 3rem);
   display: flex;
   flex-direction: column;
-  gap: clamp(1.4rem, 2.6vw, 2.1rem);
+  gap: clamp(1.2rem, 2vw, 1.6rem);
   align-items: start;
 }
+
+/* A foto do hero é esticada pela coluna de texto ao lado — e essa coluna
+   carrega manchete, texto, botões e a ficha da casa. Na escala cheia de
+   .d1 o hero passava de uma dobra e meia, a foto ficava enorme e as três
+   portas nasciam fora da tela. */
+.hero-left .d1{ font-size: clamp(2.8rem, 6.2vw, 5.6rem); }
 .hero-eyebrow{ display: flex; flex-wrap: wrap; align-items: center; gap: .55rem 1rem; }
 .stamp{
   display: inline-block;
@@ -203,12 +209,13 @@
 }
 .names b{ font-weight: 400; color: var(--fg); }
 .names i{ font-style: italic; }
-/* foto de arte de rótulo — a exceção cromática da regra */
+/* Em P&B, apesar de mostrar rótulo: a exceção cromática é a arte do
+   rótulo, não a fotografia que a contém — e aqui quem domina o quadro é
+   uma pessoa. A cor dos rótulos aparece na estante, onde a garrafa é o
+   assunto inteiro. */
 .art{
   aspect-ratio: 3 / 2;
   background-image: var(--img-art);
-  background-size: cover;
-  background-position: center;
   border: 1px solid var(--rule);
 }
 
@@ -515,7 +522,7 @@
           <b>Cartola</b> · <b>Cássia Eller</b> · <b>Chuck Berry</b> · <b>Van Gogh</b> ·
           <b>Tom</b> · <b>Vinicius</b> · <i>e a Linha Blues inteira.</i>
         </p>
-        <div class="art" role="img" aria-label="Duas garrafas Sanabria ao lado das pinturas originais dos seus rótulos, emolduradas"></div>
+        <div class="art ph" role="img" aria-label="Duas garrafas Sanabria ao lado das pinturas originais dos seus rótulos, emolduradas"></div>
       </div>
     </div>
   </section>
