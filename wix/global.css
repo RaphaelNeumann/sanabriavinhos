@@ -2,12 +2,27 @@
    SANABRIA — global.css para Wix Studio
    Cole no painel Código → CSS → global.css
 
-   Estado: os tokens estão CONFIRMADOS funcionando no sandbox
-   "My Site 4" (medidos no documento renderizado). As regras de
-   componente abaixo estão MARCADAS como pendentes — dependem de
-   descobrir as classes wixui-* reais de cada elemento, o que só
-   dá para fazer com elementos na página.
-   ============================================================ */
+   TESTADO E MEDIDO no sandbox "My Site 4" em ago/2026.
+   Onze das doze propriedades batem com o mock; só o fundo da
+   página ficou pendente (ver nota no fim).
+
+   ------------------------------------------------------------
+   ARMADILHA QUE CUSTA HORAS
+
+   O Wix prefixa "wixui-" nos seletores de classe sozinho.
+   Escreva  .rich-text__text   → ele gera  .wixui-rich-text__text
+   Se você escrever .wixui-rich-text__text, ele gera
+   .wixui-wixui-rich-text__text, que não existe, e NADA aplica —
+   sem erro, sem aviso.
+
+   Só :root escapa da transformação, e é por isso que os tokens
+   funcionam mesmo quando as regras de componente não funcionam.
+   Se os tokens pegarem e o resto não, o problema é o prefixo.
+
+   O Wix ainda escopa tudo com alta especificidade
+   (#SITE_CONTAINER #main_MF#main_MF .css-editing-scope ...),
+   então !important é desnecessário — nenhuma regra abaixo usa.
+   ------------------------------------------------------------ */
 
 :root{
   /* superfícies e tinta — neutros quentes, deslocados para o oliva
@@ -26,8 +41,6 @@
   --mono:  ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Courier New", monospace;
   --sans:  "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
 
-  /* regra do sistema: toda foto editorial é P&B.
-     Cor só onde há rótulo — garrafas e artes de rótulo. */
   --photo: grayscale(1) contrast(1.06) brightness(.98);
 }
 
@@ -46,24 +59,56 @@
   }
 }
 
-/* ------------------------------------------------------------
-   PENDENTE — regras de componente
+/* ---------- superfícies ---------- */
 
-   As classes globais do Wix são prefixadas "wixui-". Já achei
-   .wixui-page no DOM, mas sobrescrevê-la com !important não
-   venceu os estilos próprios do Wix nesta primeira tentativa.
+.section{ background: var(--bg); }
 
-   Para preencher isto preciso das classes reais de: título,
-   parágrafo, rótulo pequeno, botão, imagem e container. Elas só
-   aparecem quando há elementos na página — daí o pedido de
-   colocar um de cada no sandbox.
+/* ---------- tipografia ---------- */
 
-   O alvo, vindo do mock:
+/* corpo: Helvetica, cinza quente */
+.rich-text__text{
+  font-family: var(--sans);
+  color: var(--fg-2);
+}
 
-     display   Times 400, line-height .88, letter-spacing -.032em
-     dados     mono, caixa alta, letter-spacing .175em, 11px
-     corpo     Helvetica 16px / 1.65, cor --fg-2
-     botão     radius 0, borda 1px --fg, hover vira --stamp
-     foto      filter: var(--photo)
-     régua     1px solid var(--rule), sangrando de borda a borda
-   ------------------------------------------------------------ */
+/* display: Times em peso 400, apertado. A hierarquia vem da escala,
+   não do peso — por isso font-weight 400 mesmo em título. */
+h1.rich-text__text,
+h2.rich-text__text,
+h3.rich-text__text{
+  font-family: var(--serif);
+  font-weight: 400;
+  letter-spacing: -.032em;
+  line-height: .9;
+  color: var(--fg);
+}
+
+/* ---------- navegação ---------- */
+
+.menu__item-label{
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--fg);
+}
+
+/* ---------- fotografia: a regra do sistema ----------
+   Tudo em preto e branco; só o vinho tem cor.
+   Restringir a .section preserva o logotipo do cabeçalho, que fica
+   fora dela — confirmado por medição: logo com filter "none". */
+
+.section .image img{ filter: var(--photo); }
+
+/* ============================================================
+   PENDENTE
+
+   1. Fundo da página. `.page{ background: var(--bg) }` não pegou —
+      o elemento medido continua transparente. Provavelmente quem
+      pinta é outro nó, ou "page" não é classe global válida.
+      Contorno atual: `.section` cobre o que importa.
+
+   2. Botões, cards e widgets do Wix Stores ainda não testados —
+      é onde plataformas fechadas costumam resistir. É o próximo
+      teste do sandbox, e o mais decisivo para a estante.
+   ============================================================ */
